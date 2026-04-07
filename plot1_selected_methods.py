@@ -4,32 +4,32 @@ import argparse
 from pathlib import Path
 
 from journal_figures_common import (
-    DEFAULT_CACHE_PATH,
+    DEFAULT_RESULTS_CACHE_PATH,
     METRICS,
     OUTPUT_DIR,
     MissingDataReport,
-    load_figure_cache,
+    load_results_cache,
     plot1_whole_dataset,
 )
 
 SELECTED_METHODS = [
-    #"Oracle rerank (combined)",
-    "Oracle kNN",
-    "LLM RRF Ensemble",
     "gemini-3-pro",
-    "fewshot/gemini-3-pro-fewshot-knn10",
     "gpt-5.4",
-    "gepa/gemini-3-flash",
     "SFT + GRPO best (gpt-oss-120B)",
     "baseline/coarse-phenotype-hit-freq",
     "SFT (gpt-oss-120B)",
     "biomni-a1-claude-4",
     "Classifier",
-    "Embedding kNN",
     "baseline/random",
-    "SFT + GRPO best (gpt-oss-120B)",
-    "SFT (gpt-oss-120B)",
     "gpt-oss-120b",
+    "GRPO (qwen3-30b-instruct-2507)",
+    "C2S (Gemma-2B LoRA)",
+    "Oracle kNN",
+    "Embedding kNN",
+    "gepa/gemini-3-flash",
+    "gemini-3-pro-fewshot-knn10",
+    "LLM RRF Ensemble",
+    "qwen3.5-2b"
 ]
 
 
@@ -54,9 +54,9 @@ def _dedupe_keep_order(values: list[str]) -> list[str]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Render Plot 1 using only a selected list of methods from the cached figure data.",
+        description="Render Plot 1 using only a selected list of methods from the cached results data.",
     )
-    parser.add_argument("--cache-path", type=str, default=str(DEFAULT_CACHE_PATH))
+    parser.add_argument("--cache-path", type=str, default=str(DEFAULT_RESULTS_CACHE_PATH))
     parser.add_argument("--output-dir", type=str, default=str(OUTPUT_DIR))
     parser.add_argument("--dpi", type=int, default=300)
     parser.add_argument(
@@ -78,7 +78,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    payload = load_figure_cache(Path(args.cache_path))
+    payload = load_results_cache(Path(args.cache_path))
     plot_df = payload["plot1_df"]
     available_methods = sorted(plot_df["model"].dropna().unique().tolist())
 

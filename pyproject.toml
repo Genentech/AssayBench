@@ -1,0 +1,22 @@
+[project]
+name = "screensqa-paper"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "datasets>=4.8.4",
+    "hydra-core>=1.3.2",
+    "matplotlib>=3.10.8",
+    "numpy>=2.4.4",
+    "pandas>=3.0.2",
+    "rootutils>=1.0.7",
+    "scipy>=1.16.3",
+    "screensqa>=0.4.2",
+    "seaborn>=0.13.2",
+    "statsmodels>=0.14.5",
+]
+
+[[tool.uv.index]]
+name = "roche-pypi"
+url = "https://pypi.cedar.roche.com/simple/"

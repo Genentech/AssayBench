@@ -31,6 +31,7 @@ from journal_figures_common import (
     FEWSHOT_PREFIX,
     GRPO_STAGING_INTERIM,
     KNN_TEST_DIR,
+    LEGACY_ORACLE_CACHE_DIR,
     LLM_PRED_DIR,
     MEMORIZATION_DIR,
     METRICS,
@@ -55,6 +56,7 @@ from journal_figures_common import (
 
 
 ORACLE_FILTER_CACHE = ORACLE_CACHE_DIR / "oracle_filter_baselines.json"
+LEGACY_ORACLE_FILTER_CACHE = LEGACY_ORACLE_CACHE_DIR / "oracle_filter_baselines.json"
 ORACLE_FILTER_N_SHUFFLES = 5
 ORACLE_FILTER_SEED = 42
 CLASSIFIER_WANDB_DIR = Path("/cv/data/braid/debroue1/promptoptbase/outputs/wandb")
@@ -487,6 +489,10 @@ def _oracle_cache_path(backbone: str) -> Path:
     return ORACLE_CACHE_DIR / f"{backbone.replace('/', '__')}.json"
 
 
+def _legacy_oracle_cache_path(backbone: str) -> Path:
+    return LEGACY_ORACLE_CACHE_DIR / f"{backbone.replace('/', '__')}.json"
+
+
 def _oracle_eval_backbone(
     backbone: str,
     gt_map: Dict[str, Dict[str, Any]],
@@ -591,6 +597,34 @@ def _oracle_eval_combined(
 def _oracle_combined_cache_path(backbone_models: List[str]) -> Path:
     safe = "__".join(sorted(backbone.replace("/", "_") for backbone in backbone_models))
     return ORACLE_CACHE_DIR / f"combined__{safe}.json"
+
+
+def _legacy_oracle_combined_cache_path(backbone_models: List[str]) -> Path:
+    safe = "__".join(sorted(backbone.replace("/", "_") for backbone in backbone_models))
+    return LEGACY_ORACLE_CACHE_DIR / f"combined__{safe}.json"
+
+
+def _load_json_dict(path: Path) -> Dict[str, Any]:
+    with open(path) as handle:
+        return json.load(handle)
+
+
+def _load_oracle_cache_with_fallback(
+    cache_path: Path,
+    legacy_path: Optional[Path] = None,
+) -> Tuple[Optional[Dict[str, Any]], Optional[Path]]:
+    if cache_path.exists():
+        return _load_json_dict(cache_path), cache_path
+    if legacy_path is not None and legacy_path.exists():
+        log_progress(f"Seeding local oracle cache from legacy file {legacy_path}")
+        return _load_json_dict(legacy_path), legacy_path
+    return None, None
+
+
+def _write_local_oracle_cache(cache_path: Path, data: Dict[str, Any]) -> None:
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(cache_path, "w") as handle:
+        json.dump(data, handle)
 
 
 def compute_oracle_filter_baselines(
@@ -707,9 +741,9 @@ def compute_oracle_rerank_metrics(
     for backbone in backbone_models:
         label = f"Oracle rerank ({short_label(backbone)})"
         cache_path = _oracle_cache_path(backbone)
-        if cache_path.exists():
-            with open(cache_path) as handle:
-                cached = json.load(handle)
+        legacy_cache_path = _legacy_oracle_cache_path(backbone)
+        cached, cache_source = _load_oracle_cache_with_fallback(cache_path, legacy_cache_path)
+        if cached is not None:
             has_novel = any(key.startswith(f"{NOVEL_SPLIT_NAME}:") for key in cached)
             has_all_metrics = _oracle_cache_has_metrics(cached, metrics)
             if not has_novel or not has_all_metrics:
@@ -721,8 +755,8 @@ def compute_oracle_rerank_metrics(
                     additional_splits=[NOVEL_SPLIT_NAME],
                 )
                 cached.update(refreshed)
-                with open(cache_path, "w") as handle:
-                    json.dump(cached, handle)
+            if cache_source != cache_path or not has_novel or not has_all_metrics:
+                _write_local_oracle_cache(cache_path, cached)
             append_cached_rows(cached, label)
             continue
 
@@ -733,15 +767,17 @@ def compute_oracle_rerank_metrics(
             metrics,
             additional_splits=[NOVEL_SPLIT_NAME],
         )
-        with open(cache_path, "w") as handle:
-            json.dump(cache_entries, handle)
+        _write_local_oracle_cache(cache_path, cache_entries)
         append_cached_rows(cache_entries, label)
 
     combined_label = "Oracle rerank (combined)"
     combined_cache = _oracle_combined_cache_path(backbone_models)
-    if combined_cache.exists():
-        with open(combined_cache) as handle:
-            cached_combined = json.load(handle)
+    legacy_combined_cache = _legacy_oracle_combined_cache_path(backbone_models)
+    cached_combined, combined_source = _load_oracle_cache_with_fallback(
+        combined_cache,
+        legacy_combined_cache,
+    )
+    if cached_combined is not None:
         has_novel = any(key.startswith(f"{NOVEL_SPLIT_NAME}:") for key in cached_combined)
         has_all_metrics = _oracle_cache_has_metrics(cached_combined, metrics)
         if not has_novel or not has_all_metrics:
@@ -753,8 +789,8 @@ def compute_oracle_rerank_metrics(
                 additional_splits=[NOVEL_SPLIT_NAME],
             )
             cached_combined.update(refreshed)
-            with open(combined_cache, "w") as handle:
-                json.dump(cached_combined, handle)
+        if combined_source != combined_cache or not has_novel or not has_all_metrics:
+            _write_local_oracle_cache(combined_cache, cached_combined)
         append_cached_rows(cached_combined, combined_label)
     else:
         combined_entries = _oracle_eval_combined(
@@ -764,29 +800,29 @@ def compute_oracle_rerank_metrics(
             metrics,
             additional_splits=[NOVEL_SPLIT_NAME],
         )
-        with open(combined_cache, "w") as handle:
-            json.dump(combined_entries, handle)
+        _write_local_oracle_cache(combined_cache, combined_entries)
         append_cached_rows(combined_entries, combined_label)
 
     filter_labels = {
         "hit_filter": "Oracle hit filter",
         "neg_filter": "Oracle negative filter",
     }
-    if ORACLE_FILTER_CACHE.exists():
-        with open(ORACLE_FILTER_CACHE) as handle:
-            cached_filters = json.load(handle)
+    cached_filters, filter_source = _load_oracle_cache_with_fallback(
+        ORACLE_FILTER_CACHE,
+        LEGACY_ORACLE_FILTER_CACHE,
+    )
+    if cached_filters is not None:
         has_novel = any(key.startswith(f"{NOVEL_SPLIT_NAME}:") for key in cached_filters)
         has_all_metrics = _oracle_filter_cache_has_metrics(cached_filters, metrics)
         if not has_novel or not has_all_metrics:
             refreshed = compute_oracle_filter_baselines(combined_gt, eval_k, metrics)
             cached_filters.update(refreshed)
-            with open(ORACLE_FILTER_CACHE, "w") as handle:
-                json.dump(cached_filters, handle)
+        if filter_source != ORACLE_FILTER_CACHE or not has_novel or not has_all_metrics:
+            _write_local_oracle_cache(ORACLE_FILTER_CACHE, cached_filters)
         filter_data = cached_filters
     else:
         filter_data = compute_oracle_filter_baselines(combined_gt, eval_k, metrics)
-        with open(ORACLE_FILTER_CACHE, "w") as handle:
-            json.dump(filter_data, handle)
+        _write_local_oracle_cache(ORACLE_FILTER_CACHE, filter_data)
 
     for example_key, by_label in filter_data.items():
         if allowed_keys is not None and example_key not in allowed_keys:

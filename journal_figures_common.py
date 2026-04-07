@@ -30,9 +30,11 @@ BASE_DIR = SCRIPT_DIR.parent
 EVAL_DIR = BASE_DIR / "output" / "multi_model_ensemble" / "model_split_evaluation"
 METRICS_CACHE_DIR = EVAL_DIR / "metrics_cache"
 DATASET_PATH = "/cv/data/braid/gnesys/datasets/screensQA/biogrid_v0.4_combined"
+RESULTS_DIR = Path("/cv/data/braid/gnesys/datasets/screensQA/results")
 OUTPUT_DIR = Path(__file__).resolve().parent / "journal_figures"
 CACHE_DIR = Path(__file__).resolve().parent / "journal_figures_cache"
 DEFAULT_CACHE_PATH = CACHE_DIR / "figure_data_cache.pkl"
+DEFAULT_RESULTS_CACHE_PATH = CACHE_DIR / "results_cache.pkl"
 LLM_PRED_DIR = BASE_DIR / "output" / "multi_model_ensemble" / "llm_predictions"
 ADDITIONAL_SPLITS_DIR = EVAL_DIR / "additional_splits"
 NOVEL_JSON = ADDITIONAL_SPLITS_DIR / "per_screen_novel_public_dataset_results.json"
@@ -41,11 +43,12 @@ MEMORIZATION_DIR = BASE_DIR / "output" / "multi_model_ensemble" / "memorization_
 QWEN35_SCALING_MAPPED_PNG = (
     EVAL_DIR / "year_fold0" / "qwen35_scaling_mapped_adjusted_ndcg_at_100.png"
 )
-ORACLE_CACHE_DIR = EVAL_DIR / "oracle_rerank_cache"
+LEGACY_ORACLE_CACHE_DIR = EVAL_DIR / "oracle_rerank_cache"
+ORACLE_CACHE_DIR = CACHE_DIR / "oracle_rerank_cache"
 ORACLE_BACKBONES = ["gemini-3-pro", "gpt-5.4", "claude-opus-4.5"]
 
 NOVEL_DATASET_PATHS = [
-    "/cv/data/braid/edwarc24/code/PromptOptBioGrid/new_public_data/output/novel_public_2026_dataset/",
+    "/cv/data/braid/gnesys/datasets/screensQA/novel_public_2026_dataset/",
 ]
 NOVEL_SPLIT_NAME = "novel_public_dataset"
 
@@ -156,6 +159,7 @@ BEST_ENSEMBLE_ALL_METRICS = BAYESIAN_DIR / "best_ensemble_all_metrics.json"
 KNN_TEST_DIR = BASE_DIR / "output_latent_biology" / "knn_test"
 
 CACHE_SCHEMA_VERSION = 2
+RESULTS_CACHE_SCHEMA_VERSION = 1
 _FINAL_ANSWER_RE = re.compile(r"<\s*/?FINAL\s*ANSWER\s*>", re.IGNORECASE)
 _COHORT_MARKERS = {"val": "s", "test": "o", "novel": "D"}
 _COHORT_COLORS = {"val": "#6BAED6", "test": "#2171B5", "novel": "#CB181D"}
@@ -246,6 +250,24 @@ def load_figure_cache(cache_path: Path) -> Dict[str, Any]:
     return payload
 
 
+def save_results_cache(payload: Dict[str, Any], cache_path: Path) -> None:
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(cache_path, "wb") as handle:
+        pickle.dump(payload, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+
+def load_results_cache(cache_path: Path) -> Dict[str, Any]:
+    with open(cache_path, "rb") as handle:
+        payload = pickle.load(handle)
+    version = payload.get("schema_version")
+    if version != RESULTS_CACHE_SCHEMA_VERSION:
+        raise ValueError(
+            f"Unsupported results cache schema version {version}; "
+            f"expected {RESULTS_CACHE_SCHEMA_VERSION}. Regenerate the cache."
+        )
+    return payload
+
+
 def categorize_model(name: str) -> str:
     lower = name.lower()
     if lower.startswith(BIOMNI_PREFIX):
@@ -280,12 +302,12 @@ def short_label(name: str) -> str:
         return name[len("baseline/"):]
     if name.startswith("gepa/"):
         return "GEPA: " + name[len("gepa/"):]
+    if name.startswith(FEWSHOT_PREFIX):
+        return name[len(FEWSHOT_PREFIX):]
     return name
 
 
 def is_random_split_eligible(model: str, category: str) -> bool:
-    if model.startswith(FEWSHOT_PREFIX):
-        return False
     return category in ("LLM", "Biomni (agent)")
 
 
@@ -1038,9 +1060,130 @@ def plot4_memorization_composite(
     plt.close(fig)
 
 
+def _plot7_qwen35_param_billions(model_name: str) -> Optional[float]:
+    match = re.match(r"^qwen3\.5-(\d+(?:\.\d+)?)b", model_name)
+    if not match:
+        return None
+    return float(match.group(1))
+
+
+def plot7_scaling_laws(
+    model_scores_df: pd.DataFrame,
+    out_dir: Path,
+    dpi: int,
+) -> None:
+    apply_style()
+
+    rows = model_scores_df[
+        (model_scores_df["metric"] == "adjusted_ndcg@100")
+        & (model_scores_df["split"].isin(["train", "val", "test"]))
+    ].copy()
+    rows["param_billions"] = rows["model"].map(_plot7_qwen35_param_billions)
+    rows = rows.dropna(subset=["param_billions"]).copy()
+    if rows.empty:
+        raise ValueError(
+            "No cached Qwen3.5 adjusted_ndcg@100 rows were found for train/val/test."
+        )
+
+    summary = (
+        rows.groupby(["model", "param_billions"], as_index=False)["value"]
+        .mean()
+        .sort_values(["param_billions", "model"])
+        .reset_index(drop=True)
+    )
+    summary["param_label"] = summary["param_billions"].map(lambda value: f"{value:g}B")
+    dense_summary = summary[summary["param_billions"] <= 27.0].copy()
+    moe_summary = summary[summary["param_billions"] >= 27.0].copy()
+
+    fig, ax = plt.subplots(figsize=(8.5, 5.2))
+    ax.plot(
+        dense_summary["param_billions"],
+        dense_summary["value"],
+        color="#4C78A8",
+        linewidth=2.0,
+    )
+    ax.plot(
+        moe_summary["param_billions"],
+        moe_summary["value"],
+        color="#4C78A8",
+        linewidth=2.0,
+        linestyle=":",
+    )
+    ax.scatter(
+        summary["param_billions"],
+        summary["value"],
+        color="#F58518",
+        edgecolor="white",
+        linewidth=0.9,
+        s=62,
+        zorder=3,
+    )
+
+    for _, row in summary.iterrows():
+        ax.annotate(
+            row["param_label"],
+            (row["param_billions"], row["value"]),
+            xytext=(0, 7),
+            textcoords="offset points",
+            ha="center",
+            va="bottom",
+            fontsize=8,
+            fontweight="bold",
+        )
+
+    ax.set_xscale("log")
+    ax.set_xticks(summary["param_billions"].tolist())
+    ax.set_xticklabels(summary["param_label"].tolist())
+    ax.set_xlabel("Model parameters (billions)")
+    ax.set_ylabel("Mean AnDCG@100")
+    ax.set_title(
+        "Plot 7 — Qwen3.5 scaling laws\nmean AnDCG@100 across train + val + test screens",
+        fontweight="semibold",
+    )
+    ax.grid(axis="y", linestyle="--", alpha=0.3)
+    ax.grid(axis="x", linestyle=":", alpha=0.18)
+    ax.set_ylim(bottom=max(0.0, float(summary["value"].min()) - 0.01))
+
+    fig.tight_layout()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for fmt in ("pdf", "png"):
+        fig.savefig(out_dir / f"plot7_scaling_laws.{fmt}", dpi=dpi, bbox_inches="tight")
+    plt.close(fig)
+
+
 def _plot5_safe_filename_fragment(value: str) -> str:
     safe = re.sub(r"[^A-Za-z0-9]+", "_", value).strip("_").lower()
     return safe or "model"
+
+
+def _plot5_aggregate_model_scores(
+    model_scores_df: pd.DataFrame,
+    model_name: str,
+    value_column: str,
+    phenotype_column: str,
+) -> pd.DataFrame:
+    model_df = model_scores_df[
+        (model_scores_df["model"] == model_name)
+        & (model_scores_df["metric"] == "adjusted_ndcg@100")
+    ].copy()
+    if model_df.empty:
+        raise ValueError(
+            f"Model '{model_name}' has no cached adjusted_ndcg@100 per-example rows."
+        )
+
+    return (
+        model_df.groupby("dataset_name", as_index=False)
+        .agg({
+            "value": "mean",
+            "example_key": "first",
+            "split": "first",
+            "biogrid_phenotype": "first",
+        })
+        .rename(columns={
+            "value": value_column,
+            "biogrid_phenotype": phenotype_column,
+        })
+    )
 
 
 def plot5_duplicate_transfer_vs_model(
@@ -1052,35 +1195,33 @@ def plot5_duplicate_transfer_vs_model(
     filename_stem: Optional[str] = None,
 ) -> None:
     apply_style()
+    oracle_model_name = "Oracle kNN"
 
     duplicate_df = duplicate_transfer_df.copy()
     if duplicate_df.empty:
         raise ValueError("Duplicate-transfer cache is empty. Regenerate the figure cache.")
 
-    model_df = model_scores_df[
-        (model_scores_df["model"] == model_name)
-        & (model_scores_df["metric"] == "adjusted_ndcg@100")
-    ].copy()
-    if model_df.empty:
-        raise ValueError(
-            f"Model '{model_name}' has no cached adjusted_ndcg@100 per-example rows."
-        )
-
-    model_df = (
-        model_df.groupby("dataset_name", as_index=False)
-        .agg({
-            "value": "mean",
-            "example_key": "first",
-            "split": "first",
-            "biogrid_phenotype": "first",
-        })
-        .rename(columns={
-            "value": "model_adjusted_ndcg@100",
-            "biogrid_phenotype": "phenotype_from_scores",
-        })
+    model_df = _plot5_aggregate_model_scores(
+        model_scores_df=model_scores_df,
+        model_name=model_name,
+        value_column="model_adjusted_ndcg@100",
+        phenotype_column="model_phenotype_from_scores",
     )
+    oracle_df = _plot5_aggregate_model_scores(
+        model_scores_df=model_scores_df,
+        model_name=oracle_model_name,
+        value_column="oracle_adjusted_ndcg@100",
+        phenotype_column="oracle_phenotype_from_scores",
+    )
+
     merged = duplicate_df.merge(
         model_df,
+        on="dataset_name",
+        how="left",
+        validate="one_to_one",
+    )
+    merged = merged.merge(
+        oracle_df,
         on="dataset_name",
         how="left",
         validate="one_to_one",
@@ -1091,15 +1232,15 @@ def plot5_duplicate_transfer_vs_model(
             f"No overlapping duplicate-screen dataset names were found for '{model_name}'."
         )
 
-    merged["phenotype"] = merged["phenotype"].fillna(merged["phenotype_from_scores"])
-    merged["difference_duplicate_minus_model"] = (
-        merged["duplicate_avg_adjusted_ndcg@100"] - merged["model_adjusted_ndcg@100"]
+    merged["phenotype"] = (
+        merged["phenotype"]
+        .fillna(merged["model_phenotype_from_scores"])
+        .fillna(merged["oracle_phenotype_from_scores"])
     )
 
-    summary_metrics = [
+    base_summary_metrics = [
         "duplicate_avg_adjusted_ndcg@100",
         "model_adjusted_ndcg@100",
-        "difference_duplicate_minus_model",
     ]
     preferred_order = [
         "Fitness / Proliferation / Viability",
@@ -1113,7 +1254,7 @@ def plot5_duplicate_transfer_vs_model(
     summary_order = [item for item in preferred_order if item in observed_phenotypes]
     summary_order += sorted(set(observed_phenotypes) - set(summary_order))
 
-    comparison_by_phenotype = merged.groupby("phenotype", as_index=False)[summary_metrics].mean()
+    comparison_by_phenotype = merged.groupby("phenotype", as_index=False)[base_summary_metrics].mean()
     comparison_by_phenotype["phenotype"] = pd.Categorical(
         comparison_by_phenotype["phenotype"],
         categories=summary_order,
@@ -1123,7 +1264,7 @@ def plot5_duplicate_transfer_vs_model(
 
     overall_row = pd.DataFrame([{
         "phenotype": "Overall",
-        **merged[summary_metrics].mean().to_dict(),
+        **merged[base_summary_metrics].mean().to_dict(),
     }])
     summary_plot_df = pd.concat(
         [
@@ -1135,23 +1276,50 @@ def plot5_duplicate_transfer_vs_model(
         ignore_index=True,
     )
 
+    oracle_overlap = merged.dropna(subset=["oracle_adjusted_ndcg@100"]).copy()
+    oracle_summary = (
+        oracle_overlap.groupby("phenotype", as_index=False)["oracle_adjusted_ndcg@100"].mean()
+        if not oracle_overlap.empty
+        else pd.DataFrame(columns=["phenotype", "oracle_adjusted_ndcg@100"])
+    )
+    oracle_overall = pd.DataFrame([{
+        "phenotype": "Overall",
+        "oracle_adjusted_ndcg@100": oracle_overlap["oracle_adjusted_ndcg@100"].mean()
+        if not oracle_overlap.empty
+        else np.nan,
+    }])
+    oracle_summary = pd.concat([oracle_summary, oracle_overall], ignore_index=True)
+    summary_plot_df = summary_plot_df.merge(
+        oracle_summary,
+        on="phenotype",
+        how="left",
+        validate="one_to_one",
+    )
+
     x = np.arange(len(summary_plot_df))
-    width = 0.32
+    width = 0.24
 
     fig, ax = plt.subplots(figsize=(14, 6))
     ax.bar(
-        x - width / 2,
+        x - width,
         summary_plot_df["duplicate_avg_adjusted_ndcg@100"],
         width=width,
         label="Duplicate transfer avg AnDCG@100",
         color="#4C78A8",
     )
     ax.bar(
-        x + width / 2,
+        x,
         summary_plot_df["model_adjusted_ndcg@100"],
         width=width,
         label=f"{short_label(model_name)} AnDCG@100",
         color="#F58518",
+    )
+    ax.bar(
+        x + width,
+        summary_plot_df["oracle_adjusted_ndcg@100"],
+        width=width,
+        label=f"{short_label(oracle_model_name)} AnDCG@100",
+        color="#54A24B",
     )
 
     if len(summary_plot_df) > 1:
@@ -1167,7 +1335,8 @@ def plot5_duplicate_transfer_vs_model(
     ax.set_ylim(bottom=0.0)
     ax.set_ylabel("Mean AnDCG@100")
     ax.set_title(
-        f"Plot 5 — Duplicate-screen transfer vs {short_label(model_name)}\naggregated by coarse phenotype",
+        f"Plot 5 — Duplicate-screen transfer vs {short_label(model_name)} and "
+        f"{short_label(oracle_model_name)}\naggregated by coarse phenotype",
         fontweight="semibold",
     )
     ax.set_xticks(x)
@@ -1179,7 +1348,7 @@ def plot5_duplicate_transfer_vs_model(
     legend = fig.legend(
         loc="upper center",
         bbox_to_anchor=(0.5, 0.03),
-        ncol=2,
+        ncol=3,
         framealpha=0.95,
     )
     for text in legend.get_texts():
@@ -1187,7 +1356,10 @@ def plot5_duplicate_transfer_vs_model(
 
     fig.tight_layout(rect=(0, 0.08, 1, 1))
     out_dir.mkdir(parents=True, exist_ok=True)
-    stem = filename_stem or f"plot5_duplicate_transfer_vs_model__{_plot5_safe_filename_fragment(model_name)}"
+    stem = filename_stem or (
+        "plot5_duplicate_transfer_vs_model__"
+        f"{_plot5_safe_filename_fragment(model_name)}__with_oracle_knn"
+    )
     for fmt in ("pdf", "png"):
         fig.savefig(out_dir / f"{stem}.{fmt}", dpi=dpi, bbox_inches="tight")
     plt.close(fig)
