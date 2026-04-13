@@ -1,0 +1,319 @@
+{
+  "schema_version": 1,
+  "output_dir": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions",
+  "n_models": 52,
+  "models": [
+    {
+      "model_name": "C2S/Gemma-2B/LoRA",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/trained/C2S__Gemma-2B__LoRA.json",
+      "subdir": "trained",
+      "filename": "C2S__Gemma-2B__LoRA.json"
+    },
+    {
+      "model_name": "Classifier",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/classifier/Classifier.json",
+      "subdir": "classifier",
+      "filename": "Classifier.json"
+    },
+    {
+      "model_name": "Embedding/kNN",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/knn/Embedding__kNN.json",
+      "subdir": "knn",
+      "filename": "Embedding__kNN.json"
+    },
+    {
+      "model_name": "GLM-5",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/GLM-5.json",
+      "subdir": "llm",
+      "filename": "GLM-5.json"
+    },
+    {
+      "model_name": "GRPO/qwen3-30b-instruct-2507",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/trained/GRPO__qwen3-30b-instruct-2507.json",
+      "subdir": "trained",
+      "filename": "GRPO__qwen3-30b-instruct-2507.json"
+    },
+    {
+      "model_name": "Kimi-K2.5",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/Kimi-K2.5.json",
+      "subdir": "llm",
+      "filename": "Kimi-K2.5.json"
+    },
+    {
+      "model_name": "LLM/RRF/Ensemble",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/ensemble/LLM__RRF__Ensemble.json",
+      "subdir": "ensemble",
+      "filename": "LLM__RRF__Ensemble.json"
+    },
+    {
+      "model_name": "MiniMax-M2.5",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/MiniMax-M2.5.json",
+      "subdir": "llm",
+      "filename": "MiniMax-M2.5.json"
+    },
+    {
+      "model_name": "Oracle/kNN",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/knn/Oracle__kNN.json",
+      "subdir": "knn",
+      "filename": "Oracle__kNN.json"
+    },
+    {
+      "model_name": "SFT/GRPO/best/gpt-oss-120B",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/trained/SFT__GRPO__best__gpt-oss-120B.json",
+      "subdir": "trained",
+      "filename": "SFT__GRPO__best__gpt-oss-120B.json"
+    },
+    {
+      "model_name": "SFT/gpt-oss-120B",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/trained/SFT__gpt-oss-120B.json",
+      "subdir": "trained",
+      "filename": "SFT__gpt-oss-120B.json"
+    },
+    {
+      "model_name": "baseline/bm25",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/baselines/baseline__bm25.json",
+      "subdir": "baselines",
+      "filename": "baseline__bm25.json"
+    },
+    {
+      "model_name": "baseline/coarse-phenotype-hit-freq",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/baselines/baseline__coarse-phenotype-hit-freq.json",
+      "subdir": "baselines",
+      "filename": "baseline__coarse-phenotype-hit-freq.json"
+    },
+    {
+      "model_name": "baseline/degree",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/baselines/baseline__degree.json",
+      "subdir": "baselines",
+      "filename": "baseline__degree.json"
+    },
+    {
+      "model_name": "baseline/gene-name-overlap",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/baselines/baseline__gene-name-overlap.json",
+      "subdir": "baselines",
+      "filename": "baseline__gene-name-overlap.json"
+    },
+    {
+      "model_name": "baseline/global-hit-freq",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/baselines/baseline__global-hit-freq.json",
+      "subdir": "baselines",
+      "filename": "baseline__global-hit-freq.json"
+    },
+    {
+      "model_name": "baseline/library-size-prior",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/baselines/baseline__library-size-prior.json",
+      "subdir": "baselines",
+      "filename": "baseline__library-size-prior.json"
+    },
+    {
+      "model_name": "baseline/pagerank",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/baselines/baseline__pagerank.json",
+      "subdir": "baselines",
+      "filename": "baseline__pagerank.json"
+    },
+    {
+      "model_name": "baseline/phenotype-hit-freq",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/baselines/baseline__phenotype-hit-freq.json",
+      "subdir": "baselines",
+      "filename": "baseline__phenotype-hit-freq.json"
+    },
+    {
+      "model_name": "baseline/phenotype-knn-hit-freq",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/baselines/baseline__phenotype-knn-hit-freq.json",
+      "subdir": "baselines",
+      "filename": "baseline__phenotype-knn-hit-freq.json"
+    },
+    {
+      "model_name": "baseline/random",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/baselines/baseline__random.json",
+      "subdir": "baselines",
+      "filename": "baseline__random.json"
+    },
+    {
+      "model_name": "baseline/screen-type-hit-freq",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/baselines/baseline__screen-type-hit-freq.json",
+      "subdir": "baselines",
+      "filename": "baseline__screen-type-hit-freq.json"
+    },
+    {
+      "model_name": "biomni-a1-claude-4",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/biomni-a1-claude-4.json",
+      "subdir": "llm",
+      "filename": "biomni-a1-claude-4.json"
+    },
+    {
+      "model_name": "claude-haiku-4.5",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/claude-haiku-4.5.json",
+      "subdir": "llm",
+      "filename": "claude-haiku-4.5.json"
+    },
+    {
+      "model_name": "claude-opus-4.5",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/claude-opus-4.5.json",
+      "subdir": "llm",
+      "filename": "claude-opus-4.5.json"
+    },
+    {
+      "model_name": "claude-sonnet-4.5",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/claude-sonnet-4.5.json",
+      "subdir": "llm",
+      "filename": "claude-sonnet-4.5.json"
+    },
+    {
+      "model_name": "deepseek-v3.2-nothink",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/deepseek-v3.2-nothink.json",
+      "subdir": "llm",
+      "filename": "deepseek-v3.2-nothink.json"
+    },
+    {
+      "model_name": "deepseek-v3.2",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/deepseek-v3.2.json",
+      "subdir": "llm",
+      "filename": "deepseek-v3.2.json"
+    },
+    {
+      "model_name": "fewshot/gemini-3-flash-fewshot-knn10",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/fewshot/fewshot__gemini-3-flash-fewshot-knn10.json",
+      "subdir": "fewshot",
+      "filename": "fewshot__gemini-3-flash-fewshot-knn10.json"
+    },
+    {
+      "model_name": "fewshot/gemini-3-pro-fewshot-knn10",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/fewshot/fewshot__gemini-3-pro-fewshot-knn10.json",
+      "subdir": "fewshot",
+      "filename": "fewshot__gemini-3-pro-fewshot-knn10.json"
+    },
+    {
+      "model_name": "gemini-3-flash",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/gemini-3-flash.json",
+      "subdir": "llm",
+      "filename": "gemini-3-flash.json"
+    },
+    {
+      "model_name": "gemini-3-pro",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/gemini-3-pro.json",
+      "subdir": "llm",
+      "filename": "gemini-3-pro.json"
+    },
+    {
+      "model_name": "gemini-3.1-pro",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/gemini-3.1-pro.json",
+      "subdir": "llm",
+      "filename": "gemini-3.1-pro.json"
+    },
+    {
+      "model_name": "gepa/gemini-3-flash",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/gepa/gepa__gemini-3-flash.json",
+      "subdir": "gepa",
+      "filename": "gepa__gemini-3-flash.json"
+    },
+    {
+      "model_name": "gpt-5-mini",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/gpt-5-mini.json",
+      "subdir": "llm",
+      "filename": "gpt-5-mini.json"
+    },
+    {
+      "model_name": "gpt-5.2",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/gpt-5.2.json",
+      "subdir": "llm",
+      "filename": "gpt-5.2.json"
+    },
+    {
+      "model_name": "gpt-5.4",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/gpt-5.4.json",
+      "subdir": "llm",
+      "filename": "gpt-5.4.json"
+    },
+    {
+      "model_name": "gpt-oss-120b",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/gpt-oss-120b.json",
+      "subdir": "llm",
+      "filename": "gpt-oss-120b.json"
+    },
+    {
+      "model_name": "gpt-oss-20b",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/gpt-oss-20b.json",
+      "subdir": "llm",
+      "filename": "gpt-oss-20b.json"
+    },
+    {
+      "model_name": "olmo-3.1-32b-think",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/olmo-3.1-32b-think.json",
+      "subdir": "llm",
+      "filename": "olmo-3.1-32b-think.json"
+    },
+    {
+      "model_name": "qwen3-235b-a22b-2507",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/qwen3-235b-a22b-2507.json",
+      "subdir": "llm",
+      "filename": "qwen3-235b-a22b-2507.json"
+    },
+    {
+      "model_name": "qwen3-30b-a3b-2507",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/qwen3-30b-a3b-2507.json",
+      "subdir": "llm",
+      "filename": "qwen3-30b-a3b-2507.json"
+    },
+    {
+      "model_name": "qwen3-4b-2507",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/qwen3-4b-2507.json",
+      "subdir": "llm",
+      "filename": "qwen3-4b-2507.json"
+    },
+    {
+      "model_name": "qwen3-coder-next",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/qwen3-coder-next.json",
+      "subdir": "llm",
+      "filename": "qwen3-coder-next.json"
+    },
+    {
+      "model_name": "qwen3.5-0.8b",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/qwen3.5-0.8b.json",
+      "subdir": "llm",
+      "filename": "qwen3.5-0.8b.json"
+    },
+    {
+      "model_name": "qwen3.5-122b-a10b",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/qwen3.5-122b-a10b.json",
+      "subdir": "llm",
+      "filename": "qwen3.5-122b-a10b.json"
+    },
+    {
+      "model_name": "qwen3.5-27b",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/qwen3.5-27b.json",
+      "subdir": "llm",
+      "filename": "qwen3.5-27b.json"
+    },
+    {
+      "model_name": "qwen3.5-2b",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/qwen3.5-2b.json",
+      "subdir": "llm",
+      "filename": "qwen3.5-2b.json"
+    },
+    {
+      "model_name": "qwen3.5-35b-a3b",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/qwen3.5-35b-a3b.json",
+      "subdir": "llm",
+      "filename": "qwen3.5-35b-a3b.json"
+    },
+    {
+      "model_name": "qwen3.5-397b-a17b",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/qwen3.5-397b-a17b.json",
+      "subdir": "llm",
+      "filename": "qwen3.5-397b-a17b.json"
+    },
+    {
+      "model_name": "qwen3.5-4b",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/qwen3.5-4b.json",
+      "subdir": "llm",
+      "filename": "qwen3.5-4b.json"
+    },
+    {
+      "model_name": "qwen3.5-9b",
+      "output_path": "/cv/data/braid/edwarc24/code/PromptOptBioGrid/screensqa_paper/predictions/llm/qwen3.5-9b.json",
+      "subdir": "llm",
+      "filename": "qwen3.5-9b.json"
+    }
+  ]
+}
