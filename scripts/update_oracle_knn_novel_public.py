@@ -28,7 +28,7 @@ def log(message: str) -> None:
 
 
 LEGACY_KNN_RESULTS_PATH = Path(
-    "/cv/home/edwarc24/code/PromptOptBioGrid/promptoptbase/output_latent_biology/knn_test/year_fold0/knn_results.json"
+    "./output/knn_test/year_fold0/knn_results.json"
 )
 
 

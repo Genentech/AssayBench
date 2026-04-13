@@ -1,0 +1,25 @@
+# Configuration for collecting Biomni predictions via agenecy API
+
+# Inherit base collection config
+defaults:
+  - collect-predictions
+
+# Model name for organizing outputs
+model_name: "biomni-a1-claude-4"
+
+# LM configuration for Biomni via agenecy
+lm:
+  provider: "biomni"
+  model: "biomni-sbx:biomni-a1-claude-4"
+  api_base: "${BIOMNI_API_BASE}"  # Set to your Biomni/agenecy API endpoint
+  max_tokens: 200000  # Biomni is agentic — tool traces consume many tokens before the final answer
+  temperature: 0.7
+
+# Collection settings
+collection:
+  n_runs: 1
+  collect_train: true
+  collect_val: true
+  collect_test: true
+  num_workers: 1  # Sequential — agenecy API is sensitive to concurrency (502s)
+  save_frequency: 1  # Save intermediate results every N examples (default: 5)

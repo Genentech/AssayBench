@@ -1,0 +1,35 @@
+# Configuration for collecting predictions from Qwen3.5-397B-A17B
+# Serve with: ./serve.sh Qwen/Qwen3.5-397B-A17B --tensor-parallel-size 8 \
+#   --reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_coder \
+#   --language-model-only --port 8050 --api-key token-abc123
+
+# Inherit base collection config
+defaults:
+  - collect-predictions
+
+# Model name for organizing outputs
+model_name: "qwen3.5-35b-a3b"
+
+# LM configuration for local model
+# Recommended sampling params from https://huggingface.co/Qwen/Qwen3.5-397B-A17B
+lm:
+  provider: "local"
+  model: "Qwen/Qwen3.5-35B-A3B"
+  max_tokens: 32768
+  temperature: 1.0
+  top_p: 0.95
+  top_k: 20
+  min_p: 0
+  presence_penalty: 1.5
+  repetition_penalty: 1.0
+  api_base: "http://localhost:8080/v1"
+  api_key: "token-abc123"
+
+# Collection settings
+collection:
+  n_runs: 5
+  collect_train: true
+  collect_val: true
+  collect_test: true
+  save_frequency: 5
+  num_workers: 8

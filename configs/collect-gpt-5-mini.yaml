@@ -1,0 +1,24 @@
+# Configuration for collecting LLM predictions
+
+defaults:
+  - collect-predictions
+
+
+# Model name for organizing outputs
+model_name: "gpt-5-mini"
+
+# Collection settings
+collection:
+  n_runs: 1  # Number of inference runs per example
+  collect_train: true  # Collect predictions on train split
+  collect_val: true  # Collect predictions on val split
+  collect_test: true  # Collect predictions on test split
+  num_workers: 8  # Number of parallel workers (1 = sequential, >1 = parallel)
+  retry_failed: true  # Re-run examples where all predictions failed (empty)
+
+# LM configuration
+lm:
+  provider: "azure"  # Options: azure, openai, anthropic, local
+  model: "gpt-5-mini"  # Model name or deployment name
+  max_tokens: 32000
+  temperature: 1.0

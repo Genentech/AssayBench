@@ -15,8 +15,6 @@ rootutils.setup_root(__file__, indicator=".project_root", pythonpath=True)
 import dotenv
 
 dotenv.load_dotenv(".env", override=True)
-dotenv.load_dotenv("/cv/home/edwarc24/code/PromptOptBioGrid/promptoptbase/.env", override=False)
-dotenv.load_dotenv("/cv/home/debroue1/from_prescient/projects/promptoptbase/.env", override=True)
 
 import dspy
 
@@ -35,7 +33,7 @@ except ImportError:
 
 
 DEFAULT_GEPA_SPLIT_PATH = Path(
-    "/cv/home/edwarc24/code/PromptOptBioGrid/promptoptbase/output/gepa/gemini-3-flash/llm_predictions/gemini-3-flash/test_predictions.json"
+    "./output/gepa/gemini-3-flash/llm_predictions/gemini-3-flash/test_predictions.json"
 )
 
 

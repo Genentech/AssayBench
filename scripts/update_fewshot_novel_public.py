@@ -18,8 +18,6 @@ rootutils.setup_root(__file__, indicator=".project_root", pythonpath=True)
 import dotenv
 
 dotenv.load_dotenv(".env", override=True)
-dotenv.load_dotenv("/cv/home/edwarc24/code/PromptOptBioGrid/promptoptbase/.env", override=False)
-dotenv.load_dotenv("/cv/home/debroue1/from_prescient/projects/promptoptbase/.env", override=True)
 
 import dspy
 from openai import AzureOpenAI
@@ -39,9 +37,7 @@ except ImportError:
 
 
 SCREEN_EMBEDDING_CACHE_PATHS = [
-    Path("/cv/home/edwarc24/code/PromptOptBioGrid/promptoptbase/output_latent_biology/text_embedding_cache.pkl"),
     Path("output_latent_biology/text_embedding_cache.pkl"),
-    Path("/braid/wua33/gnesys/results/screensQA/agent_rationales/text_embedding_cache/base_1205/text_embedding_cache.pkl"),
 ]
 
 INSTRUCTION_SUFFIX = (

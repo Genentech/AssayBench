@@ -1,4 +1,4 @@
-# ScreensQA Paper — Figure Generation
+# ScreensQA Paper — Figure Generation and Analysis
 
 ## Repository Structure
 
@@ -30,6 +30,31 @@ screensqa_paper/
     export_harmonized_knn_predictions.py
     export_harmonized_ensemble_predictions.py
 
+  scripts/                       # prediction collection, evaluation, and training
+    collect_llm_predictions.py           # collect LLM predictions (Hydra)
+    collect_fewshot_predictions.py       # collect few-shot kNN-augmented predictions
+    generate_baseline_predictions.py     # generate non-LLM baselines (Hydra)
+    evaluate_model_splits.py             # evaluate models across splits (Hydra)
+    evaluate_best_ensemble.py            # evaluate best RRF ensemble trial
+    run_ensemble_baseline.py             # single-model multi-run ensemble
+    run_gepa_collect_predictions.py      # GEPA optimization + prediction collection
+    run_gepa_optimization.py             # standalone GEPA optimization
+    knn_test.py                          # kNN ranking (oracle / embedding)
+    train_relevance_predictor_classifier.py  # gene relevance classifier (NOTE: placeholder, needs update)
+    bollm_gene_embeddings.py             # BOLLM gene embedding loader
+    download_gene_summaries.py           # download NCBI gene summaries for BM25
+    shared_utils.py                      # shared loaders and utilities
+    update_*_novel_public.py             # update specific model tracks with novel_public data
+
+  configs/                       # Hydra YAML configs for runner scripts
+    collect-predictions.yaml             # base template for LLM collection
+    collect-<model>.yaml                 # per-model overrides (30 models)
+    collect-fewshot-predictions.yaml     # few-shot collection config
+    generate-baselines.yaml              # baseline generation config
+    evaluate-model-splits.yaml           # evaluation config
+    ensemble-baseline.yaml               # ensemble baseline config
+    gepa/gemini-3-flash.yaml             # GEPA config for Gemini Flash
+
   predictions/                   # harmonized prediction JSONs (by model category)
     harmonized_predictions_manifest.json
     baselines/
@@ -41,20 +66,11 @@ screensqa_paper/
     gepa/
     classifier/
 
-  scripts/                       # data update utilities
-    shared_utils.py
-    run_ensemble_baseline.py
-    update_oracle_knn_novel_public.py
-    update_gepa_novel_public.py
-    update_fewshot_novel_public.py
-    update_gpt_oss_120b_novel_public.py
-    update_baseline_coarse_phenotype_novel_public.py
-
   docs/
     knn_novel_public_workflow.md
 ```
 
-## Journal Figure Workflow
+## Quick Start: Generating Journal Figures
 
 ### Step 1: Build the figure data cache
 
@@ -98,6 +114,55 @@ read from the **figure data cache**.
 uv run python figures/generate_journal_figures.py --refresh-data
 ```
 
+## Collecting Predictions
+
+### LLM predictions
+
+Each model has a Hydra config in `configs/`. To collect predictions for a model:
+
+```bash
+uv run python scripts/collect_llm_predictions.py --config-name collect-gpt-5-mini
+```
+
+For local models served via vLLM, start the server first, then run:
+
+```bash
+uv run python scripts/collect_llm_predictions.py --config-name collect-deepseek-v3.2
+```
+
+### Few-shot predictions
+
+```bash
+uv run python scripts/collect_fewshot_predictions.py
+```
+
+### Non-LLM baselines
+
+```bash
+uv run python scripts/download_gene_summaries.py   # one-time: download NCBI gene summaries
+uv run python scripts/generate_baseline_predictions.py
+```
+
+### GEPA predictions
+
+```bash
+uv run python scripts/run_gepa_collect_predictions.py \
+    --config-path ../configs/gepa --config-name gemini-3-flash
+```
+
+### kNN predictions
+
+```bash
+uv run python scripts/knn_test.py --mode oracle
+uv run python scripts/knn_test.py --mode embedding
+```
+
+### Evaluation
+
+```bash
+uv run python scripts/evaluate_model_splits.py
+```
+
 ## Harmonized Predictions
 
 The `predictions/` directory contains one JSON file per model, organized by
@@ -119,3 +184,14 @@ uv run python exporters/export_harmonized_model_predictions.py --overwrite
 uv run python exporters/export_harmonized_knn_predictions.py --overwrite
 uv run python exporters/export_harmonized_ensemble_predictions.py --overwrite
 ```
+
+## Environment Setup
+
+API keys should be provided via environment variables or a `.env` file:
+- `AZURE_API_KEY` / `AZURE_API_BASE` — for Azure OpenAI models
+- `GEMINI_API_KEY` — for Gemini models
+- `ANTHROPIC_API_KEY` — for Claude models
+- `PORTKEY_API_KEY` / `PORTKEY_API_BASE` — for Portkey-proxied models
+- `AGENECY_API_KEY` / `BIOMNI_API_BASE` — for Biomni agent models
+
+For local models, set `api_key: "token-abc123"` in the config (default placeholder for vLLM servers).
