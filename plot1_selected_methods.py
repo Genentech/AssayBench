@@ -22,11 +22,11 @@ SELECTED_METHODS = [
     "Classifier",
     "baseline/random",
     "gpt-oss-120b",
-    "GRPO (qwen3-30b-instruct-2507)",
     "C2S (Gemma-2B LoRA)",
     "Oracle kNN",
     "Embedding kNN",
     "gepa/gemini-3-flash",
+    "gemini-3-flash",
     "gemini-3-pro-fewshot-knn10",
     "LLM RRF Ensemble",
     "qwen3.5-2b"

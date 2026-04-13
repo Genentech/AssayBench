@@ -651,6 +651,7 @@ def _plot1_get_panel_data(
         if cohort not in pivoted.columns:
             pivoted[cohort] = np.nan
     pivoted = pivoted[list(cohort_order)]
+    pivoted = pivoted.apply(pd.to_numeric, errors="coerce")
     ascending = metric in LOWER_IS_BETTER
     return pivoted.sort_values(by="test", ascending=ascending, na_position="last")
 
@@ -666,7 +667,7 @@ def _plot1_dot_panel(
     y_positions = np.arange(n_rows)
 
     for cohort in cohort_order:
-        values = pivoted[cohort].values
+        values = pd.to_numeric(pivoted[cohort], errors="coerce").to_numpy()
         mask = ~np.isnan(values)
         ax.scatter(
             values[mask],
