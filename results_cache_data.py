@@ -105,7 +105,7 @@ def _load_results_manifest(
         return [path for path in paths if path.exists()]
     paths = sorted(
         path
-        for path in results_dir.glob("*.json")
+        for path in results_dir.rglob("*.json")
         if path.name != "harmonized_predictions_manifest.json"
     )
     if selected_models is None:

@@ -9,6 +9,10 @@ Typical usage:
 
 from __future__ import annotations
 
+import rootutils
+
+rootutils.setup_root(__file__, indicator=".project_root", pythonpath=True)
+
 import argparse
 from pathlib import Path
 

@@ -1,90 +1,121 @@
-# Journal Figure Workflow
+# ScreensQA Paper — Figure Generation
 
-Build the cached figure inputs once:
+## Repository Structure
 
-```bash
-uv run python generate_figures_data.py
+```
+screensqa_paper/
+  journal_figures_common.py      # shared constants, paths, plotting helpers
+  journal_figures_data.py        # builds figure_data_cache.pkl
+  results_cache_data.py          # builds results_cache.pkl from harmonized predictions
+
+  figures/                       # all figure rendering scripts
+    generate_figures_data.py     # CLI: build figure data cache
+    generate_results_cache.py    # CLI: build results cache
+    generate_journal_figures.py  # CLI: refresh cache + render all plots
+    plot0_dataset_composition.py
+    plot0_dataset_task.py
+    plot1_whole_dataset.py
+    plot1_selected_methods.py
+    plot2_phenotype.py
+    plot2_phenotype_bar_plot_year.py
+    plot3_ensemble_val_vs_test.py
+    plot4_memorization_composite.py
+    plot5_duplicate_transfer_vs_model.py
+    plot6_memorization_analysis.py
+    plot7_scaling_laws.py
+    plot_grpo_staging_table.py
+
+  exporters/                     # harmonized prediction export pipelines
+    export_harmonized_model_predictions.py
+    export_harmonized_knn_predictions.py
+    export_harmonized_ensemble_predictions.py
+
+  predictions/                   # harmonized prediction JSONs (by model category)
+    harmonized_predictions_manifest.json
+    baselines/
+    llm/
+    trained/
+    fewshot/
+    knn/
+    ensemble/
+    gepa/
+    classifier/
+
+  scripts/                       # data update utilities
+    shared_utils.py
+    run_ensemble_baseline.py
+    update_oracle_knn_novel_public.py
+    update_gepa_novel_public.py
+    update_fewshot_novel_public.py
+    update_gpt_oss_120b_novel_public.py
+    update_baseline_coarse_phenotype_novel_public.py
+
+  docs/
+    knn_novel_public_workflow.md
 ```
 
-Build the direct-metrics cache for Plot 1, Plot 4, and Plot 5 from the
-harmonized prediction files in `/cv/data/braid/gnesys/datasets/screensQA/results`:
+## Journal Figure Workflow
+
+### Step 1: Build the figure data cache
 
 ```bash
-uv run python generate_results_cache.py
+uv run python figures/generate_figures_data.py
 ```
 
-Then render any figure very quickly from that cache:
+### Step 2: Build the results cache
+
+Scores models from the harmonized prediction files in `predictions/`:
 
 ```bash
-uv run python plot0_dataset_composition.py
-uv run python plot0_dataset_task.py
-uv run python plot1_whole_dataset.py
-uv run python plot1_selected_methods.py --method "Classifier" --method "gemini-3-pro"
-uv run python plot2_phenotype.py
-uv run python plot2_phenotype_bar_plot_year.py
-uv run python plot3_ensemble_val_vs_test.py
-uv run python plot4_memorization_composite.py
-uv run python plot5_duplicate_transfer_vs_model.py
-uv run python plot_grpo_staging_table.py
+uv run python figures/generate_results_cache.py
+```
+
+### Step 3: Render individual figures
+
+```bash
+uv run python figures/plot0_dataset_composition.py
+uv run python figures/plot0_dataset_task.py
+uv run python figures/plot1_whole_dataset.py
+uv run python figures/plot1_selected_methods.py --method "Classifier" --method "gemini-3-pro"
+uv run python figures/plot2_phenotype.py
+uv run python figures/plot2_phenotype_bar_plot_year.py
+uv run python figures/plot3_ensemble_val_vs_test.py
+uv run python figures/plot4_memorization_composite.py
+uv run python figures/plot5_duplicate_transfer_vs_model.py
+uv run python figures/plot6_memorization_analysis.py
+uv run python figures/plot7_scaling_laws.py
+uv run python figures/plot_grpo_staging_table.py
 ```
 
 `plot1_whole_dataset.py`, `plot1_selected_methods.py`,
 `plot4_memorization_composite.py`, and `plot5_duplicate_transfer_vs_model.py`
-now read from `generate_results_cache.py` by default. The other figure scripts
-still read from `generate_figures_data.py`.
+read from the **results cache**. The other figure scripts
+read from the **figure data cache**.
 
-To refresh the cache and regenerate everything in one command:
-
-```bash
-uv run python generate_journal_figures.py --refresh-data
-```
-
-# Harmonized Prediction Export
-
-To export a harmonized `dataset_name -> ranked genes` JSON file for each model,
-run:
+### One-shot: refresh cache and regenerate everything
 
 ```bash
-uv run python export_harmonized_model_predictions.py --overwrite
+uv run python figures/generate_journal_figures.py --refresh-data
 ```
 
-By default this writes one JSON file per model to:
+## Harmonized Predictions
 
-```text
-/cv/data/braid/gnesys/datasets/screensQA/results
-```
+The `predictions/` directory contains one JSON file per model, organized by
+category (baselines, llm, trained, fewshot, knn, ensemble, gepa, classifier).
+Gene lists are trimmed to the top 200 per screen.
 
-It also writes a `harmonized_predictions_manifest.json` file in that directory.
-
-Each model file stores records grouped by `dataset_name`, with metadata such as:
-- `split`
-- `split_layout`
-- `example_key` when available
-- `predicted_genes`
-- `prediction_runs`
+Each model file stores records grouped by `dataset_name`, with fields:
+- `split` — train, val, test, or novel_public_dataset
+- `split_layout` — year or random
+- `predicted_genes` — ranked gene list (up to 200)
+- `prediction_runs` — per-run gene lists
 - `n_runs`
+- `example_key`
 
-Useful variants:
-
-```bash
-uv run python export_harmonized_model_predictions.py --dry-run
-uv run python export_harmonized_model_predictions.py --model gemini-3-pro --model Classifier
-uv run python export_harmonized_model_predictions.py --model "Oracle kNN" --model "Embedding kNN"
-uv run python export_harmonized_model_predictions.py --model "gemini-3-pro-fewshot-knn10"
-uv run python export_harmonized_model_predictions.py --skip-baselines --skip-classifier
-```
-
-The exporter currently covers:
-- canonical LLM prediction directories
-- few-shot LLM prediction directories under `fewshot_predictions` (exported under their plain model names, for example `gemini-3-pro-fewshot-knn10`)
-- baseline prediction directories
-- reconstructed learned ensemble: `LLM RRF Ensemble`
-- reconstructed kNN transfer baselines: `Oracle kNN` and `Embedding kNN`
-- trained and staged models such as GRPO, C2S, SFT, and SFT + GRPO
-- the classifier predictions from the result CSVs
-
-There is also a standalone kNN-only exporter:
+### Exporting new harmonized predictions
 
 ```bash
-uv run python export_harmonized_knn_predictions.py --overwrite
+uv run python exporters/export_harmonized_model_predictions.py --overwrite
+uv run python exporters/export_harmonized_knn_predictions.py --overwrite
+uv run python exporters/export_harmonized_ensemble_predictions.py --overwrite
 ```

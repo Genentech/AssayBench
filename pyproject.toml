@@ -1,7 +1,7 @@
 [project]
 name = "screensqa-paper"
 version = "0.1.0"
-description = "Add your description here"
+description = "Figure generation and analysis scripts for the ScreensQA gene ranking benchmark paper"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
