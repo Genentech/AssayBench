@@ -1,7 +1,7 @@
 [project]
-name = "screensqa-paper"
+name = "assaybench"
 version = "0.1.0"
-description = "Figure generation and analysis scripts for the ScreensQA gene ranking benchmark paper"
+description = "Figure generation and analysis scripts for the AssayBench gene ranking benchmark paper"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -11,8 +11,8 @@ dependencies = [
     "numpy>=2.4.4",
     "pandas>=3.0.2",
     "rootutils>=1.0.7",
+    "scikit-learn>=1.8.0",
     "scipy>=1.16.3",
-    "screensqa>=0.4.2",
     "seaborn>=0.13.2",
     "statsmodels>=0.14.5",
 ]
@@ -20,3 +20,9 @@ dependencies = [
 [[tool.uv.index]]
 name = "roche-pypi"
 url = "https://pypi.cedar.roche.com/simple/"
+
+[dependency-groups]
+dev = [
+    "jupyter",
+    "ipykernel",
+]
