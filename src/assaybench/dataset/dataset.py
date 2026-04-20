@@ -1,5 +1,5 @@
 from datasets import Dataset
-from datasets import load_from_disk
+from datasets import load_dataset
 import os
 import dotenv
 from typing import Literal
@@ -32,7 +32,8 @@ class AssayBenchDataset:
     
     def __init__(
         self,
-        dataset_path: str = "/cv/data/braid/gnesys/datasets/screensQA/biogrid_v0.4_combined",
+        dataset_group: str = "Genentech/assaybench",
+        dataset_name: str = "biogrid",
         split_type: str = "year",
         fold: int = 0,
         max_examples: Optional[int] = None,
@@ -42,7 +43,7 @@ class AssayBenchDataset:
         random_seed: int = 42,
         display_library_genes: bool = False,
         use_existing_prompt: bool = False,
-        internal_ds_path: bool = None,
+        novel_dataset_name: bool = None,
     ):
         """
         Initialize the BioGRID dataset loader.
@@ -60,9 +61,10 @@ class AssayBenchDataset:
             use_existing_prompt: If True, use the ``"prompt"`` field from each
                 dataset entry as the question (bypassing template formatting).
                 Falls back to template formatting if the field is absent.
-            internal_ds_path: Path to the internal dataset (default: None) - this effectively adds an additional test set of more recent screens that have not been included in the training data, to evaluate generalization to new screens
+            novel_dataset_name: Name of the novel dataset (default: None) - this effectively adds an additional test set of more recent screens that have not been included in the training data, to evaluate generalization to new screens
         """
-        self.dataset_path = dataset_path
+        self.dataset_group = dataset_group
+        self.dataset_name = dataset_name
         self.split_type = split_type
         self.fold = fold
         self.max_examples = max_examples
@@ -79,7 +81,7 @@ class AssayBenchDataset:
         else:
             self.prompt_template = load_objective_prompt("biogrid_ranking_prompt")
 
-        self.internal_ds_path = internal_ds_path
+        self.novel_dataset_name = novel_dataset_name
     
     def load(self) -> Dataset:
         """
@@ -88,20 +90,17 @@ class AssayBenchDataset:
         Returns:
             HuggingFace Dataset object
         """
-        dataset = load_from_disk(self.dataset_path)
+        dataset = load_dataset(self.dataset_group, self.dataset_name)
         
         # Limit number of examples if specified
         if self.max_examples is not None:
             dataset = dataset.select(range(min(self.max_examples, len(dataset))))
 
-        # Remove the merged directional screens if specified
-        if self.internal_ds_path is not None:
-            if isinstance(self.internal_ds_path, list):
-                self.internal_ds = [load_from_disk(path) for path in self.internal_ds_path]
-            else:
-                self.internal_ds = [load_from_disk(self.internal_ds_path)]
+        # Load the novel dataset if specified
+        if self.novel_dataset_name is not None:
+            self.novel_dataset = load_dataset(self.dataset_group, self.novel_dataset_name)
         else:
-            self.internal_ds = None
+            self.novel_dataset = None
         
         self.dataset = dataset
         return dataset
@@ -127,8 +126,7 @@ class AssayBenchDataset:
         
         examples = []
 
-
-        for item in self.dataset:
+        for item in self.dataset["train"]:
             # Get top 10 genes by relevance score
             top10_genes_args = np.argsort(item['relevance_scores'])[::-1]
             top10_genes = np.array(item['relevance_genes'])[top10_genes_args][:10].tolist()
@@ -168,13 +166,13 @@ class AssayBenchDataset:
                 'answer': ', '.join(top10_genes)
             }
             examples.append(example)
-        if self.internal_ds is not None:
-            for internal_ds in self.internal_ds:
-                for item in internal_ds:
-                    prompt = self.prompt_template.format(**item)
-                    top10_genes_args = np.argsort(item['relevance_scores'])[::-1]
-                    top10_genes = np.array(item['relevance_genes'])[top10_genes_args][:10].tolist()
-                    example = {
+
+        if self.novel_dataset is not None:
+            for item in self.novel_dataset["train"]:
+                prompt = self.prompt_template.format(**item)
+                top10_genes_args = np.argsort(item['relevance_scores'])[::-1]
+                top10_genes = np.array(item['relevance_genes'])[top10_genes_args][:10].tolist()
+                example = {
                         'question': prompt,
                         'relevance_genes': item['relevance_genes'],
                         'relevance_scores': item['relevance_scores'],
@@ -191,24 +189,24 @@ class AssayBenchDataset:
                         'screen_rationale': item.get('screen_rationale', 'Not specified'),
                         'num_genes': len(item['relevance_genes']),
                         'screen_category': item.get('screen_category', 'Not specified'),
-                        'split': "internal_test",
+                        'split': "novel_dataset",
+                        "cleaned_phenotype": item.get('cleaned_phenotype', 'Not specified'),
                         # Create answer as top 10 genes for reference
                         'answer': ', '.join(top10_genes)
                     }
-                    examples.append(example)
+                examples.append(example)
         
         return examples
     
     def get_train_test_split(
         self,
-        include_internal_test: bool = False
+        include_novel_dataset: bool = False
     ) -> tuple[List[Dict], List[Dict], List[Dict], List[Dict]]:
         """
         Split dataset into train, validation, and test sets.
         
         Returns:
-            Tuple of (train_examples, val_examples, test_examples, internal_test_examples) - internal_test_examples is only returned if include_internal_test is True and internal_ds is not None
-        
+            Tuple of (train_examples, val_examples, test_examples, novel_dataset_examples) - novel_dataset_examples is only returned if include_novel_dataset is True and novel_dataset is not None
         """
         
         examples = self.get_list_examples()
@@ -222,9 +220,9 @@ class AssayBenchDataset:
             val_examples = [example for example in examples if example['split'] == 'validation']
             test_examples = [example for example in examples if example['split'] == 'test']
         
-        if include_internal_test and self.internal_ds is not None:
-            internal_test_examples = [example for example in examples if example['split'] == 'internal_test']
-            return train_examples, val_examples, test_examples, internal_test_examples
+        if self.novel_dataset is not None:
+            novel_dataset_examples = [example for example in examples if example['split'] == 'novel_dataset']
+            return train_examples, val_examples, test_examples, novel_dataset_examples
         return train_examples, val_examples, test_examples
     
     def __len__(self) -> int:
