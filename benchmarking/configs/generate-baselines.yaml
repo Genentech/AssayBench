@@ -1,0 +1,26 @@
+# Configuration for generating non-LLM baseline predictions
+
+# Which baselines to generate. Use "all" or a list like:
+# baselines='["random", "global-hit-freq", "bm25"]'
+baselines: "all"
+
+# K for phenotype-knn-hit-freq baseline
+knn_k: 10
+
+# Directory containing gene_summaries.tsv (from download_gene_summaries.py)
+gene_data_dir: "./gene_data"
+
+# Directory for BioGRID PPI data (auto-downloaded if missing)
+ppi_data_dir: "./gene_data/biogrid_ppi"
+
+# Dataset settings
+dataset:
+  dataset_path: "./data/biogrid_v0.4_combined"
+  split_type: "year"
+  fold: 0
+
+# Output settings
+output:
+  save_dir: "./output/multi_model_ensemble/"
+
+seed: 42

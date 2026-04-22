@@ -142,9 +142,10 @@ class AssayBenchDataset:
                 if len(item['relevance_genes']) < 2000:
                     prompt += "\n\Only the following genes were considered in this screen. Only output genes from this list: " + ', '.join(item['relevance_genes'])
 
- 
             example = {
                 'question': prompt,
+                'author': item.get("author", "Not specified"),
+                'source_id': item.get("source_id", "Not specified"),
                 'relevance_genes': item['relevance_genes'],
                 'relevance_scores': item['relevance_scores'],
                 'hit': item['hit'],
@@ -178,6 +179,8 @@ class AssayBenchDataset:
                         'relevance_scores': item['relevance_scores'],
                         'hit': item['hit'],
                         'dataset_name': item['dataset_name'],
+                        'author': item.get("author", "Not specified"),
+                        'source_id': item.get("source_id", "Not specified"),
                         'screen_ids': _extract_screen_ids_from_dataset_name(item["dataset_name"]),
                         'phenotype': item.get('phenotype', 'Not specified'),
                         'condition_clause': item.get('condition_clause', 'Not specified'),

@@ -3,11 +3,38 @@
 import re
 import numpy as np
 from typing import List, Dict, Any, Optional, Set, Union
+import csv
 import random
 from importlib.resources import files
 from pathlib import Path
-import pandas as pd
-from sklearn.metrics import roc_auc_score
+
+
+def roc_auc_score(y_true, y_scores):
+    y_true = np.asarray(y_true)
+    y_scores = np.asarray(y_scores, dtype=float)
+
+    pos_mask = y_true == 1
+    n_pos = pos_mask.sum()
+    n_neg = len(y_true) - n_pos
+
+    if n_pos == 0 or n_neg == 0:
+        raise ValueError("Only one class present in y_true.")
+
+    order = np.argsort(y_scores)
+    ranks = np.empty_like(order, dtype=float)
+    ranks[order] = np.arange(1, len(y_scores) + 1, dtype=float)
+
+    sorted_scores = y_scores[order]
+    i = 0
+    while i < len(sorted_scores):
+        j = i
+        while j < len(sorted_scores) and sorted_scores[j] == sorted_scores[i]:
+            j += 1
+        avg_rank = (i + j + 1) / 2.0
+        ranks[order[i:j]] = avg_rank
+        i = j
+
+    return (ranks[pos_mask].sum() - n_pos * (n_pos + 1) / 2) / (n_pos * n_neg)
 
 # All available metric groups
 ALL_METRIC_GROUPS = {"ndcg", "adjusted_ndcg", "auroc", "mrr", "precision", "recall", "inverse_precision"}
@@ -57,8 +84,10 @@ class RankingMetrics:
 
         self.num_random_samples = 10
 
-        hgnc_path = files("assaybench.data.hgnc")/"all_genes.tsv"
-        self.df_hgnc = pd.read_csv(hgnc_path, sep="\t")
+        hgnc_path = files("assaybench.data.hgnc") / "all_genes.tsv"
+        with open(hgnc_path, newline="") as f:
+            reader = csv.DictReader(f, delimiter="\t")
+            self._hgnc_approved_symbols = {row["Approved symbol"] for row in reader}
 
         self.no_hgnc_penalty = no_hgnc_penalty
 
@@ -441,7 +470,7 @@ class RankingMetrics:
         
         if normalized_gene in scoring_dict:
             return scoring_dict[normalized_gene]
-        elif normalized_gene not in self.df_hgnc['Approved symbol'].values:
+        elif normalized_gene not in self._hgnc_approved_symbols:
             return self.no_hgnc_penalty  # unknown gene
         else:
             return None

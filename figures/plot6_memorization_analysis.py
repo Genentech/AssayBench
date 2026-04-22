@@ -3,13 +3,11 @@ from __future__ import annotations
 import argparse
 import os
 import re
-from collections import defaultdict
+import sys
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict
 
-import rootutils
-
-rootutils.setup_root(__file__, indicator=".project_root", pythonpath=True)
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 
@@ -20,41 +18,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from assaybench import AssayBenchDataset
+
 from journal_figures_common import (
-    DATASET_PATH,
+    CACHE_DIR,
     DEFAULT_RESULTS_CACHE_PATH,
     OUTPUT_DIR,
     load_results_cache,
 )
 
-
-BIOGRID_INDEX_PATH = Path(
-    "/cv/data/braid/wua33/gnesys/data/biogrid/"
-    "BIOGRID-ORCS-SCREEN_INDEX-2.0.18.index.tab.txt"
-)
-CITATION_CACHE_PATH = Path(
-    "/cv/home/edwarc24/code/PromptOptBioGrid/promptoptbase/output/"
-    "multi_model_ensemble/memorization_analysis/citation_cache.json"
-)
 PLOT6_BASENAME = "plot6_memorization_analysis"
-
-
-def extract_screen_ids(dataset_name: str) -> List[int]:
-    if dataset_name.startswith("U_TR_"):
-        parts = dataset_name[5:].split("_")
-        return [int(part) for part in parts[:-1] if part.isdigit()]
-    if dataset_name.startswith("TR_"):
-        parts = dataset_name[3:].split("_")
-        return [int(part) for part in parts if part.isdigit()]
-    if dataset_name.startswith("U_"):
-        parts = dataset_name.split("_")
-        if len(parts) >= 2 and parts[1].isdigit():
-            return [int(parts[1])]
-        return []
-    try:
-        return [int(dataset_name)]
-    except ValueError:
-        return []
+DEFAULT_CITATION_CACHE_PATH = CACHE_DIR / "citation_count.json"
 
 
 def extract_publication_year(author_field: str) -> int | None:
@@ -62,92 +36,73 @@ def extract_publication_year(author_field: str) -> int | None:
     return int(match.group(1)) if match else None
 
 
-def build_plot6_analysis_dataframe(cache_path: Path) -> pd.DataFrame:
-    from datasets import load_from_disk
-    from screensqa.utils.biogrid_maps import stratify_metrics_by_dataset_name
+def _load_dataset_metadata() -> Dict[str, Dict[str, Any]]:
+    ds = AssayBenchDataset(dataset_name="biogrid", split_type="year", fold=0)
+    examples = ds.get_list_examples()
+    meta: Dict[str, Dict[str, Any]] = {}
+    for ex in examples:
+        name = ex["dataset_name"]
+        if name in meta:
+            continue
+        year = extract_publication_year(ex.get("author", ""))
+        source_id = str(ex.get("source_id", ""))
+        if source_id in ("", "Not specified", "nan"):
+            source_id = None
+        meta[name] = {"publication_year": year, "source_id": source_id}
+    return meta
 
+
+def build_plot6_analysis_dataframe(
+    cache_path: Path,
+    citation_cache_path: Path | None = None,
+) -> pd.DataFrame:
     payload = load_results_cache(cache_path)
     scores_df = payload.get("plot5_model_scores_df")
     if not isinstance(scores_df, pd.DataFrame) or scores_df.empty:
         raise ValueError(f"No plot5_model_scores_df table found in {cache_path}")
 
     scores_df = scores_df.copy()
-    scores_df = scores_df.loc[(scores_df["model"]=="gemini-3-pro")
-                              & (scores_df["metric"] == "adjusted_ndcg@100")
-        & scores_df["example_key"].notna()][["example_key", "value"]].rename(columns={"value": "metric_value"})
-    
+    scores_df = scores_df.loc[
+        (scores_df["model"] == "gemini-3-pro")
+        & (scores_df["metric"] == "adjusted_ndcg@100")
+        & scores_df["example_key"].notna()
+    ][["example_key", "dataset_name", "biogrid_phenotype", "value"]].rename(
+        columns={"value": "metric_value"}
+    )
+
     if scores_df.empty:
-        raise ValueError("Cached results do not contain any val/test adjusted_ndcg@100 rows")
+        raise ValueError("Cached results do not contain any gemini-3-pro adjusted_ndcg@100 rows")
 
-    dataset = load_from_disk(DATASET_PATH)
-    rows: List[Dict[str, Any]] = []
-    split_counters: Dict[str, int] = defaultdict(int)
-    key_map = {"train": "train", "validation": "val", "test": "test"}
-    for row in dataset:
-        split = row["yearfold0"]
-        index = split_counters[split]
-        split_counters[split] += 1
-        rows.append({
-            "example_key": f"{key_map[split]}:{index}",
-            "dataset_name": row["dataset_name"],
-            "screen_ids": extract_screen_ids(row["dataset_name"]),
-        })
-    meta_df = pd.DataFrame(rows)
+    dataset_meta = _load_dataset_metadata()
 
-    phenotype_df = stratify_metrics_by_dataset_name({row["dataset_name"]: 0 for row in rows})
-    phenotype_df = phenotype_df.rename(columns={"phenotype": "biogrid_phenotype"})
-    phenotype_df.index.name = "dataset_name"
-    phenotype_df = phenotype_df[["biogrid_phenotype"]].reset_index()
-    meta_df = meta_df.merge(phenotype_df, on="dataset_name", how="left")
-
-
-    biogrid_index = pd.read_csv(BIOGRID_INDEX_PATH, sep="\t")
-    screen_id_to_year: Dict[int, int] = {}
-    screen_id_to_pmid: Dict[int, str] = {}
-    for _, row in biogrid_index.iterrows():
-        screen_id = row["#SCREEN_ID"]
-        year = extract_publication_year(row.get("AUTHOR", ""))
-        if year is not None:
-            screen_id_to_year[screen_id] = year
-        pmid = str(row.get("SOURCE_ID", ""))
-        if pmid and pmid != "nan":
-            screen_id_to_pmid[screen_id] = pmid
-    if 1686 in screen_id_to_year and screen_id_to_year[1686] == 1970:
-        screen_id_to_year[1686] = 2021
+    scores_df["publication_year"] = scores_df["dataset_name"].map(
+        lambda n: dataset_meta.get(n, {}).get("publication_year")
+    )
+    scores_df["source_id"] = scores_df["dataset_name"].map(
+        lambda n: dataset_meta.get(n, {}).get("source_id")
+    )
 
     pmid_to_citations: Dict[str, Any] = {}
-    if CITATION_CACHE_PATH.exists():
+    if citation_cache_path is not None and citation_cache_path.exists():
         import json
 
-        with open(CITATION_CACHE_PATH) as handle:
+        with open(citation_cache_path) as handle:
             pmid_to_citations = json.load(handle)
 
-    def get_year(screen_ids: List[int]) -> int | None:
-        years = [screen_id_to_year[screen_id] for screen_id in screen_ids if screen_id in screen_id_to_year]
-        return int(np.median(years)) if years else None
+    scores_df["citation_count"] = scores_df["source_id"].map(
+        lambda sid: pmid_to_citations.get(sid) if sid else None
+    )
 
-    def get_citations(screen_ids: List[int]) -> int | None:
-        citations = [
-            pmid_to_citations.get(screen_id_to_pmid.get(screen_id, ""))
-            for screen_id in screen_ids
-            if screen_id in screen_id_to_pmid
-        ]
-        citations = [citation for citation in citations if citation is not None]
-        return int(np.median(citations)) if citations else None
+    # Screen 1686 has an incorrect author year (1970) in the source data
+    scores_df.loc[scores_df["dataset_name"] == "1686", "publication_year"] = 2021
 
-    meta_df["publication_year"] = meta_df["screen_ids"].apply(get_year)
-    meta_df = meta_df.dropna(subset=["publication_year"]).copy()
-    meta_df["publication_year"] = meta_df["publication_year"].astype(int)
-    meta_df["biogrid_phenotype"] = meta_df["biogrid_phenotype"].fillna("Not specified")
-    meta_df["citation_count"] = meta_df["screen_ids"].apply(get_citations)
-    meta_df["log_citations"] = np.log1p(meta_df["citation_count"].fillna(0).astype(float))
-
-    analysis_df = scores_df.merge(meta_df, on="example_key", how="inner")
-    if analysis_df.empty:
-        raise ValueError("No overlap between cached model scores and metadata rows")
+    scores_df = scores_df.dropna(subset=["publication_year", "citation_count"]).copy()
+    scores_df["publication_year"] = scores_df["publication_year"].astype(int)
+    scores_df["biogrid_phenotype"] = scores_df["biogrid_phenotype"].fillna("Not specified")
+    scores_df["log_citations"] = np.log1p(scores_df["citation_count"].astype(float))
 
     screen_df = (
-        analysis_df.groupby(
+        scores_df.groupby(
             ["example_key", "publication_year", "biogrid_phenotype", "citation_count", "log_citations"],
             as_index=False,
         )["metric_value"]
@@ -175,7 +130,15 @@ def fit_simple_regression(screen_df: pd.DataFrame):
 
     df = screen_df.copy()
     df["year_c"] = df["publication_year"] - df["publication_year"].median()
-    model = smf.ols("metric_value ~ year_c + C(biogrid_phenotype) + log_citations", data=df).fit()
+
+    n_phenotypes = df["biogrid_phenotype"].nunique()
+    if n_phenotypes > 1:
+        formula = "metric_value ~ year_c + C(biogrid_phenotype) + log_citations"
+    else:
+        print(f"Warning: only {n_phenotypes} phenotype level(s) — dropping phenotype from regression")
+        formula = "metric_value ~ year_c + log_citations"
+
+    model = smf.ols(formula, data=df).fit()
     return model, df
 
 
@@ -293,9 +256,19 @@ def main() -> None:
     parser.add_argument("--cache-path", type=str, default=str(DEFAULT_RESULTS_CACHE_PATH))
     parser.add_argument("--output-dir", type=str, default=str(OUTPUT_DIR))
     parser.add_argument("--dpi", type=int, default=300)
+    parser.add_argument(
+        "--citation-cache",
+        type=str,
+        default=str(DEFAULT_CITATION_CACHE_PATH),
+        help="Path to a JSON mapping PMIDs to citation counts.",
+    )
     args = parser.parse_args()
 
-    screen_df = build_plot6_analysis_dataframe(Path(args.cache_path))
+    citation_cache_path = Path(args.citation_cache)
+    screen_df = build_plot6_analysis_dataframe(
+        cache_path=Path(args.cache_path),
+        citation_cache_path=citation_cache_path,
+    )
     render_plot6_memorization_analysis(screen_df, Path(args.output_dir), args.dpi)
     print(f"Saved Plot 6 to {Path(args.output_dir) / f'{PLOT6_BASENAME}.png'}")
     print(f"Saved summary to {Path(args.output_dir) / f'{PLOT6_BASENAME}_summary.txt'}")

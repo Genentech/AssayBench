@@ -1,9 +1,14 @@
-# ScreensQA Paper — Figure Generation and Analysis
+# AssayBench
 
-## Repository Structure
+
+## AssayBench package
+
+
+
+## Paper Reproduction Structure
 
 ```
-screensqa_paper/
+AssayBench/
   journal_figures_common.py      # shared constants, paths, plotting helpers
   journal_figures_data.py        # builds figure_data_cache.pkl
   results_cache_data.py          # builds results_cache.pkl from harmonized predictions

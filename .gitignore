@@ -3,3 +3,4 @@ __pycache__/
 .venv/
 journal_figures_cache/
 journal_figures/
+.env

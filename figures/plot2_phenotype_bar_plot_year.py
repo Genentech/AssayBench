@@ -1,32 +1,31 @@
 from __future__ import annotations
 
-import rootutils
-
-rootutils.setup_root(__file__, indicator=".project_root", pythonpath=True)
-
+import sys
 import argparse
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 from journal_figures_common import (
-    DEFAULT_CACHE_PATH,
+    DEFAULT_RESULTS_CACHE_PATH,
     OUTPUT_DIR,
-    load_figure_cache,
+    load_results_cache,
     plot2_coarse_phenotype_bar_year,
 )
 
 SELECTED_METHODS = [
     #"Oracle rerank (combined)",
     "Oracle kNN",
-    #"LLM RRF Ensemble",
+    "LLM RRF Ensemble",
     "gemini-3-pro",
-    "fewshot/gemini-3-pro-fewshot-knn10",
+    #"fewshot/gemini-3-pro-fewshot-knn10",
     "gpt-5.4",
-    "gepa/gemini-3-flash",
+    #"gepa/gemini-3-flash",
     #"SFT + GRPO best (gpt-oss-120B)",
     "baseline/coarse-phenotype-hit-freq",
     #"SFT (gpt-oss-120B)",
     #"biomni-a1-claude-4",
-    #"Classifier",
+    "Classifier",
     "Embedding kNN",
     #"C2S (Gemma-2B LoRA)",
     #"baseline/random"
@@ -54,9 +53,9 @@ def _dedupe_keep_order(values: list[str]) -> list[str]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Render a year-split test bar plot by coarse phenotype for selected methods.",
+        description="Render a year-split test bar plot by coarse phenotype for selected methods from the results cache.",
     )
-    parser.add_argument("--cache-path", type=str, default=str(DEFAULT_CACHE_PATH))
+    parser.add_argument("--cache-path", type=str, default=str(DEFAULT_RESULTS_CACHE_PATH))
     parser.add_argument("--output-dir", type=str, default=str(OUTPUT_DIR))
     parser.add_argument("--dpi", type=int, default=300)
     parser.add_argument(
@@ -78,9 +77,9 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    payload = load_figure_cache(Path(args.cache_path))
-    per_ex_year = payload["plot2_year_df"]
-    meta_df = payload["meta_df"]
+    payload = load_results_cache(Path(args.cache_path))
+    per_ex_year = payload["plot5_model_scores_df"]
+    meta_df = payload.get("meta_df")
     available_methods = sorted(per_ex_year["model"].dropna().unique().tolist())
 
     if args.list_available:

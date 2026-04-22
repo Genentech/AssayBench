@@ -1,0 +1,96 @@
+# Configuration for evaluating model performance across train/val/test splits
+
+# Force recompute metrics even if cached (default: false)
+force_recompute: false
+
+# Recompute specific models only (keeps cache for others)
+# Set to null to use cache for all, or list specific models to recompute
+# Example: ["gpt-5-mini", "qwen3-4b-2507"]
+recompute_models: null
+
+# Use gene mapper to normalize gene symbols before evaluation
+# When true, computes both mapped and unmapped metrics and creates comparison plots
+use_gene_mapper: false
+
+# List of model names to evaluate (must have predictions collected)
+models:
+  - "qwen3-235b-a22b-2507"
+  - "qwen3-30b-a3b-2507"
+  - "qwen3-4b-2507"
+  # - "gpt-5-mini"
+  # - "claude-4.5-haiku"
+
+# GEPA-optimized models to evaluate (predictions live under gepa_dir/<model>/)
+# Set to null or empty list to skip GEPA evaluation
+gepa_models: null
+  # - "gemini-3-flash"
+
+# Directory containing GEPA output (one subdirectory per model)
+gepa_dir: "./output/gepa/"
+
+# Baseline (non-LLM) models to evaluate
+# Predictions live under output.save_dir/baseline_predictions/<model>/
+# Set to null or empty list to skip baseline evaluation
+baseline_models: null
+  # - "random"
+  # - "global-hit-freq"
+  # - "bm25"
+  # - "pagerank"
+
+# Few-shot (kNN-augmented) models to evaluate
+# Predictions live under fewshot_dir/<model>/
+# Set to null or empty list to skip few-shot evaluation
+fewshot_models: null
+  # - "gemini-3-pro-fewshot-knn10"
+  # - "gemini-3-flash-fewshot-knn10"
+
+# Directory containing few-shot prediction outputs
+fewshot_dir: "./output/multi_model_ensemble/fewshot_predictions/"
+
+# Metric to evaluate and plot
+metric: "adjusted_ndcg@100"
+
+# Extra metrics to plot for additional splits (per-screen and summary charts).
+# Set to null to only plot the primary metric.
+additional_metrics:
+  - "precision@100"
+  - "inverse_precision@100"
+  - "normalized_precision@100"
+  - "normalized_inverse_precision@100"
+  - "hit_scaled_adjusted_ndcg@100"
+
+# Number of parallel workers for metric computation (default: min(cpu_count, 8))
+n_workers: 64
+
+# Dataset settings (for loading ground truth)
+dataset:
+  dataset_path: "./data/biogrid_v0.4_combined"
+
+  # Single split_type/fold (used if split_types/folds are null)
+  split_type: "year"
+  fold: 0
+
+  # Multiple split_types and folds to evaluate
+  # Set to null to use single split_type/fold above
+  # Or provide lists like: ["year", "random"] and [0, 1, 2]
+  split_types: null
+  folds: null
+
+# Additional splits to evaluate with per-screen breakdown.
+# Each split lists dataset paths and how to load prompts.
+# Set to null to skip additional split evaluation.
+additional_splits:
+  novel_public_dataset:
+    paths:
+      - "./data/novel_public_2026_dataset/"
+    use_existing_prompt: false
+    display_library_genes: false
+
+# Evaluation settings
+evaluation:
+  k_values: [5, 10, 20, 50, 100]
+  use_thresholded_scoring: true
+
+# Output settings
+output:
+  save_dir: "./output/multi_model_ensemble/"
