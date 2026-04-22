@@ -24,7 +24,7 @@ import pandas as pd
 # Paths — all relative to the repo root
 # ---------------------------------------------------------------------------
 REPO_DIR = Path(__file__).resolve().parent.parent
-PREDICTIONS_DIR = REPO_DIR / "predictions"
+PREDICTIONS_DIR = REPO_DIR / "benchmarking" / "predictions"
 OUTPUT_DIR = Path(__file__).resolve().parent / "journal_figures"
 CACHE_DIR = Path(__file__).resolve().parent / "journal_figures_cache"
 DEFAULT_CACHE_PATH = CACHE_DIR / "figure_data_cache.pkl"

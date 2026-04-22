@@ -21,14 +21,13 @@ import pandas as pd
 from assaybench import AssayBenchDataset
 
 from journal_figures_common import (
-    CACHE_DIR,
     DEFAULT_RESULTS_CACHE_PATH,
     OUTPUT_DIR,
     load_results_cache,
 )
 
 PLOT6_BASENAME = "plot6_memorization_analysis"
-DEFAULT_CITATION_CACHE_PATH = CACHE_DIR / "citation_count.json"
+DEFAULT_CITATION_CACHE_PATH = Path(__file__).resolve().parent / "data" / "citation_count.json"
 
 
 def extract_publication_year(author_field: str) -> int | None:
