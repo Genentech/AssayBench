@@ -54,9 +54,9 @@ metric: "adjusted_ndcg@100"
 # Set to null to only plot the primary metric.
 additional_metrics:
   - "precision@100"
-  - "inverse_precision@100"
+  - "fdr@100"
   - "normalized_precision@100"
-  - "normalized_inverse_precision@100"
+  - "normalized_fdr@100"
   - "hit_scaled_adjusted_ndcg@100"
 
 # Number of parallel workers for metric computation (default: min(cpu_count, 8))

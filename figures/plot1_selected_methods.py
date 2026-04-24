@@ -39,7 +39,7 @@ SELECTED_METHODS = [
 COMPACT_TABLE_METRICS = (
     "adjusted_ndcg@100",
     "normalized_precision@100",
-    "inverse_precision@100",
+    "fdr@100",
 )
 
 

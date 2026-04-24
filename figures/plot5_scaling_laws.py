@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-import rootutils
-
-rootutils.setup_root(__file__, indicator=".project_root", pythonpath=True)
-
 import argparse
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from journal_figures_common import (
     DEFAULT_RESULTS_CACHE_PATH,

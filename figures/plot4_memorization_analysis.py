@@ -26,7 +26,7 @@ from journal_figures_common import (
     load_results_cache,
 )
 
-PLOT6_BASENAME = "plot6_memorization_analysis"
+PLOT4_BASENAME = "plot4_memorization_analysis"
 DEFAULT_CITATION_CACHE_PATH = Path(__file__).resolve().parent / "data" / "citation_count.json"
 
 
@@ -210,7 +210,7 @@ def render_plot6_memorization_analysis(screen_df: pd.DataFrame, output_dir: Path
 
     output_dir.mkdir(parents=True, exist_ok=True)
     for suffix in ("png", "pdf"):
-        fig.savefig(output_dir / f"{PLOT6_BASENAME}.{suffix}", dpi=dpi, bbox_inches="tight")
+        fig.savefig(output_dir / f"{PLOT4_BASENAME}.{suffix}", dpi=dpi, bbox_inches="tight")
     plt.close(fig)
 
     present_phenotypes = {
@@ -243,7 +243,7 @@ def render_plot6_memorization_analysis(screen_df: pd.DataFrame, output_dir: Path
             f"  {row['label']}: coef={row['coef']:+.6f}, se={row['std']:.6f}, p={row['p_value']:.3e}"
         )
     summary = "\n".join(summary_lines)
-    (output_dir / f"{PLOT6_BASENAME}_summary.txt").write_text(summary)
+    (output_dir / f"{PLOT4_BASENAME}_summary.txt").write_text(summary)
     print(summary)
     return summary
 
@@ -269,8 +269,8 @@ def main() -> None:
         citation_cache_path=citation_cache_path,
     )
     render_plot6_memorization_analysis(screen_df, Path(args.output_dir), args.dpi)
-    print(f"Saved Plot 6 to {Path(args.output_dir) / f'{PLOT6_BASENAME}.png'}")
-    print(f"Saved summary to {Path(args.output_dir) / f'{PLOT6_BASENAME}_summary.txt'}")
+    print(f"Saved Plot 6 to {Path(args.output_dir) / f'{PLOT4_BASENAME}.png'}")
+    print(f"Saved summary to {Path(args.output_dir) / f'{PLOT4_BASENAME}_summary.txt'}")
 
 
 if __name__ == "__main__":

@@ -42,7 +42,6 @@ class AssayBenchDataset:
         val_size: float = 0.1,
         random_seed: int = 42,
         display_library_genes: bool = False,
-        use_existing_prompt: bool = False,
         novel_dataset_name: bool = None,
     ):
         """
@@ -58,9 +57,6 @@ class AssayBenchDataset:
             val_size: Fraction of data for validation set (default: 0.1)
             random_seed: Random seed for reproducibility (default: 42)
             display_library_genes: Whether to include the list of genes considered in the screen in the prompt - only done when the number of genes is small (<2000) (default: False)
-            use_existing_prompt: If True, use the ``"prompt"`` field from each
-                dataset entry as the question (bypassing template formatting).
-                Falls back to template formatting if the field is absent.
             novel_dataset_name: Name of the novel dataset (default: None) - this effectively adds an additional test set of more recent screens that have not been included in the training data, to evaluate generalization to new screens
         """
         self.dataset_group = dataset_group
@@ -73,7 +69,6 @@ class AssayBenchDataset:
         self.val_size = val_size
         self.random_seed = random_seed
         self.display_library_genes = display_library_genes
-        self.use_existing_prompt = use_existing_prompt
         
         # Use custom prompt template or load from YAML
         if prompt_template is not None:
@@ -134,10 +129,7 @@ class AssayBenchDataset:
             #Removing trailing period from phenotype if it exists for better prompt formatting
             if item["phenotype"][-1] == ".":
                 item["phenotype"] = item["phenotype"][:-1] # remove trailing period for better prompt formatting
-            if self.use_existing_prompt and "prompt" in item:
-                prompt = item["prompt"]
-            else:
-                prompt = self.prompt_template.format(**item)
+            prompt = self.prompt_template.format(**item)
             if self.display_library_genes:
                 if len(item['relevance_genes']) < 2000:
                     prompt += "\n\Only the following genes were considered in this screen. Only output genes from this list: " + ', '.join(item['relevance_genes'])

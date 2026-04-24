@@ -40,7 +40,7 @@ PHENOTYPE_COLORS = {
 
 EXTRA_PALETTE = ["#9467bd", "#8c564b", "#e377c2", "#17becf", "#bcbd22"]
 
-SPLIT_ORDER = ["train", "val", "test"]
+SPLIT_ORDER = ["train", "val", "test", "internal"]
 
 
 def load_dataset_dataframe() -> pd.DataFrame:
@@ -78,6 +78,7 @@ def _summarize_row(label: str, values_by_split: pd.Series, total_value=None) -> 
         "Train": values_by_split["train"],
         "Val": values_by_split["val"],
         "Test": values_by_split["test"],
+        "Novel": values_by_split["internal"],
     })
 
 
@@ -86,16 +87,16 @@ def _format_count_and_pct(count, denominator) -> str:
     return f"{int(count):,} ({pct:.1f}%)"
 
 
-def build_latex_table(df_biogrid: pd.DataFrame) -> str:
-    benchmark_entries_by_split = df_biogrid.groupby("split").size().reindex(SPLIT_ORDER).fillna(0)
-    total_screens_by_split = df_biogrid.groupby("split")["num_screens"].sum().reindex(SPLIT_ORDER).fillna(0)
-    unique_screen_ids_df = df_biogrid.explode("screen_ids")
+def build_latex_table(df: pd.DataFrame) -> str:
+    benchmark_entries_by_split = df.groupby("split").size().reindex(SPLIT_ORDER).fillna(0)
+    total_screens_by_split = df.groupby("split")["num_screens"].sum().reindex(SPLIT_ORDER).fillna(0)
+    unique_screen_ids_df = df.explode("screen_ids")
     unique_screen_ids_by_split = (
         unique_screen_ids_df.groupby("split")["screen_ids"].nunique().reindex(SPLIT_ORDER).fillna(0)
     )
 
     rows = [
-        _summarize_row("Benchmark entries", benchmark_entries_by_split, total_value=len(df_biogrid)),
+        _summarize_row("Benchmark entries", benchmark_entries_by_split, total_value=len(df)),
         _summarize_row(
             "Unique screen IDs",
             unique_screen_ids_by_split,
@@ -103,45 +104,47 @@ def build_latex_table(df_biogrid: pd.DataFrame) -> str:
         ),
     ]
 
-    phenotype_counts = df_biogrid.groupby(["split", "phenotype"])["num_screens"].sum()
+    phenotype_counts = df.groupby(["split", "phenotype"])["num_screens"].sum()
     for phenotype in PHENOTYPE_ORDER:
         if phenotype in phenotype_counts.index.get_level_values("phenotype"):
             rows.append(
                 _summarize_row(
                     f"Phenotype: {phenotype}",
                     phenotype_counts.xs(phenotype, level="phenotype"),
-                    total_value=df_biogrid.loc[df_biogrid["phenotype"] == phenotype, "num_screens"].sum(),
+                    total_value=df.loc[df["phenotype"] == phenotype, "num_screens"].sum(),
                 )
             )
 
     rows.append(
         _summarize_row(
             "Avg. relevance genes / entry",
-            df_biogrid.groupby("split")["num_genes"].mean(),
-            total_value=df_biogrid["num_genes"].mean(),
+            df.groupby("split")["num_genes"].mean(),
+            total_value=df["num_genes"].mean(),
         )
     )
     rows.append(
         _summarize_row(
             "Merged replicate entries",
-            df_biogrid.assign(is_merged=df_biogrid["num_screens"] > 1).groupby("split")["is_merged"].sum(),
-            total_value=(df_biogrid["num_screens"] > 1).sum(),
+            df.assign(is_merged=df["num_screens"] > 1).groupby("split")["is_merged"].sum(),
+            total_value=(df["num_screens"] > 1).sum(),
         )
     )
 
     latex_table_df = pd.DataFrame(rows).set_index("Metric")
 
     entry_denominators = pd.Series({
-        "Total": len(df_biogrid),
+        "Total": len(df),
         "Train": benchmark_entries_by_split["train"],
         "Val": benchmark_entries_by_split["val"],
         "Test": benchmark_entries_by_split["test"],
+        "Novel": benchmark_entries_by_split["internal"],
     })
     screen_denominators = pd.Series({
         "Total": total_screens_by_split.sum(),
         "Train": total_screens_by_split["train"],
         "Val": total_screens_by_split["val"],
         "Test": total_screens_by_split["test"],
+        "Novel": total_screens_by_split["internal"],
     })
 
     formatted_table = latex_table_df.copy().astype(object)
@@ -169,7 +172,7 @@ def build_latex_table(df_biogrid: pd.DataFrame) -> str:
         escape=False,
         caption=r"AssayBench dataset statistics by split.",
         label="tab:biogrid_dataset_stats",
-        column_format="lrrrr",
+        column_format="lrrrrr",
     )
     return latex_str
 
@@ -263,7 +266,7 @@ def main() -> None:
 
     print(f"Loaded {len(df)} entries ({len(df_biogrid)} biogrid + {(df['split'] == 'internal').sum()} novel)")
 
-    latex_str = build_latex_table(df_biogrid)
+    latex_str = build_latex_table(df)
     latex_path = output_dir / "plot0_dataset_stats.tex"
     latex_path.write_text(latex_str)
     print(f"\nLaTeX table saved to {latex_path}")

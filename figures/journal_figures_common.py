@@ -36,16 +36,16 @@ DEFAULT_RESULTS_CACHE_PATH = CACHE_DIR / "results_cache.pkl"
 METRICS: Tuple[str, ...] = (
     "adjusted_ndcg@100",
     "precision@100",
-    "inverse_precision@100",
+    "fdr@100",
     "normalized_precision@100",
-    "normalized_inverse_precision@100",
+    "normalized_fdr@100",
 )
 METRIC_LABELS = {
     "adjusted_ndcg@100": "AnDCG@100",
     "precision@100": "Precision@100",
-    "inverse_precision@100": "FDR@100",
+    "fdr@100": "FDR@100",
     "normalized_precision@100": "NPrecision@100",
-    "normalized_inverse_precision@100": "NormalizedFDR@100",
+    "normalized_fdr@100": "NormalizedFDR@100",
 }
 
 METHOD_DISPLAY_NAMES = {
@@ -80,7 +80,7 @@ METHOD_DISPLAY_NAMES = {
 
 BIOMNI_PREFIX = "biomni"
 FEWSHOT_PREFIX = "fewshot/"
-LOWER_IS_BETTER = {"inverse_precision@100", "normalized_inverse_precision@100"}
+LOWER_IS_BETTER = {"fdr@100", "normalized_fdr@100"}
 
 STATISTICAL_BASELINES = {
     "baseline/random",
@@ -1114,11 +1114,11 @@ def plot7_scaling_laws(
     fig.tight_layout()
     out_dir.mkdir(parents=True, exist_ok=True)
     for fmt in ("pdf", "png"):
-        fig.savefig(out_dir / f"plot7_scaling_laws.{fmt}", dpi=dpi, bbox_inches="tight")
+        fig.savefig(out_dir / f"plot5_scaling_laws.{fmt}", dpi=dpi, bbox_inches="tight")
     plt.close(fig)
 
 
-def _plot5_safe_filename_fragment(value: str) -> str:
+def _safe_filename_fragment(value: str) -> str:
     safe = re.sub(r"[^A-Za-z0-9]+", "_", value).strip("_").lower()
     return safe or "model"
 
@@ -1324,8 +1324,8 @@ def plot5_duplicate_transfer_vs_model(
     fig.tight_layout(rect=(0, 0.08, 1, 1))
     out_dir.mkdir(parents=True, exist_ok=True)
     stem = filename_stem or (
-        "plot5_duplicate_transfer_vs_model__"
-        f"{_plot5_safe_filename_fragment(model_name)}__with_oracle_knn"
+        "plot3_duplicate_transfer_vs_model__"
+        f"{_safe_filename_fragment(model_name)}__with_oracle_knn"
     )
     for fmt in ("pdf", "png"):
         fig.savefig(out_dir / f"{stem}.{fmt}", dpi=dpi, bbox_inches="tight")

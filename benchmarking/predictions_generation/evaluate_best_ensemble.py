@@ -4,7 +4,7 @@
 Loads the best-on-validation trial from the Bayesian optimization results,
 reconstructs the ensemble function, and evaluates on val / test / novel
 splits with the full metric set (adjusted_ndcg@100, precision@100,
-inverse_precision@100).
+fdr@100).
 
 Results are saved to a JSON file that generate_journal_figures.py can
 consume.
@@ -56,7 +56,7 @@ CONFIG_MODELS = {
     "top3_optimize_all": TOP3_MODELS,
 }
 
-METRICS_TO_EVAL = ["adjusted_ndcg@100", "precision@100", "inverse_precision@100"]
+METRICS_TO_EVAL = ["adjusted_ndcg@100", "precision@100", "fdr@100"]
 
 OUTPUT_PATH = BAYESIAN_DIR / "best_ensemble_all_metrics.json"
 
@@ -236,7 +236,7 @@ def main():
     metrics_eval = RankingMetrics(
         k_values=[100],
         use_gene_mapper=True,
-        metric_groups=["ndcg", "adjusted_ndcg", "precision", "inverse_precision"],
+        metric_groups=["ndcg", "adjusted_ndcg", "precision", "fdr"],
     )
 
     results: Dict[str, Any] = {

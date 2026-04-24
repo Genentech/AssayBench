@@ -37,7 +37,7 @@ def roc_auc_score(y_true, y_scores):
     return (ranks[pos_mask].sum() - n_pos * (n_pos + 1) / 2) / (n_pos * n_neg)
 
 # All available metric groups
-ALL_METRIC_GROUPS = {"ndcg", "adjusted_ndcg", "auroc", "mrr", "precision", "recall", "inverse_precision"}
+ALL_METRIC_GROUPS = {"ndcg", "adjusted_ndcg", "auroc", "mrr", "precision", "recall", "fdr"}
 
 # Import GeneMapper from the package utils
 from assaybench.utils.gene_mapper import GeneMapper
@@ -331,7 +331,7 @@ class RankingMetrics:
         
         return num_relevant_retrieved / total_relevant
 
-    def compute_inverse_precision_at_k(
+    def compute_fdr_at_k(
         self,
         predicted_relevances: List[float],
         k: int,
@@ -606,14 +606,14 @@ class RankingMetrics:
                         results[f'recall@{k}'] = self.compute_recall_at_k(
                             predicted_values, relevance_scores, k, relevance_threshold
                         )
-        if "inverse_precision" in self.metric_groups:
+        if "fdr" in self.metric_groups:
             for k in self.k_values:
                 if k <= len(predicted_values):
-                    results[f'inverse_precision@{k}'] = self.compute_inverse_precision_at_k(
+                    results[f'fdr@{k}'] = self.compute_fdr_at_k(
                         predicted_values, k, relevance_threshold
                     )
                     n_neg_rel = sum(1 for rel in relevance_scores if rel < relevance_threshold)
-                    results[f'normalized_inverse_precision@{k}'] = self.compute_inverse_precision_at_k(predicted_values, k, relevance_threshold, normalization = n_neg_rel)
+                    results[f'normalized_fdr@{k}'] = self.compute_fdr_at_k(predicted_values, k, relevance_threshold, normalization = n_neg_rel)
                     
  
         return results

@@ -331,7 +331,7 @@ def compute_model_knn(
     return matched_train_indices, predicted_scores
 
 
-EVAL_METRICS = ("adjusted_ndcg@100", "precision@100", "inverse_precision@100")
+EVAL_METRICS = ("adjusted_ndcg@100", "precision@100", "fdr@100")
 
 DEFAULT_NOVEL_PATHS = [
     "./data/novel_public_2026_dataset/",
