@@ -280,6 +280,7 @@ class RankingMetrics:
         Returns:
             Precision@K score (fraction of top-k items that are relevant)
         """
+        predicted_relevances = predicted_relevances[:k].copy()  # Take top K and copy to avoid modifying original list
         condensed_relevances = [rel for rel in predicted_relevances if rel is not None]
         if k > len(condensed_relevances):
             k = len(condensed_relevances)
@@ -317,10 +318,11 @@ class RankingMetrics:
         Returns:
             Recall@K score (fraction of all relevant items in top-k)
         """
+        predicted_relevances = predicted_relevances[:k].copy()
         condensed_relevances = [rel for rel in predicted_relevances if rel is not None]
         if k > len(condensed_relevances):
             k = len(condensed_relevances)
-        
+
         total_relevant = sum(1 for rel in all_relevances if rel > relevance_threshold)
         
         if total_relevant == 0:
@@ -350,13 +352,14 @@ class RankingMetrics:
         Returns:
             Inverse Precision@K score (fraction of top-k items that are not relevant)
         """
+        predicted_relevances = predicted_relevances[:k].copy()
         condensed_relevances = [rel for rel in predicted_relevances if rel is not None]
         if k > len(condensed_relevances):
             k = len(condensed_relevances)
-        
+
         if k == 0:
             return 0.0
-        
+
         top_k = condensed_relevances[:k]
         num_relevant = sum(1 for rel in top_k if rel < relevance_threshold)
 

@@ -169,6 +169,7 @@ python plot2_phenotype_bar_plot_year.py
 python plot3_duplicate_transfer_vs_model.py
 python plot4_memorization_analysis.py
 python plot5_scaling_laws.py
+python plot6_bias.py
 ```
 
 Outputs (PNG, PDF, LaTeX tables) are saved to `figures/journal_figures/`.
@@ -181,3 +182,4 @@ Outputs (PNG, PDF, LaTeX tables) are saved to `figures/journal_figures/`.
 | `plot3_duplicate_transfer_vs_model.py` | Duplicate-screen cross-transfer vs model performance |
 | `plot4_memorization_analysis.py` | Regression of performance on publication year, phenotype, and citations |
 | `plot5_scaling_laws.py` | Qwen3.5 scaling laws (AnDCG@100 vs model size) |
+| `plot6_bias.py` | Gene-level prediction bias analysis across models |
