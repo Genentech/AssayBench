@@ -1,0 +1,31 @@
+biogrid_ranking_prompt: |
+  ## Goal
+
+  You are tasked with ranking genes from a genetic perturbation screen. Based on the experimental context and hit criteria provided below, provide a list of 100 genes that are hits in this screen, ranked from strongest to weakest according to the criteria defined below.
+
+  ## Experimental Context
+
+  This screen was performed in {{cell_line}} cells, a {{cell_type}}. Researchers used a {{library_type}} library ({{library_methodology}}) to systematically perturb gene function. The experiment followed a {{experimental_setup}} design and was conducted over {{duration}}{{condition_clause}}.
+
+  ## Screen Objective
+
+  The primary objective of this screen was to identify a set of hit genes, each of which {{phenotype}}.
+
+  ## Hit Definition
+
+  A gene is classified as a "hit" if its {{library_methodology}} significantly {{phenotype}}. The statistical criterion for significance is: {{significance_criteria}}.
+
+  ## Ranking Criteria
+
+  Genes with {{ranking_rationale}} are ranked most highly.
+
+  ## Additional Context
+  Screen notes: {{notes}}
+
+  ## Required Output Format
+
+  Provide your response as an ordered list of exactly 100 HGNC gene symbols, using the ranking criteria above.
+  That is, top genes should have {{ranking_rationale}}.
+  
+  Format: 
+  GENE1, GENE2, GENE3, ..., GENE100

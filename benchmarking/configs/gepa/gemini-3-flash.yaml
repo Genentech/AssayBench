@@ -1,0 +1,59 @@
+# GEPA prompt optimization + test evaluation with Gemini 3 Flash
+#
+# Usage:
+#   python scripts/run_gepa_collect_predictions.py \
+#       --config-path ../configs/gepa --config-name gemini-3-flash
+
+# Model name for organizing outputs
+model_name: "gemini-3-flash"
+
+# Set to true to skip GEPA optimization and load the saved model from optimized_model.pkl
+load_saved_model: false
+
+# Task LM: Gemini 3 Flash (the model being optimized)
+lm:
+  provider: "gemini"
+  model: "gemini-3-flash-preview"
+  max_tokens: 32000
+  temperature: 1.0
+
+# Dataset settings - BioGRID ScreensQA
+dataset:
+  dataset_path: "./data/biogrid_v0.4_combined"
+  split_type: "year"
+  fold: 0
+  max_examples: null
+
+# GEPA reflection LM (used by GEPA for prompt mutation/reflection)
+dspy_lm:
+  provider: "gemini"
+  model: "gemini-3-flash-preview"
+  max_tokens: 32000
+  temperature: 1.0
+
+# GEPA optimization settings
+gepa:
+  max_metric_calls: 5000
+  reflection_minibatch_size: 3
+  use_merge: true
+  max_merge_invocations: 5
+
+# Ranking evaluation settings (used by GEPA metric)
+evaluation:
+  k_values: [5, 10, 20, 50, 100]
+  use_thresholded_scoring: true
+
+# Collection settings for evaluation after GEPA
+collection:
+  n_runs: 1
+  collect_train: true
+  collect_val: true
+  collect_test: true
+  num_workers: 8
+  retry_failed: false
+
+# Output settings
+output:
+  save_dir: "./output/gepa/"
+
+seed: 42

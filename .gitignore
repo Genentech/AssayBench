@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.venv/
+journal_figures_cache/
+journal_figures/
+.env
