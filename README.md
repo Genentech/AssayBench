@@ -2,6 +2,9 @@
 
 A benchmark for evaluating machine learning models on phenotypic screen prediction.
 
+[:octocat: Code](https://github.com/Genentech/AssayBench) | [:hugs: Dataset](https://huggingface.co/datasets/Genentech/assaybench) | [:page_with_curl: Paper](https://arxiv.org/abs/2605.10876)
+
+
 ## 1. Installation
 
 Install directly from the repository:
@@ -71,6 +74,7 @@ for example in val:
 ```
 
 See [`examples/load_data.ipynb`](examples/load_data.ipynb) for a complete walkthrough.
+
 
 ### Dataset fields
 
@@ -159,6 +163,16 @@ The template is formatted with Python's `str.format()` using each screen's metad
 | `{ranking_rationale}` | What makes a gene rank highly |
 | `{notes}` | Additional screen notes |
 
+### Collecting LLM Results
+
+Results from LLMs can be collected using [](benchmarking/predictions_generation/collect_llm_predictions.py); it uses DSPy and a couple additional instructions:
+> Your goal is to provide a list of genes that meet the screen criteria, even if you do not have access to the actual experimental data. The genes must use HGNC symbols. Use your knowledge of biology, gene function, and relevant pathways to predict which genes are most likely to be hits. Do not refuse to answer or say you need more data—make your best predictions based on your understanding of the biological context.
+
+Example Command: 
+```python
+uv run python benchmarking/predictions_generation/collect_llm_predictions.py --config-name=collect-GLM-5
+```
+
 
 ## 3. Paper reproduction
 
@@ -202,3 +216,20 @@ Outputs (PNG, PDF, LaTeX tables) are saved to `figures/journal_figures/`.
 | `plot4_memorization_analysis.py` | Regression of performance on publication year, phenotype, and citations |
 | `plot5_scaling_laws.py` | Qwen3.5 scaling laws (AnDCG@100 vs model size) |
 | `plot6_bias.py` | Gene-level prediction bias analysis across models |
+
+
+
+## Citation
+If you found our work useful, please cite:
+```bibtex
+@misc{debrouwer2026assaybench,
+      title={AssayBench: An Assay-Level Virtual Cell Benchmark for LLMs and Agents}, 
+      author={Edward De Brouwer and Carl Edwards and Alexander Wu and Jenna Collier and Graham Heimberg and Xiner Li and Meena Subramaniam and Ehsan Hajiramezanali and David Richmond and Jan-Christian Hütter and Sara Mostafavi and Gabriele Scalia},
+      year={2026},
+      eprint={2605.10876},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2605.10876}, 
+}
+```
+
