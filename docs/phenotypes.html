@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Phenotypes · AssayBench</title>
+<link rel="stylesheet" href="assets/css/site.css"/>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main>
+  <div class="container-wide">
+    <h1>Performance by phenotype</h1>
+    <p class="lede">
+      Mean per-screen <strong>AnDCG@100</strong> across the five coarse phenotype classes used in the paper.
+      Pick a model set to reproduce Figure 3 or to compare any subset of the methods in the cache.
+    </p>
+    <p class="figure-caption">
+      <span class="label">From §4.4:</span> Predictive performance was highest for the viability screens, likely
+      because their hit genes are enriched for conserved cellular dependencies that recur across screens. Other
+      phenotypes, such as host-pathogen response or molecular reporter activity, appear more
+      context-specific and therefore harder to predict from generic biological knowledge alone.
+    </p>
+
+    <div class="controls">
+      <div class="control">
+        <label for="ctrl-split">Cohort</label>
+        <select id="ctrl-split">
+          <option value="test" selected>Test</option>
+          <option value="val">Validation</option>
+        </select>
+      </div>
+      <div class="control">
+        <label for="ctrl-preset">Model set</label>
+        <select id="ctrl-preset">
+          <option value="paper" selected>Paper Figure 3</option>
+          <option value="frontier">Frontier LLMs</option>
+          <option value="baselines">Baselines</option>
+          <option value="trained">Trained / optimized</option>
+          <option value="all">All models</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="plot" id="phenotype-plot" style="min-height: 560px;"></div>
+    <p class="figure-caption" style="margin-top: 8px;">
+      Cell values are the mean AnDCG@100 across screens with the listed phenotype. The <em>n</em> in each row
+      header is the number of unique screens that contribute to the row. Hover a cell for the underlying number.
+    </p>
+
+    <h2>Why phenotype matters</h2>
+    <p>
+      AssayBench combines screens spanning fitness/proliferation/viability, drug/chemical response,
+      host&ndash;pathogen response, molecular reporter activity, and trafficking/localization. Viability screens
+      are the most predictable because the same essential genes recur across cell lines and contexts. That
+      is why the phenotype-based hit-frequency baseline does so well overall, despite being a simple prior.
+      The same predictability does not transfer to phenotypes where the hit set is more context-specific.
+    </p>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/phenotypes.js"></script>
+</body>
+</html>

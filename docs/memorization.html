@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Memorization · AssayBench</title>
+<link rel="stylesheet" href="assets/css/site.css"/>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main>
+  <div class="container">
+    <h1>Memorization analysis</h1>
+    <p class="lede">
+      Why do frontier LLMs do better on older screens than on freshly released ones? AssayBench's recent
+      <em>LaTest</em> split together with citation-count metadata lets us probe that gap directly.
+    </p>
+    <p class="figure-caption">
+      <span class="label">From §4.6:</span> A regression analysis of Gemini 3 Pro performance across AssayBench
+      as a function of screen publication year, citation count, and phenotype shows the apparent temporal
+      effect is largely explained by citations. This is consistent with memorization: highly cited screens
+      are more likely to have been discussed in the literature, increasing the chance that their biological
+      findings were present in the pretraining data of frontier models.
+    </p>
+
+    <h2>Citations vs Gemini 3 Pro AnDCG@100</h2>
+    <p style="color:var(--ink-2);">
+      Each point is a single screen; the x-axis is log(1 + citation count) of the source publication. Colors
+      track the coarse phenotype class.
+    </p>
+    <div class="plot plot-medium" id="scatter-plot"></div>
+
+    <h2>Regression coefficients</h2>
+    <p style="color:var(--ink-2);">
+      Linear regression of AnDCG@100 on centered publication year, log(1 + citations), and phenotype dummies.
+      Error bars are ±1 standard error.
+    </p>
+    <div class="plot plot-short" id="coefficients-plot"></div>
+    <p class="figure-caption" id="r2-line"></p>
+
+    <h2>How to read this</h2>
+    <p>
+      If frontier LLMs only "won" by memorizing public benchmarks, the year coefficient would dominate. Instead
+      the citation coefficient absorbs most of the temporal signal, suggesting it is not the date of
+      publication but how widely a screen has been discussed in literature that drives performance. That is
+      precisely what one would expect if pretraining corpora over-represent highly cited work. Nevertheless,
+      frontier LLMs still retain the strongest relative performance on <em>LaTest</em>, so memorization is part
+      of the picture, not all of it.
+    </p>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/memorization.js"></script>
+</body>
+</html>

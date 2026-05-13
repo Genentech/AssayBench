@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Per-screen explorer · AssayBench</title>
+<link rel="stylesheet" href="assets/css/site.css"/>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main>
+  <div class="container-wide">
+    <h1>Per-screen explorer</h1>
+    <p class="lede">
+      AssayBench evaluates 1,920 screens; the paper highlights a handful. Use this view to pick any single
+      screen and inspect how every model ranked its gene list, or pick a model and rank all screens by its
+      per-screen score.
+    </p>
+    <p class="figure-caption">
+      The data behind this view is the same per-example score table that powers Figure 3 of the paper:
+      adjusted nDCG@100 and Precision@100 for every (model, screen) pair on the year split, including the
+      LaTest novel cohort.
+    </p>
+
+    <div class="controls">
+      <div class="control">
+        <label for="ctrl-mode">Mode</label>
+        <select id="ctrl-mode">
+          <option value="by_screen" selected>Pick a screen → rank the models</option>
+          <option value="by_model">Pick a model → rank the screens</option>
+        </select>
+      </div>
+      <div class="control">
+        <label for="ctrl-split">Year split</label>
+        <select id="ctrl-split">
+          <option value="all" selected>All splits</option>
+          <option value="train">Train</option>
+          <option value="val">Validation</option>
+          <option value="test">Test</option>
+          <option value="novel_public_dataset">LaTest</option>
+        </select>
+      </div>
+      <div class="control">
+        <label for="ctrl-screen">Screen</label>
+        <select id="ctrl-screen"></select>
+      </div>
+      <div class="control" id="ctrl-model-wrap" style="display:none;">
+        <label for="ctrl-model">Model</label>
+        <select id="ctrl-model"></select>
+      </div>
+      <div class="control">
+        <label for="ctrl-search">Search</label>
+        <input id="ctrl-search" type="search" placeholder="Filter screens / phenotype..."/>
+      </div>
+    </div>
+
+    <div id="screens-note"></div>
+    <div class="split-grid">
+      <div class="left">
+        <div class="plot plot-tall" id="screens-plot"></div>
+      </div>
+      <div class="right" id="screens-meta">
+        <div class="loading">Loading…</div>
+      </div>
+    </div>
+
+    <h2>Reading the chart</h2>
+    <p style="color:var(--ink-2);">
+      In <em>by screen</em> mode each row is a model and the marker is its score on the selected screen,
+      sorted from best to worst. In <em>by model</em> mode each row is a coarse phenotype class; the box
+      summarizes the AnDCG@100 distribution across all screens in that class, and each dot is one screen
+      (hover for the screen name and phenotype). That makes it easy to spot where the model is strong vs
+      weak and which phenotypes it struggles on.
+    </p>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/screens.js"></script>
+</body>
+</html>

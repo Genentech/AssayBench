@@ -1,6 +1,7 @@
 __pycache__/
 *.pyc
 .venv/
+*.egg-info/
 journal_figures_cache/
 journal_figures/
 .env

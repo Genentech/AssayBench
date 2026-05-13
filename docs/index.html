@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>AssayBench: An Assay-Level Virtual Cell Benchmark for LLMs and Agents</title>
+<meta name="description" content="AssayBench is a benchmark of 1,920 public CRISPR screens for evaluating LLMs and agents on in-silico phenotypic screening."/>
+<link rel="stylesheet" href="assets/css/site.css"/>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main>
+  <div class="container">
+    <p style="font-family: var(--sans); font-size: 13px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 8px;">
+      Benchmark · Phenotypic Screen Prediction · Genentech · 2026
+    </p>
+    <h1 class="paper-title">AssayBench: An Assay-Level Virtual Cell Benchmark for LLMs and Agents</h1>
+    <p class="paper-authors">
+      <span class="equal">Edward De Brouwer</span>,
+      <span class="equal">Carl Edwards</span>,
+      <span class="equal">Alexander Wu</span>,
+      Jenna Collier, Graham Heimberg, Xiner Li, Meena Subramaniam, Ehsan Hajiramezanali,
+      David Richmond, Jan-Christian Hütter, Sara Mostafavi, Gabriele Scalia
+    </p>
+    <p class="paper-affil">
+      Genentech, South San Francisco, CA, USA &nbsp;·&nbsp;
+      <span class="equal">★ equal contribution</span>
+    </p>
+    <div class="badges">
+      <a class="badge" href="https://arxiv.org/abs/2605.10876"><span>📄</span> arXiv:2605.10876</a>
+      <a class="badge alt" href="https://github.com/Genentech/AssayBench"><span>💻</span> Code</a>
+      <a class="badge alt-2" href="https://huggingface.co/datasets/Genentech/assaybench"><span>🤗</span> Dataset</a>
+      <a class="badge alt-3" href="cite.html"><span>📚</span> Citation</a>
+    </div>
+
+    <p class="lede">
+      Building the virtual cell requires more than predicting gene expression. Can a model predict the outcome
+      of a CRISPR screen <em>before</em> you run it? AssayBench frames in-silico phenotypic screening as a
+      gene-ranking task on 1,920 public CRISPR screens and gives a single, comparable yardstick (adjusted
+      nDCG) for measuring progress across heterogeneous assays.
+    </p>
+
+    <div class="callout">
+      <strong>TL;DR.</strong> We benchmark frontier LLMs, biology-specific LLMs, agents, trainable
+      gene-relevance predictors, and retrieval / frequency baselines. Generalist frontier LLMs lead the board,
+      but all methods remain far below empirically estimated performance ceilings. Fine-tuning and ensembling
+      push the frontier further. Performance partly tracks citation counts, consistent with memorization, and
+      motivates our recent-screens "LaTest" split.
+    </div>
+
+    <h2>Abstract</h2>
+    <p>
+      Recent advances in machine learning and large-scale biological data collections have revived the prospect
+      of building a virtual cell, a computational model of cellular behavior that could accelerate biological
+      discovery. One of the most compelling promises of this vision is the ability to perform in silico
+      phenotypic screens, in which a model predicts the effects of cellular perturbations in unseen biological
+      contexts. This task combines heterogeneous textual inputs with diverse phenotypic outputs, making it
+      particularly well-suited to LLMs and agentic systems. Yet, no standard benchmark currently exists for
+      this task, as existing efforts focus on narrower molecular readouts that are only indirectly aligned with
+      the phenotypic endpoints driving many real-world drug discovery workflows. In this work, we present
+      AssayBench, a benchmark for phenotypic screen prediction, built from 1,920 publicly available CRISPR
+      screens spanning five broad classes of cellular phenotypes. We formulate the screen prediction task as a
+      gene rank prediction for each screen and introduce the adjusted nDCG, a continuous metric for comparing
+      performance across heterogeneous assays. Our extensive evaluation shows that existing methods remain far
+      from empirically estimated performance ceilings and zero-shot generalist LLMs outperform biology-specific
+      LLMs and trainable baselines. Optimization techniques such as fine-tuning, ensembling, and prompt
+      optimization can further improve LLM performance on this task. Overall, AssayBench offers a practical
+      testbed for measuring progress toward in-silico phenotypic screening and, more broadly, virtual cell
+      models.
+    </p>
+
+    <h2>By the numbers</h2>
+    <div class="stat-grid" id="stat-grid">
+      <div class="stat-card"><div class="stat-value">1,920</div><div class="stat-label">Public CRISPR screens</div></div>
+      <div class="stat-card"><div class="stat-value" data-stat="n_models">…</div><div class="stat-label">Methods evaluated</div></div>
+      <div class="stat-card"><div class="stat-value" data-stat="n_categories">…</div><div class="stat-label">Model families</div></div>
+      <div class="stat-card"><div class="stat-value">5</div><div class="stat-label">Phenotype classes</div></div>
+      <div class="stat-card"><div class="stat-value">5</div><div class="stat-label">Ranking metrics</div></div>
+      <div class="stat-card"><div class="stat-value">3</div><div class="stat-label">Cohorts (val / test / LaTest)</div></div>
+    </div>
+
+    <h2>Headline findings</h2>
+    <ul class="bullets">
+      <li>Frontier generalist LLMs outperform biology-specific LLMs, biomedical agents, trainable baselines, and retrieval baselines.</li>
+      <li>Even the best models remain far below empirical performance ceilings. Oracle&nbsp;kNN outperforms the top model by ~86%, and technical-replicate predictors nearly double the AnDCG@100 of Gemini&nbsp;3 Pro.</li>
+      <li>Fine-tuning (SFT, GRPO) and ensembling each push performance further; the LLM RRF ensemble achieves the best overall test score.</li>
+      <li>The performance drop on our recent <em>LaTest</em> split, together with a citation-count effect, is consistent with partial memorization of public screen literature.</li>
+    </ul>
+
+    <h2>Explore the results</h2>
+    <p style="margin-top:-2px;color:var(--ink-2);">
+      Every panel below is interactive and powered by the same results cache that produced the paper's figures.
+    </p>
+    <div class="feature-grid">
+      <a class="feature-card" href="leaderboard.html">
+        <div class="feature-kicker">Figure 2 · Leaderboard</div>
+        <h3>Full benchmark table</h3>
+        <p>Sort and filter every model in the cache by metric, cohort, and split layout. A dot-and-line chart updates with your selection.</p>
+        <div class="feature-cta">Open the leaderboard →</div>
+      </a>
+      <a class="feature-card" href="phenotypes.html">
+        <div class="feature-kicker">Figure 3 · Phenotypes</div>
+        <h3>Performance by phenotype</h3>
+        <p>Mean AnDCG@100 per (phenotype × model) on the year-split test cohort. Viability screens are the most predictable, host-pathogen the hardest.</p>
+        <div class="feature-cta">Open the heatmap →</div>
+      </a>
+      <a class="feature-card" href="scaling.html">
+        <div class="feature-kicker">Figure 4 (left) · Scaling</div>
+        <h3>Qwen3.5 scaling + optimization</h3>
+        <p>Mean AnDCG@100 vs parameter count for the Qwen3.5 family, plus side-by-side bars comparing base, SFT, and GRPO variants.</p>
+        <div class="feature-cta">Open scaling →</div>
+      </a>
+      <a class="feature-card" href="memorization.html">
+        <div class="feature-kicker">Figure 4 (right) · Memorization</div>
+        <h3>Citations vs performance</h3>
+        <p>Gemini&nbsp;3 Pro AnDCG@100 vs log(1 + citation count) across screens, plus regression coefficients for year, citations, and phenotype.</p>
+        <div class="feature-cta">Open the analysis →</div>
+      </a>
+      <a class="feature-card" href="bias.html">
+        <div class="feature-kicker">Figure 5 · Bias</div>
+        <h3>Gene-set bias</h3>
+        <p>For each (model, screen), the fraction of top-100 predicted genes in curated gene sets minus the same fraction in ground truth.</p>
+        <div class="feature-cta">Open the heatmap →</div>
+      </a>
+      <a class="feature-card" href="screens.html">
+        <div class="feature-kicker">Drill-down</div>
+        <h3>Per-screen explorer</h3>
+        <p>Pick any of the 1,920 screens to see how every model ranks it on AnDCG@100, alongside the screen's metadata.</p>
+        <div class="feature-cta">Open the explorer →</div>
+      </a>
+      <a class="feature-card" href="umap.html">
+        <div class="feature-kicker">Latent biology</div>
+        <h3>Screen UMAP</h3>
+        <p>UMAP over the ground-truth screen transfer matrix. Color by split, phenotype, cell type, library, or publication year.</p>
+        <div class="feature-cta">Open the UMAP →</div>
+      </a>
+    </div>
+
+    <h2>How the task works</h2>
+    <p>
+      Each example is a free-text description of a CRISPR screen (cell line, library, perturbation, condition,
+      phenotype) plus a list of genes in the screen library. The model returns a ranked list of genes most
+      likely to be hits. Predictions are scored against thresholded percentile-relevance scores from the
+      BioGRID ORCS source data, summarized by adjusted nDCG (<a href="metric.html">AnDCG</a>): a
+      chance-corrected ranking metric that is comparable across screens of very different sizes and hit rates.
+    </p>
+
+    <p>
+      The benchmark ships three cohorts: a year-split <em>train / val / test</em> built from BioGRID screens
+      published through 2025, and a held-out <em>LaTest</em> split that is refreshed regularly with screens
+      published in the past six months. It serves as an ongoing memorization probe for new frontier models.
+    </p>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/site.js"></script>
+<script>
+(async () => {
+  try {
+    const summary = await AssayBench.fetchJSON("assets/data/summary.json");
+    document.querySelectorAll("[data-stat]").forEach((node) => {
+      const key = node.dataset.stat;
+      if (summary[key] !== undefined) node.textContent = summary[key].toLocaleString();
+    });
+  } catch (err) {
+    console.warn("Could not load summary.json", err);
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Leaderboard · AssayBench</title>
+<link rel="stylesheet" href="assets/css/site.css"/>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main>
+  <div class="container-wide">
+    <h1>Benchmark leaderboard</h1>
+    <p class="lede">
+      Every method evaluated in the AssayBench cache, including ones that didn't make the main paper
+      figures. Pick a metric, cohort, and split layout to re-rank the table and the companion chart.
+    </p>
+    <p class="figure-caption">
+      <span class="label">From §4.1:</span> On the test set, Gemini 3 Pro and GPT-5.4 lead on AnDCG@100,
+      outperforming smaller open-weight LLMs, biology-specific language models and agents (Biomni and
+      C2S-Scale), the trainable neural gene-relevance predictor, and Embedding kNN. The gene-frequency baseline
+      is also surprisingly competitive overall: much of its signal is driven by
+      <em>Fitness / Proliferation / Viability</em> screens.
+    </p>
+
+    <div class="controls">
+      <div class="control">
+        <label for="ctrl-metric">Metric</label>
+        <select id="ctrl-metric"></select>
+      </div>
+      <div class="control">
+        <label for="ctrl-split">Split layout</label>
+        <select id="ctrl-split">
+          <option value="year">Year split</option>
+          <option value="random">Random split</option>
+        </select>
+      </div>
+      <div class="control">
+        <label for="ctrl-cohort">Sort by cohort</label>
+        <select id="ctrl-cohort">
+          <option value="test">Test</option>
+          <option value="val">Validation</option>
+          <option value="novel">LaTest (novel)</option>
+        </select>
+      </div>
+      <div class="control">
+        <label>&nbsp;</label>
+        <button class="button secondary" id="ctrl-reset">Reset filters</button>
+      </div>
+    </div>
+
+    <div class="tag-row" id="category-filter"></div>
+
+    <div class="split-grid" style="grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 18px;">
+      <div class="left">
+        <div class="table-wrap" style="max-height: 720px; overflow:auto;">
+          <table class="leaderboard" id="leaderboard-table">
+            <thead>
+              <tr>
+                <th class="left" data-key="display_name">Model <span class="sort-indicator"></span></th>
+                <th class="left" data-key="category_display">Category <span class="sort-indicator"></span></th>
+                <th data-key="val">Val <span class="sort-indicator"></span></th>
+                <th data-key="test">Test <span class="sort-indicator"></span></th>
+                <th data-key="novel">LaTest <span class="sort-indicator"></span></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="left">
+        <div class="plot plot-tall" id="leaderboard-plot"></div>
+      </div>
+    </div>
+
+    <h2>Notes</h2>
+    <ul class="bullets">
+      <li><strong>Year split:</strong> built from BioGRID screens published through 2025, with train, val, and test cohorts assigned by publication year. Used for the main benchmark and covers every method in the cache.</li>
+      <li><strong>Random split:</strong> screens shuffled across train/val/test irrespective of year. Reported here for zero-shot LLMs, agents, the classifier, and oracle kNN where reverse-direction screens are excluded.</li>
+      <li><strong>LaTest cohort:</strong> held-out screens published in the past six months, refreshed regularly. The same cohort is used under both split layouts.</li>
+      <li>Lower is better for dFDR@100 and Normalized dFDR@100; higher is better for the other three metrics.</li>
+    </ul>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/leaderboard.js"></script>
+</body>
+</html>

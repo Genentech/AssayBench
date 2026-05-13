@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Bias · AssayBench</title>
+<link rel="stylesheet" href="assets/css/site.css"/>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main>
+  <div class="container">
+    <h1>Gene-set bias</h1>
+    <p class="lede">
+      For each (model, screen), we score how strongly the model's top-100 prediction over- or under-represents
+      curated gene families relative to ground truth. Positive cells mean the model leans toward that family;
+      negative cells mean it under-predicts it.
+    </p>
+    <p class="figure-caption">
+      <span class="label">From §4.7:</span> GPT models over-represent cell-cycle genes, Gemini models
+      over-represent developmental-biology genes, and all models over-represent disease-associated genes,
+      likely reflecting the prevalence of those genes in the training corpus.
+    </p>
+
+    <div class="plot" id="bias-plot" style="min-height: 720px;"></div>
+    <p class="figure-caption">
+      Hover a cell for the exact value. Bias is computed as
+      <em>(fraction of predicted top-100 genes in the set) minus (fraction of true top-100 genes in the set)</em>.
+      Models are grouped by total parameter count (Small &lt; 10B, Medium &lt; 50B, Large &lt; 250B, Very Large &lt; 1T, Frontier).
+    </p>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/bias.js"></script>
+</body>
+</html>

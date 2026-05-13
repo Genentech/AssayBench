@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Scaling & Optimization · AssayBench</title>
+<link rel="stylesheet" href="assets/css/site.css"/>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main>
+  <div class="container">
+    <h1>Scaling laws &amp; LLM optimization</h1>
+    <p class="lede">
+      How does AnDCG@100 grow with parameter count, and how much can we recover with fine-tuning,
+      reinforcement learning, prompt optimization, or few-shot retrieval? The first chart sweeps the Qwen3.5
+      family; the second compares base vs optimized variants for GPT-OSS-120B, Qwen3-30B, and Gemini 3.
+    </p>
+
+    <p class="figure-caption">
+      <span class="label">From §4.5:</span> Larger models generally achieve higher AnDCG@100, consistent with a
+      scaling trend, with gains plateauing at the top end. The 35B, 122B, and 397B variants are mixture-of-experts
+      (MoE) models; we plot them at their <em>total</em> parameter count, so the MoE point sits to the right of
+      where its active-parameter equivalent would lie.
+    </p>
+
+    <div class="plot plot-medium" id="scaling-plot"></div>
+
+    <hr class="section-divider"/>
+
+    <h2>Optimization lifts the frontier further</h2>
+    <p class="figure-caption">
+      <span class="label">From §4.3:</span> SFT and SFT+GRPO lift GPT-OSS-120B's test AnDCG@100 by
+      <strong>+0.001</strong> and <strong>+0.008</strong> respectively (about 1.1% and 6.8% relative over the
+      base model). GEPA improves Gemini 3 Flash on validation but fails to generalize on test, suggesting
+      overfitting. Bar labels report each variant's absolute change relative to its base.
+    </p>
+    <div class="plot plot-medium" id="optimization-plot"></div>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/scaling.js"></script>
+</body>
+</html>

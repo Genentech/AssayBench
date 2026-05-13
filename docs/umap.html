@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Screen UMAP · AssayBench</title>
+<link rel="stylesheet" href="assets/css/site.css"/>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main>
+  <div class="container-wide">
+    <h1>Screen UMAP explorer</h1>
+    <p class="lede">
+      A 2-D projection of every AssayBench screen, computed from the model-agnostic
+      <em>ground-truth transfer matrix</em>. Pan, zoom, search, and recolor by split, phenotype, library type,
+      cell type, or publication year.
+    </p>
+    <p class="figure-caption">
+      <span class="label">How the transfer matrix is built:</span> for each ordered pair of screens
+      <em>(source → target)</em>, we take the top-100 genes of the source's ground-truth ranking and score
+      them against the target's ground-truth ranking using AnDCG@100. The full N×N matrix is then symmetrized
+      and converted to a distance via <em>1 − ((T + Tᵀ)/2)</em>. UMAP is fit on that precomputed distance with
+      <code>n_neighbors=15</code>, <code>min_dist=0.1</code>. The <em>Train-Fitted</em> layout fits UMAP on
+      training screens only and projects val / test / LaTest via a 10-NN soft assignment so layouts are
+      comparable across the year split.
+    </p>
+
+    <div class="iframe-wrap">
+      <iframe src="assets/umap/screen_umap_explorer.html" title="Screen UMAP Explorer" allowfullscreen></iframe>
+    </div>
+
+    <h2>Why look at this?</h2>
+    <p>
+      The phenotype heatmap shows that some phenotype classes are far easier than others. The UMAP shows the
+      mirror image of that observation: viability screens form a dense, well-mixed cloud (you can predict any
+      of them well from the others), while reporter-activity and host-pathogen screens form sparser clusters
+      that don't transfer as well. The Train-Fitted projection is useful for asking <em>is my held-out screen
+      in a region where the training set is dense?</em> A useful proxy for OOD risk.
+    </p>
+
+    <h2>Caveat</h2>
+    <p style="color:var(--ink-2);">
+      The transfer matrix is built from ground-truth rankings, so closeness here reflects overlap in
+      <em>hit-gene structure</em>, not necessarily semantic similarity of the screen descriptions. Two
+      mechanistically related screens with disjoint hit sets can still appear far apart. Treat the UMAP as a
+      complement to the phenotype heatmap, not a substitute.
+    </p>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

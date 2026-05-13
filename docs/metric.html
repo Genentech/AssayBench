@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>AnDCG@k · AssayBench</title>
+<link rel="stylesheet" href="assets/css/site.css"/>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [["\\(","\\)"]], displayMath: [["\\[","\\]"]] },
+  options: { renderActions: { addMenu: [] } },
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  .metric-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 20px 0 28px;
+  }
+  .metric-card h3 { margin-top: 0; }
+  .equation {
+    background: #f8fafc;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    overflow-x: auto;
+    text-align: center;
+  }
+  .annot {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink-3);
+    margin: -6px 0 16px;
+  }
+  .example {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 12px 0;
+  }
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main>
+  <div class="container">
+    <p style="font-family: var(--sans); font-size: 13px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 8px;">
+      AssayBench · Task &amp; evaluation metrics · §3
+    </p>
+    <h1>Adjusted nDCG@k (AnDCG@k)</h1>
+    <p class="lede">
+      AnDCG@k is the primary metric we use to score gene rankings across heterogeneous CRISPR screens. It is a
+      modified version of nDCG@k with two changes: it is <strong>condensed</strong> (unassayed genes are
+      ignored, not penalised as false positives) and <strong>adjusted</strong> (a screen-specific random
+      baseline is subtracted, then random-or-worse performance is clamped to zero).
+    </p>
+
+    <div class="callout">
+      <strong>One-line definition.</strong> Take the model's top-\(k\) predicted genes, look up their
+      ground-truth relevance scores, drop the ones that weren't measured in the screen, compute discounted
+      cumulative gain on what's left, normalise by an ideal ranking that avoids wrong-direction hits, and
+      finally rescale so that 0 means "random-or-worse for this screen" and 1 means "perfect for this screen".
+    </div>
+
+    <h2>Step 1. Lift predictions into the relevance space</h2>
+    <p>
+      Let \([g_1,\dots,g_L]\) be the ranked prediction list and let \(\mathbf{y}\) denote the ground-truth
+      relevance scores for the target screen. We construct the score sequence \(\mathbf{x}\) by assigning
+    </p>
+    <div class="equation">
+      \(
+        x_i =
+        \begin{cases}
+          \mathbf{y}[g_i] & \text{if } g_i \text{ is assayed in the screen} \\
+          \texttt{MISSING} & \text{otherwise}
+        \end{cases}
+      \)
+    </div>
+    <p class="annot">
+      Predicted genes that are not measured in the target screen are tagged as <code>MISSING</code> rather
+      than treated as false positives. This matters because library composition varies wildly across
+      AssayBench's 1,920 screens.
+    </p>
+
+    <h2>Step 2. Truncate and condense</h2>
+    <p>
+      If the prediction list is shorter than \(k\), pad it with zero-relevance entries. Then truncate to the
+      first \(k\) positions and remove all <code>MISSING</code> entries while preserving order. Genes ranked
+      below \(k\) do not move up to replace missing top-\(k\) predictions. Concretely, with \(k=5\):
+    </p>
+    <div class="example">[0.9, MISSING, 0.6, MISSING, -0.2, 0.8]  →  [0.9, 0.6, -0.2]</div>
+    <p>
+      Call the condensed sequence \(\mathbf{x}'=(x'_1,\dots,x'_{k'})\) where \(k' \le k\).
+    </p>
+
+    <h2>Step 3. Discounted Cumulative Gain</h2>
+    <div class="equation">
+      \(
+        \mathrm{DCG}@k = \sum_{i=1}^{k'} \frac{x'_i}{\log_2(i+1)}
+      \)
+    </div>
+    <p class="annot">
+      Because relevance scores can be <em>negative</em> for genes associated with the opposite phenotype
+      direction, ranking such genes near the top <em>decreases</em> the score. This is a desirable property
+      for directional screens (e.g. "increases drug resistance" should not look the same as "decreases drug
+      resistance").
+    </p>
+
+    <h2>Step 4. Normalise against the ideal ranking</h2>
+    <p>
+      The ideal ranking is obtained by clipping negative relevance values to zero and sorting the resulting
+      ground-truth relevance scores in descending order. Clipping means the ideal predictor is not penalized
+      for avoiding genes associated with the opposite phenotype direction. Let \(\mathrm{IDCG}@k\) be the
+      corresponding discounted cumulative gain. Then
+    </p>
+    <div class="equation">
+      \(
+        \mathrm{nDCG}@k = \frac{\mathrm{DCG}@k}{\mathrm{IDCG}@k}
+      \)
+    </div>
+    <p class="annot">
+      Set to 0 when the denominator is zero. The negative-relevance clipping prevents the ideal normalizer
+      from making \(\mathrm{nDCG}@k\) exceed 1.
+    </p>
+
+    <h2>Step 5. Adjust against a per-screen random baseline</h2>
+    <p>
+      Raw nDCG values are <em>not</em> directly comparable across screens: predicting the hits of some assays
+      is intrinsically easier than others (think viability vs reporter activity). We correct for this by
+      subtracting a screen-specific random baseline \(\mathrm{nDCG}_{\mathrm{rand}}@k\):
+    </p>
+    <div class="equation" style="background:#fef9c3; border-color:#fde68a;">
+      \(
+        \boxed{\;\mathrm{AnDCG}@k \;=\; \max\left(
+          \dfrac{\mathrm{nDCG}@k \;-\; \mathrm{nDCG}_{\mathrm{rand}}@k}
+               {1 - \mathrm{nDCG}_{\mathrm{rand}}@k},\;0\right)\;}
+      \)
+    </div>
+    <p class="annot">
+      In practice this rescales performance so that <strong>0 corresponds to a random ranking</strong> and
+      <strong>1 to the ideal ranking</strong> for every screen, regardless of how easy or hard the screen is.
+      The expected value of nDCG@k under a uniformly random predictor can be computed analytically (see
+      <a href="https://arxiv.org/abs/2605.10876">paper, Appendix on adjusted-condensed nDCG</a>), so we don't
+      need Monte Carlo sampling. Scores that would fall below the random baseline are reported as 0.
+    </p>
+
+    <h2>Companion metrics</h2>
+    <div class="metric-card">
+      <h3>Precision@k</h3>
+      <div class="equation">
+        \(
+          \mathrm{Precision}@k =
+          \begin{cases}
+            \dfrac{1}{k'} \sum_{j=1}^{k'} \mathbb{I}[c_j > 0], & k' > 0 \\
+            0, & k' = 0
+          \end{cases}
+        \)
+      </div>
+      <p class="annot">
+        For precision-style metrics, unscored predictions are condensed before the top-\(k\) cutoff in the
+        paper definition. Here \((c_1,\dots,c_M)\) is that condensed sequence and \(k'=\min(k,M)\).
+        Normalized Precision divides by the screen-specific maximum attainable precision.
+      </p>
+    </div>
+
+    <div class="metric-card">
+      <h3>Directional false discovery rate (dFDR@k)</h3>
+      <div class="equation">
+        \(
+          \mathrm{dFDR}@k =
+          \begin{cases}
+            \dfrac{1}{k'} \sum_{j=1}^{k'} \mathbb{I}[c_j < 0], & k' > 0 \\
+            0, & k' = 0
+          \end{cases}
+        \)
+      </div>
+      <p class="annot">
+        Reported only for directional screens, where some genes have negative relevance because they
+        correspond to the opposite phenotype direction. This metric measures how often the model puts those
+        "wrong-direction" genes among its top scored predictions. Normalized dFDR divides by the
+        screen-specific maximum attainable dFDR.
+      </p>
+    </div>
+
+    <h2>Why this matters</h2>
+    <p>
+      With raw nDCG, a uniform-ranking baseline can already score 0.4 on a viability screen and 0.05 on a
+      sparse reporter screen, making per-screen averages dominated by the easy assays. AnDCG@k centers every
+      screen on its own random baseline, so mean AnDCG@100 across 1,920 heterogeneous screens is a
+      <em>fair</em> measure of how well a method captures screen-specific biology.
+    </p>
+
+    <p style="font-family: var(--sans); font-size: 13px; color: var(--ink-3); margin-top: 28px;">
+      Source: §3 (Task and evaluation metrics) of the AssayBench paper.
+      See the <a href="https://arxiv.org/abs/2605.10876">arXiv version</a> for the closed-form expression of
+      \(\mathrm{nDCG}_{\mathrm{rand}}@k\) and additional discussion of edge cases.
+    </p>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/site.js"></script>
+</body>
+</html>
