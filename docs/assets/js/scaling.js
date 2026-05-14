@@ -39,8 +39,12 @@
       hovertemplate: "<b>%{text}</b><br>Total params: %{x}B<br>AnDCG@100: %{y:.4f}<extra></extra>",
     };
 
+    // On a log-scale axis, Plotly expects annotation x to be the log10 of the
+    // desired data value (unlike trace x). Without this, the 0.8B and 2B
+    // labels end up at 10^0.8 and 10^2 (i.e., ~6B and 100B) and the larger
+    // ones disappear off-chart.
     const annotations = rows.map((r) => ({
-      x: r.param_billions,
+      x: Math.log10(r.param_billions),
       y: r.mean_andcg100,
       text: r.display_name.replace(/^Qwen3\.5-/, ""),
       showarrow: false,
