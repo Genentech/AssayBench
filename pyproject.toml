@@ -7,21 +7,16 @@ name = "assaybench"
 version = "0.1.0"
 description = "AssayBench: a gene ranking benchmark for evaluating LLMs on biological assay data"
 readme = "README.md"
+authors = [{name = "Edward De Brouwer", email = "debroue1@gene.com"}, {name = "Carl Edwards", email = "edwardc24@gene.com"}]
+urls = {Homepage = "https://genentech.github.io/AssayBench"}
 requires-python = ">=3.11"
-license = {text = "MIT"}
+license = {file = "LICENSE"}
 dependencies = [
     "datasets>=4.0.0",
     "numpy>=1.24.0",
     "pyyaml>=6.0",
     "requests>=2.28.0",
     "python-dotenv>=1.0.0",
-]
-
-[project.optional-dependencies]
-dev = [
-    "jupyter",
-    "ipykernel",
-    "pytest",
 ]
 
 [tool.setuptools.packages.find]
