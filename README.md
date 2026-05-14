@@ -2,7 +2,13 @@
 
 A benchmark for evaluating machine learning models on phenotypic screen prediction.
 
-[:octocat: Code](https://github.com/Genentech/AssayBench) | [:hugs: Dataset](https://huggingface.co/datasets/Genentech/assaybench) | [:page_with_curl: Paper](https://arxiv.org/abs/2605.10876)
+[:globe_with_meridians: Website](https://genentech.github.io/AssayBench/) | [:octocat: Code](https://github.com/Genentech/AssayBench) | [:hugs: Dataset](https://huggingface.co/datasets/Genentech/assaybench) | [:page_with_curl: Paper](https://arxiv.org/abs/2605.10876)
+
+## 0. News
+
+We released a [website](https://genentech.github.io/AssayBench/) with interactive data visualization!
+
+[<img width="1352" height="675" alt="image" src="https://github.com/user-attachments/assets/74201853-1505-429f-af1d-0c3ad64065c7" />](https://genentech.github.io/AssayBench/)
 
 
 ## 1. Installation
