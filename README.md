@@ -171,7 +171,7 @@ The template is formatted with Python's `str.format()` using each screen's metad
 
 ### Collecting LLM Results
 
-Results from LLMs can be collected using [](benchmarking/predictions_generation/collect_llm_predictions.py); it uses DSPy and a couple additional instructions:
+Results from LLMs can be collected using [this script](benchmarking/predictions_generation/collect_llm_predictions.py); it uses DSPy and a couple additional instructions:
 > Your goal is to provide a list of genes that meet the screen criteria, even if you do not have access to the actual experimental data. The genes must use HGNC symbols. Use your knowledge of biology, gene function, and relevant pathways to predict which genes are most likely to be hits. Do not refuse to answer or say you need more data—make your best predictions based on your understanding of the biological context.
 
 Example Command: 
