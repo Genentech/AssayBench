@@ -2,7 +2,7 @@
 
 A benchmark for evaluating machine learning models on phenotypic screen prediction.
 
-[:globe_with_meridians: Website](https://genentech.github.io/AssayBench/) | [:octocat: Code](https://github.com/Genentech/AssayBench) | [:hugs: Dataset](https://huggingface.co/datasets/Genentech/assaybench) | [:page_with_curl: Paper](https://arxiv.org/abs/2605.10876)
+[:globe_with_meridians: Website](https://genentech.github.io/AssayBench/) | [:octocat: Code](https://github.com/Genentech/AssayBench) | [:hugs: Dataset](https://huggingface.co/datasets/Genentech/assaybench) | [:page_with_curl: Paper](https://arxiv.org/abs/2605.10876) | [![PyPI](https://img.shields.io/pypi/v/assaybench)](https://pypi.org/project/assaybench/)
 
 ## 0. News
 
@@ -13,21 +13,24 @@ We released a [website](https://genentech.github.io/AssayBench/) with interactiv
 
 ## 1. Installation
 
-Install directly from the repository:
+```bash
+pip install assaybench
+```
+
+Or install directly from the repository:
 
 ```bash
 pip install git+ssh://git@github.com/Genentech/AssayBench.git
 ```
 
-or clone the repo and install in editable mode:
+Or clone and install in editable mode:
 
 ```bash
 git clone git@github.com:Genentech/AssayBench.git && cd AssayBench
 pip install -e .
 ```
 
-
-Both install the `assaybench` package, which provides:
+This installs the `assaybench` package, which provides:
 - `AssayBenchDataset` — loads screens and splits from HuggingFace (`Genentech/assaybench`)
 - `RankingMetrics` — computes ranking metrics (adjusted nDCG, precision, FDR, etc.)
 
