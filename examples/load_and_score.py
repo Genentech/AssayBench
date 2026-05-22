@@ -42,4 +42,3 @@ metrics = {ex["dataset_name"]: metric_fn.evaluate(top_100_answers(ex["question"]
 
 adncg_at_100 = [m["adjusted_ndcg@100"] for m in metrics.values()]
 print(f"Average adjusted nDCG@100: {sum(adncg_at_100)/len(adncg_at_100)}")
-

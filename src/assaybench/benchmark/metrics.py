@@ -41,6 +41,7 @@ ALL_METRIC_GROUPS = {"ndcg", "adjusted_ndcg", "auroc", "mrr", "precision", "reca
 
 # Import GeneMapper from the package utils
 from assaybench.utils.gene_mapper import GeneMapper
+from assaybench.utils.score_maps import hit_scale_relevance_scores
 
 class RankingMetrics:
     """
@@ -496,16 +497,7 @@ class RankingMetrics:
             Dictionary of metric scores
         """
 
-        # rescaled relevance_scores
-        hit_scaled_relevance_scores = np.array(relevance_scores) 
-        n_hits = sum(hit_scaled_relevance_scores > 0)
-        n_neg_hits = sum(hit_scaled_relevance_scores < 0)       
-        N = len(hit_scaled_relevance_scores)
-        if n_hits > 0:
-            hit_scaled_relevance_scores[hit_scaled_relevance_scores > 0] = 1 - ((1-hit_scaled_relevance_scores[hit_scaled_relevance_scores > 0]) * (N / n_hits))
-        if n_neg_hits>0:
-            hit_scaled_relevance_scores[hit_scaled_relevance_scores < 0] = -1 + ((1+hit_scaled_relevance_scores[hit_scaled_relevance_scores < 0]) * (N / n_neg_hits))
-        hit_scaled_relevance_scores = hit_scaled_relevance_scores.tolist()
+        hit_scaled_relevance_scores = hit_scale_relevance_scores(relevance_scores)
         
         #remove duplicates from predicted genes
         
