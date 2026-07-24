@@ -1,0 +1,2 @@
+# Large regenerable similarity matrices (rebuild by running the notebook)
+results/*.npz
