@@ -36,6 +36,12 @@ from assaybench.benchmark.diversity import (
     pathway_diversity,
     vendi_score,
 )
+from assaybench.benchmark.effective_pathways import (
+    effective_n,
+    effective_pathways,
+    pathway_weights,
+    scope_rng,
+)
 from assaybench.benchmark.sequential import (
     AcquisitionCounts,
     adjusted_nauc,
@@ -80,6 +86,11 @@ __all__ = [
     "load_gene_sets",
     "pathway_diversity",
     "vendi_score",
+    # Effective Pathways across batch, screen, and dataset scopes
+    "effective_n",
+    "effective_pathways",
+    "pathway_weights",
+    "scope_rng",
     # Named screen sets: which screens a reported number was computed on
     "ScreenSetManifest",
     "available_manifests",

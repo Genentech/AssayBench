@@ -34,6 +34,7 @@ This installs the `assaybench` package, which provides:
 - `AssayBenchDataset` — loads screens and splits from HuggingFace (`Genentech/assaybench`)
 - `RankingMetrics` — computes ranking metrics (adjusted nDCG, precision, FDR, etc.)
 - `assaybench.benchmark.sequential` — [sequential-acquisition metrics](#sequential-screens-assaybench-loop) (EF, adjusted nAUC, shortfall, %essential) for adaptive screens
+- `assaybench.benchmark.effective_pathways` — Effective Pathways (EP-B, EP-S, EP-D) for biological diversity across batches, screens, and datasets
 - `assaybench` (CLI) — [manages external data assets](#external-data-assets) that cannot be redistributed
 
 
@@ -161,6 +162,19 @@ sf = shortfall(acquired, library)
 | `shortfall` | SF | What fraction of picks produced no label at all. |
 | `percent_essential` | %essential | How many of the hits found are common-essential genes — always hits, in any screen. |
 | `batch_diversity` | Vendi, pathway overlap | Did the batch explore, or propose twelve subunits of one complex? |
+| `effective_pathways` | EP-B, EP-S, EP-D | How many biological programs did the picks cover within batches, screens, and the pooled dataset? |
+
+Effective Pathways is data-independent: pass the pathway vocabulary you intend
+to use as a gene-to-pathways mapping. AssayBench does not bundle or silently
+select a Reactome release.
+
+```python
+from assaybench import effective_pathways
+
+membership = {"TP53": ("Cell Cycle",), "ATM": ("DNA Repair",)}
+screen_batches = [[["TP53", "ATM"]]]  # screen -> batch -> genes
+ep = effective_pathways(screen_batches, membership=membership)
+```
 
 Two conventions make EF comparable across screens. **Real genes outside the
 screen library are forgiven** — no label exists for them, so scoring them
