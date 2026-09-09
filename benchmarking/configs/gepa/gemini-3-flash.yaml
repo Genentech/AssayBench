@@ -17,7 +17,7 @@ lm:
   max_tokens: 32000
   temperature: 1.0
 
-# Dataset settings - BioGRID ScreensQA
+# Dataset settings - BioGRID AssayBench
 dataset:
   dataset_path: "./data/biogrid_v0.4_combined"
   split_type: "year"

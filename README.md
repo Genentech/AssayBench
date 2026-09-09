@@ -33,6 +33,8 @@ pip install -e .
 This installs the `assaybench` package, which provides:
 - `AssayBenchDataset` — loads screens and splits from HuggingFace (`Genentech/assaybench`)
 - `RankingMetrics` — computes ranking metrics (adjusted nDCG, precision, FDR, etc.)
+- `assaybench.benchmark.sequential` — [sequential-acquisition metrics](#sequential-screens-assaybench-loop) (EF, adjusted nAUC, shortfall, %essential) for adaptive screens
+- `assaybench` (CLI) — [manages external data assets](#external-data-assets) that cannot be redistributed
 
 
 ### With `uv` 
@@ -132,6 +134,140 @@ Each screen returned by `get_train_test_split()` is a dictionary with the follow
 | `hit_scaled_adjusted_ndcg@k` | Adjusted nDCG using binary hit labels |
 
 By default all metric groups are computed. Pass `metric_groups={"adjusted_ndcg", "precision"}` to restrict to a subset.
+
+### Sequential screens (ASSAYBENCH-LOOP)
+
+`RankingMetrics` scores a single ranked gene list. `assaybench.benchmark.sequential`
+scores a *trajectory*: the genes a policy acquires over N rounds of an adaptive
+screen, where each round's labels are revealed before the next round is
+proposed. These are the metrics defined in [AssayLoop](#citation) §3.3.
+
+```python
+from assaybench import adjusted_nauc, enrichment_factor, shortfall
+
+rounds = [["TP53", "MYC", "KRAS"], ["BRCA1", "ATM"]]      # what the policy asked for
+acquired = [gene for batch in rounds for gene in batch]
+
+ef = enrichment_factor(acquired, library, hits, universe=hgnc_symbols, budget=100)
+nauc = adjusted_nauc(rounds, library, hits, universe=hgnc_symbols)
+sf = shortfall(acquired, library)
+```
+
+| Function | Metric | What it answers |
+|---|---|---|
+| `enrichment_factor` | EF | How many more hits than random, over the same effective budget. The headline number, and the only one comparable across screens with different hit rates. |
+| `adjusted_nauc` | adjusted nAUC | Did it reach the hits *early*, or only by the last round? |
+| `fraction_of_hits` | FH | Of everything there was to find, how much was found. |
+| `shortfall` | SF | What fraction of picks produced no label at all. |
+| `percent_essential` | %essential | How many of the hits found are common-essential genes — always hits, in any screen. |
+| `batch_diversity` | Vendi, pathway overlap | Did the batch explore, or propose twelve subunits of one complex? |
+
+Two conventions make EF comparable across screens. **Real genes outside the
+screen library are forgiven** — no label exists for them, so scoring them
+either way would measure library composition rather than the policy.
+**Hallucinated symbols and unspent budget slots are charged** — otherwise a
+policy games EF by naming three genes it is sure of and leaving 97 slots empty.
+`classify_acquisitions` returns the full breakdown if you want to report the
+terms separately.
+
+`percent_essential` uses DepMap Public 26Q1 common-essential genes. The pinned
+CSV is not included in the package and is never downloaded or hosted by
+AssayBench. Users obtain it from DepMap; AssayBench locates it locally and
+verifies its checksum before use. DepMap data is not covered by AssayBench's
+MIT license and remains subject to the
+[current DepMap Terms and Conditions](https://depmap.org/portal/terms/). See
+`src/assaybench/data/depmap/PROVENANCE.md` and `THIRD_PARTY_NOTICES.md`.
+
+### Running a policy: `assaybench.core`
+
+The metrics above score a trajectory you already have. To *produce* one, use
+the loop. `assaybench.core` is four abstract base classes and the driver that
+turns them into a run:
+
+| ABC | Implement it to supply | Key methods |
+|---|---|---|
+| `Task` | the screen: what can be picked, what happens when you pick it | `candidates()`, `reveal(batch)`, `ground_truth()` |
+| `Model` | a belief over the unacquired candidates | `predict(observations, candidates)` |
+| `AcquisitionFunction` | the choice of the next batch | `suggest(history, candidates, batch_size, ...)` |
+| `Metric` | a per-step score | `score(observations, prediction, ground_truth, ...)` |
+
+Model and acquisition are separate on purpose: an acquisition may consume the
+model's belief (greedy, UCB) or ignore it entirely (random, or an LLM that
+picks genes by name). Pair any acquisition with a do-nothing model to ablate.
+
+```python
+from assaybench import SequentialLoop
+
+loop = SequentialLoop(task, model, acquisition, metrics, batch_size=100)
+result = loop.run(n_steps=10)          # -> RunResult(history=[StepRecord], final_metrics={...})
+```
+
+Two behaviours are worth knowing before you trust a number out of it:
+
+- **An under-supplied batch is never padded.** If an acquisition returns 40
+  genes when asked for 100, the loop records 40 and charges the other 60 to
+  `shortfall_frac`. Filling them with random picks would credit the policy
+  with acquisitions it did not make. A run that under-supplies more than
+  `max_shortfall_frac` of its slots is aborted and flagged in
+  `final_metrics["error"]`, so an aggregate can drop it rather than average in
+  a flat curve as though it were a genuine result.
+- **Warm-start observations count.** A `Task` that pre-reveals data must
+  return it from `initial_observations()`; the loop emits those as step 0, so
+  the model, the acquisition and the metrics all see them from the start.
+
+The loop itself does no I/O and never touches the network. If you need to
+correlate whatever your model does internally — LLM calls, say — with the run,
+pass a `trace_scope` context manager; it is called as
+`trace_scope(run_id, sweep_id=..., task_id=...)` around the whole run.
+
+[AssayLoop](#citation) is the reference implementation: a model zoo, LLM
+acquisition policies and the paper's experiments, all built on these ABCs.
+
+### External data assets
+
+Pathway-overlap diversity scores against MSigDB, which is **not** bundled: its
+C2 collection mixes CC BY 4.0 sets with KEGG sets under Kanehisa Laboratories'
+terms and BioCarta sets held by qualified permission, none of which this
+package is entitled to redistribute. Fetch it yourself, on the Broad's terms:
+
+```bash
+assaybench assets                    # what is registered, and under what licence
+assaybench download msigdb-go-bp     # ~5 MB, into ~/.cache/assaybench
+```
+
+The DepMap Public 26Q1 common-essential list must be downloaded manually from
+the [DepMap downloads page](https://depmap.org/portal/download/). Keep its
+original filename, then point AssayBench at it:
+
+```console
+export ASSAYBENCH_DEPMAP_PATH=/absolute/path/CRISPRInferredCommonEssentials.csv
+```
+
+Alternatively, place it in the cache directory printed by `assaybench assets`.
+When `percent_essential` first needs the file, a missing-file error repeats
+these instructions. AssayBench never contacts DepMap for this asset.
+
+All assets are checksum-pinned to the exact revisions behind the published
+results, so a different release or corrupted file is an error rather than a
+silent change in your numbers. Set `$ASSAYBENCH_CACHE` to relocate the cache.
+
+Nothing here falls back to a different release. Downloads must match the
+recorded checksum—a plausible number computed against substituted data is
+worse than no number.
+
+The embedding views (Vendi, cosine spread) take whatever gene-embedding space
+you hand them, so no large download is implied:
+
+```python
+from assaybench import GeneEmbeddings, batch_diversity, load_gene_sets
+
+embeddings = GeneEmbeddings.from_frame(frame, name="presage:GenePT_ada")
+batch_diversity(batch, embeddings, load_gene_sets())
+```
+
+The published numbers use GenePT ada-002 vectors from the
+[PRESAGE](https://github.com/Genentech/PRESAGE) cache, which is 3.4 GB and
+therefore neither a dependency nor a download this package performs.
 
 ### Custom prompts
 
@@ -241,4 +377,3 @@ If you found our work useful, please cite:
       url={https://arxiv.org/abs/2605.10876}, 
 }
 ```
-

@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 """
 Shared utilities for LLM prediction evaluation scripts.
 
@@ -19,8 +20,8 @@ import numpy as np
 from collections import defaultdict
 from datasets import load_from_disk
 
-from screensqa.benchmark.ranking_metrics import RankingMetrics
-from screensqa.dataset.dataset import BioGRIDDSPY
+from assaybench.benchmark.ranking_metrics import RankingMetrics
+from assaybench.dataset.dataset import BioGRIDDSPY
 
 try:
     from run_ensemble_baseline import create_dspy_examples
@@ -205,7 +206,7 @@ def load_additional_ground_truth(
     Returns a dict mapping ``"{split_name}:{index}"`` to ground truth dicts
     with the same format as :func:`load_all_ground_truth`.
     """
-    from screensqa.utils.prompt_loaders import load_objective_prompt
+    from assaybench.utils.prompt_loaders import load_objective_prompt
 
     prompt_template = None
     if not use_existing_prompt:
@@ -262,7 +263,7 @@ def create_example_global_id(question: str, genes: List[str], dataset_name: str 
 
     NOTE: dataset_name alone is NOT unique -- e.g. U_1241_inc and U_1508_inc each
     appear twice (inc/dec phenotype directions sharing the same name due to a
-    screensqa bug).  The hash includes question text and gene list to ensure
+    assaybench bug).  The hash includes question text and gene list to ensure
     disambiguation even when dataset_names collide.
     """
     gene_str = "|".join(genes) if genes else ""

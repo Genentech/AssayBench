@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 """
 Generate non-LLM baseline predictions for the BioGRID gene ranking benchmark.
 
@@ -41,7 +42,7 @@ from typing import List, Dict, Any, Optional, Tuple
 from collections import defaultdict
 
 from datasets import load_from_disk
-from screensqa.dataset.dataset import BioGRIDDSPY
+from assaybench.dataset.dataset import BioGRIDDSPY
 
 from scripts.collect_llm_predictions import create_dspy_examples
 
@@ -236,8 +237,8 @@ def baseline_phenotype_hit_freq(
 def build_coarse_phenotype_map(
     examples: List[Dict[str, Any]],
 ) -> Dict[str, str]:
-    """Build dataset_name -> coarse phenotype mapping using screensqa's stratification."""
-    from screensqa.utils.biogrid_maps import stratify_metrics_by_dataset_name
+    """Build dataset_name -> coarse phenotype mapping using assaybench's stratification."""
+    from assaybench.utils.biogrid_maps import stratify_metrics_by_dataset_name
 
     dataset_names = list({ex["dataset_name"] for ex in examples})
     phenotype_df = stratify_metrics_by_dataset_name(

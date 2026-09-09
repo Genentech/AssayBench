@@ -18,7 +18,7 @@ dataset:
   relevance_score_name: "thresholded_geometric_relevance_scores"
   prompt_template_key: "objective_ranking_prompt"
   mounted_dir: "./data/"  # Base directory for dataset files
-  cache_directory: "screensQA"
+  cache_directory: "assaybench"
   seed: 42
 
 # Ranking evaluation settings

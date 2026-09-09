@@ -1,5 +1,4 @@
 import yaml
-import os
 from importlib.resources import files
 import logging
 
@@ -20,13 +19,13 @@ def load_objective_prompt(keyword, think_open_tag = None, think_close_tag = None
         log.warning(f"Objective prompt with keyword {keyword} was not found. returned empty string instead")
 
     if ("think_open_tag" in prompt) and (think_open_tag is None):
-        log.warning(f"Prompt contains think_open_tag but it was not provided.")
+        log.warning("Prompt contains think_open_tag but it was not provided.")
     if ("think_close_tag" in prompt) and (think_close_tag is None):
-        log.warning(f"Prompt contains think_close_tag but it was not provided.")
+        log.warning("Prompt contains think_close_tag but it was not provided.")
     if ("answer_open_tag" in prompt) and (answer_open_tag is None):
-        log.warning(f"Prompt contains answer_open_tag but it was not provided.")
+        log.warning("Prompt contains answer_open_tag but it was not provided.")
     if ("answer_close_tag" in prompt) and (answer_close_tag is None):
-        log.warning(f"Prompt contains answer_close_tag but it was not provided.")
+        log.warning("Prompt contains answer_close_tag but it was not provided.")
 
     prompt = prompt.format(think_open_tag = think_open_tag,
                            think_close_tag = think_close_tag,

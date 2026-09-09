@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 """
 Script to collect predictions from a single LLM with robust error handling and resumable collection.
 
@@ -18,7 +19,6 @@ Supports:
 - Google Gemini (via Google AI Studio)
 - Biomni (via agenecy API)
 - Local LLMs (via OpenAI-compatible API)
-- GNEsys
 
 Features:
 - Parallel Processing: Use num_workers to process multiple examples concurrently
@@ -72,13 +72,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import time
 import requests
-import urllib3
 import dspy
 from dspy import Example
 
 
-from screensqa.dataset.dataset import BioGRIDDSPY
-from promptopt.utils.gnesys_wrapper import GNEsysPredictor, GNEsysLM
+from assaybench.dataset.dataset import BioGRIDDSPY
 
 # Set up logging to catch dspy warnings
 logging.basicConfig(level=logging.WARNING)
@@ -288,7 +286,7 @@ class RankingModule(dspy.Module):
 def create_dspy_examples(dataset_examples: List[Dict[str, Any]]) -> List[Example]:
     """Convert dataset examples to DSPy Example format.
     
-    Supports both ScreensQADSPY and BioGRIDDSPY dataset formats.
+    Supports both AssayBenchDSPY and BioGRIDDSPY dataset formats.
     """
     dspy_examples = []
     
@@ -298,7 +296,7 @@ def create_dspy_examples(dataset_examples: List[Dict[str, Any]]) -> List[Example
             answer=ex.get('answer', '')
         ).with_inputs("question")
         
-        # Handle both 'genes' (ScreensQADSPY) and 'relevance_genes' (BioGRIDDSPY)
+        # Handle both 'genes' (AssayBenchDSPY) and 'relevance_genes' (BioGRIDDSPY)
         dspy_ex.genes = ex.get('genes', ex.get('relevance_genes', []))
         
         # Store metadata - common fields
@@ -306,7 +304,7 @@ def create_dspy_examples(dataset_examples: List[Dict[str, Any]]) -> List[Example
             if key in ex:
                 setattr(dspy_ex, key, ex[key])
         
-        # ScreensQADSPY-specific fields
+        # AssayBenchDSPY-specific fields
         for key in ['alpha', 'ranking_method', 'description', 'split', 'reverse']:
             if key in ex:
                 setattr(dspy_ex, key, ex[key])
@@ -336,8 +334,8 @@ def load_additional_split_examples(
     a ``prompt`` column (use_existing_prompt=True), uses that column directly.
     """
     from datasets import load_from_disk
-    from screensqa.utils.prompt_loaders import load_objective_prompt
-    from screensqa.data_generation.biogrid_generation import _extract_screen_ids_from_dataset_name
+    from assaybench.utils.prompt_loaders import load_objective_prompt
+    from assaybench.data_generation.biogrid_generation import _extract_screen_ids_from_dataset_name
 
     prompt_template = None
     if not use_existing_prompt:
@@ -1058,8 +1056,8 @@ class BiomniLM(dspy.LM):
     which can take minutes -- without streaming the connection gets closed by
     nginx before the response is ready (empty body / 502).
     
-    Uses requests directly with verify=False to bypass SSL certificate issues.
-    Includes retry logic with exponential backoff for transient failures.
+    Uses requests directly with normal TLS certificate verification and retry
+    logic with exponential backoff for transient failures.
     """
     
     def __init__(self, api_key: str, api_base: str, model: str,
@@ -1075,8 +1073,6 @@ class BiomniLM(dspy.LM):
         self.initial_backoff = initial_backoff
         self.history = []
         self.url = f"{api_base}/chat/completions"
-        # Suppress InsecureRequestWarning from urllib3
-        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     
     def _stream_request(self, headers, payload):
         """
@@ -1092,7 +1088,6 @@ class BiomniLM(dspy.LM):
         payload_with_stream = {**payload, "stream": True}
         
         with requests.Session() as session:
-            session.verify = False
             resp = session.post(
                 self.url,
                 headers=headers,
@@ -1219,26 +1214,7 @@ def main(cfg: DictConfig):
     # Initialize LM based on configuration
     print(f"\nInitializing LM ({cfg.lm.provider})...")
     
-    if cfg.lm.provider == 'gnesys':
-        # GNEsys configuration
-        print("  Initializing GNEsys...")
-        gnesys_predictor = GNEsysPredictor.from_config_path(
-            config_path=cfg.gnesys.config_path,
-            config_name=cfg.gnesys.config_name,
-            overrides=cfg.gnesys.overrides,
-            verbose=cfg.gnesys.verbose
-        )
-        
-        lm = GNEsysLM(
-            gnesys_predictor=gnesys_predictor,
-            reuse_kernels=cfg.gnesys.get('reuse_kernels', True),
-            max_kernels=cfg.gnesys.get('max_kernels', 5)
-        )
-        
-        init_prompt = gnesys_predictor.get_init_prompt()
-        RankingSignatureClass = create_ranking_signature(init_prompt)
-        
-    elif cfg.lm.provider == 'azure':
+    if cfg.lm.provider == 'azure':
         # Azure OpenAI configuration
         # Support both AZURE_API_KEY and AZURE_OPENAI_API_KEY
         api_key = os.environ.get('AZURE_API_KEY') or os.environ.get('AZURE_OPENAI_API_KEY')
@@ -1306,7 +1282,7 @@ def main(cfg: DictConfig):
         RankingSignatureClass = create_ranking_signature()
         
     elif cfg.lm.provider == 'portkey':
-        # Portkey gateway configuration (for Galileo/Roche AI Gateway)
+        # Portkey gateway configuration
         from portkey_ai import createHeaders
         
         api_key = cfg.lm.get('api_key') or os.environ.get('PORTKEY_API_KEY')
@@ -1341,7 +1317,7 @@ def main(cfg: DictConfig):
         
     elif cfg.lm.provider == 'biomni':
         # Biomni configuration (via agenecy OpenAI-compatible API)
-        # Uses custom BiomniLM class with requests + verify=False to bypass SSL issues
+        # Uses the custom streaming BiomniLM client with TLS verification enabled.
         api_key = os.environ.get('AGENECY_API_KEY')
         api_base = cfg.lm.get('api_base') or os.environ.get('BIOMNI_API_BASE', '')
         
@@ -1623,7 +1599,6 @@ def main(cfg: DictConfig):
 
 if __name__ == "__main__":
     main()
-
 
 
 

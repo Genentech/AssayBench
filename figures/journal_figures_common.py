@@ -321,7 +321,7 @@ def plot0_dataset_task(meta_df: pd.DataFrame, out_dir: Path, dpi: int) -> None:
     axes[1].text(
         0.02,
         0.95,
-        f"BioGRID ScreensQA v0.4\n"
+        f"BioGRID AssayBench v0.4\n"
         f"Total examples: {len(meta_df)}\n"
         f"Distinct screen rationales: {n_pheno}\n"
         f"Task: rank genes by screen relevance (nDCG / precision @K).",
@@ -1366,7 +1366,7 @@ def write_figure_captions(caption_path: Path, report: MissingDataReport) -> None
     text = """# Figure captions
 
 ## Plot 0 — `plot0_dataset_task`
-**Caption.** Overview of the ScreensQA BioGRID benchmark: example counts per temporal split (year fold 0) and short description of the gene-ranking task.
+**Caption.** Overview of the AssayBench BioGRID benchmark: example counts per temporal split (year fold 0) and short description of the gene-ranking task.
 
 ## Plot 1 — `plot1_whole_dataset`
 **Caption.** Single figure: **rows** = AnDCG@100, precision@100, inverse precision@100; **columns** = year split (full zoo) vs random split (LLM + Biomni + classifier + oracle rerank only). **Columns** val / test / novel within each heatmap. Row heights scale with model count; shared color scale 0–1. Year vs random columns are **not** directly comparable across all methods.

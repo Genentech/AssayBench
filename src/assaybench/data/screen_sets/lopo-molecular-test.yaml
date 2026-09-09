@@ -1,0 +1,194 @@
+version: 2
+description: 'LOPO fold: held-out test set for phenotype ''Molecular Output / Reporter
+  / Pathway Activity'' (91 screens from all yearfold0 partitions).'
+source:
+  dataset: Genentech/assaybench
+  config: biogrid
+  split_field: yearfold0
+  split_value:
+  - train
+  - validation
+  - test
+screens:
+- dataset_name: '1188'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '1190'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '1571'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '1573'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '1588'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '1608'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '1619'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '1686'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '172'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '1725'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '173'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '174'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '175'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '176'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '177'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '1897'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '1898'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '1964'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2076'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2077'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2084'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2104'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2135'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2137'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2145'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2146'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2148'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2149'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2150'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2151'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2152'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2153'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2154'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2155'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2156'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2158'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2159'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2161'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2162'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2164'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2165'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2168'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2202'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2203'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '2204'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '586'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '588'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '589'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: '591'
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1591_dec
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1591_inc
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1591_merged
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1592_dec
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1592_inc
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1592_merged
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1593_dec
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1593_inc
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1593_merged
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1732_dec
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1732_inc
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1732_merged
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1733_dec
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1733_inc
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1733_merged
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1987_dec
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1987_inc
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1987_merged
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1988_dec
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1988_inc
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_1988_merged
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2421_dec
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2421_inc
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2421_merged
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2422_dec
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2422_inc
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2422_merged
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2423_dec
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2423_inc
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2423_merged
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2424_dec
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2424_inc
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2424_merged
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2425_dec
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2425_inc
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2425_merged
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2426_dec
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2426_inc
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2426_merged
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2427_dec
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2427_inc
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+- dataset_name: U_2427_merged
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity

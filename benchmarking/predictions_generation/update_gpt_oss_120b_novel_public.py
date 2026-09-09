@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 from __future__ import annotations
 
 import argparse
@@ -11,7 +12,7 @@ import rootutils
 rootutils.setup_root(__file__, indicator=".project_root", pythonpath=True)
 
 from journal_figures_common import NOVEL_DATASET_PATHS, NOVEL_SPLIT_NAME, RESULTS_DIR
-from screensqa.dataset.dataset import BioGRIDDSPY
+from assaybench.dataset.dataset import BioGRIDDSPY
 
 
 MODEL_SPECS: Dict[str, Dict[str, Any]] = {

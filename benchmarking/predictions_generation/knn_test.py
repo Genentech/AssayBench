@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 """
 kNN-based transfer analysis with multiple methods.
 
@@ -35,8 +36,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from screensqa.dataset.dataset import BioGRIDDSPY
-from screensqa.benchmark.ranking_metrics import RankingMetrics
+from assaybench.dataset.dataset import BioGRIDDSPY
+from assaybench.benchmark.ranking_metrics import RankingMetrics
 from openai import AzureOpenAI
 
 # Add parent scripts directory to path for imports
@@ -348,7 +349,7 @@ def load_novel_split(
     structure used by the transfer-matrix screens (keys: genes, relevance_scores).
     """
     from datasets import load_from_disk
-    from screensqa.utils.prompt_loaders import load_objective_prompt
+    from assaybench.utils.prompt_loaders import load_objective_prompt
 
     prompt_template = load_objective_prompt("biogrid_ranking_prompt")
     all_examples: List[Dict[str, Any]] = []

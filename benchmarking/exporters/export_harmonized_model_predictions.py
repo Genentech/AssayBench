@@ -1,9 +1,11 @@
+# Not functional in public package. Script is just for reference.
 from __future__ import annotations
 
 import argparse
 import ast
 import csv
 import json
+import os
 import re
 import sys
 from collections import defaultdict
@@ -35,22 +37,22 @@ from export_harmonized_ensemble_predictions import (
 from export_harmonized_knn_predictions import export_knn_payloads
 
 
-DEFAULT_OUTPUT_DIR = Path("/cv/data/braid/gnesys/datasets/screensQA/results")
+DEFAULT_OUTPUT_DIR = Path("output/harmonized_predictions")
 SCHEMA_VERSION = 1
-PROMPTOPTBASE_ROOT = SCRIPT_DIR.parent.parent
-SCREENSQA_SRC = Path("/cv/home/debroue1/from_prescient/projects/screensQA/src")
+REPO_ROOT = SCRIPT_DIR.parent
 GEPA_DIR = SCRIPT_DIR.parent / "output" / "gepa"
-CLASSIFIER_OUTPUT_ROOT = Path("/cv/data/braid/debroue1/promptoptbase/outputs")
+CLASSIFIER_OUTPUT_ROOT = Path(
+    os.environ.get("ASSAYBENCH_CLASSIFIER_OUTPUT_ROOT", "output/classifier")
+)
 CLASSIFIER_RUN_IDS = {
     "year": "r3ph5o3v",
     "random": "rp8xcp30",
     "novel": "r3ph5o3v",
 }
 
-for extra_path in [PROMPTOPTBASE_ROOT, SCREENSQA_SRC]:
-    extra_str = str(extra_path)
-    if extra_str not in sys.path:
-        sys.path.insert(0, extra_str)
+repo_root_str = str(REPO_ROOT)
+if repo_root_str not in sys.path:
+    sys.path.insert(0, repo_root_str)
 
 
 def log(message: str) -> None:
@@ -59,7 +61,7 @@ def log(message: str) -> None:
 
 
 def get_shared_utils() -> tuple[Any, Any, Any]:
-    from promptoptbase.scripts.shared_utils import (
+    from benchmarking.predictions_generation.shared_utils import (
         load_additional_ground_truth,
         load_all_ground_truth,
         load_all_model_predictions,
@@ -160,7 +162,7 @@ def make_record(
     if example_key is not None:
         record["example_key"] = example_key
     if source_files:
-        record["source_files"] = list(source_files)
+        record["source_files"] = sorted({Path(source).name for source in source_files})
     if extra:
         record.update(extra)
     return record
@@ -197,7 +199,7 @@ def build_payload(
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "model_name": model_name,
         "source_group": source_group,
-        "source_files": list(source_files),
+        "source_files": sorted({Path(source).name for source in source_files}),
         "n_records": len(records),
         "n_unique_datasets": len(grouped),
         "records_by_dataset": grouped,
@@ -606,7 +608,7 @@ def build_manifest_entry(payload: Dict[str, Any], output_path: Path) -> Dict[str
     return {
         "model_name": payload["model_name"],
         "source_group": payload["source_group"],
-        "output_path": str(output_path),
+        "output_path": output_path.name,
         "n_records": payload["n_records"],
         "n_unique_datasets": payload["n_unique_datasets"],
         "source_files": payload["source_files"],
@@ -822,7 +824,6 @@ def main() -> None:
     manifest = {
         "schema_version": SCHEMA_VERSION,
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
-        "output_dir": str(args.output_dir),
         "n_models": len(manifest_entries),
         "models": manifest_entries,
     }

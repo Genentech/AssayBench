@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 from __future__ import annotations
 
 import argparse
@@ -23,18 +24,16 @@ from journal_figures_common import (
 )
 
 
-DEFAULT_OUTPUT_DIR = Path("/cv/data/braid/gnesys/datasets/screensQA/results")
+DEFAULT_OUTPUT_DIR = Path("output/harmonized_predictions")
 SCHEMA_VERSION = 1
-PROMPTOPTBASE_ROOT = SCRIPT_DIR.parent.parent
-SCREENSQA_SRC = Path("/cv/home/debroue1/from_prescient/projects/screensQA/src")
+REPO_ROOT = SCRIPT_DIR.parent
 ENSEMBLE_MODEL_NAME = "LLM RRF Ensemble"
 
-for extra_path in [PROMPTOPTBASE_ROOT, SCREENSQA_SRC]:
-    extra_str = str(extra_path)
-    if extra_str not in sys.path:
-        sys.path.insert(0, extra_str)
+repo_root_str = str(REPO_ROOT)
+if repo_root_str not in sys.path:
+    sys.path.insert(0, repo_root_str)
 
-from promptoptbase.scripts.shared_utils import (  # noqa: E402
+from benchmarking.predictions_generation.shared_utils import (  # noqa: E402
     load_additional_ground_truth,
     load_all_ground_truth,
     load_all_model_predictions,
@@ -115,7 +114,7 @@ def build_payload(
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "model_name": model_name,
         "source_group": "ensemble_predictions",
-        "source_files": list(source_files),
+        "source_files": sorted({Path(source).name for source in source_files}),
         "n_records": len(records),
         "n_unique_datasets": len(grouped),
         "records_by_dataset": grouped,

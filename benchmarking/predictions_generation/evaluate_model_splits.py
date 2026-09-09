@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 """
 Script to evaluate LLM model performance across train, validation, and test splits.
 
@@ -48,9 +49,9 @@ from omegaconf import DictConfig, ListConfig
 from typing import List, Dict, Any, Optional, Tuple
 import numpy as np
 import matplotlib.pyplot as plt
-from screensqa.benchmark.ranking_metrics import RankingMetrics
-from screensqa.utils.gene_mapper import GeneMapper
-from screensqa.utils.biogrid_maps import stratify_metrics_by_dataset_name
+from assaybench.benchmark.ranking_metrics import RankingMetrics
+from assaybench.utils.gene_mapper import GeneMapper
+from assaybench.utils.biogrid_maps import stratify_metrics_by_dataset_name
 
 from scripts.shared_utils import (
     deterministic_hash,
@@ -1301,21 +1302,6 @@ def plot_additional_splits_summary(
     plt.close(fig)
 
 
-# Dataset-name exact matches and prefixes for internal/proprietary screens in
-# ongoing_screens.  Each maps to a human-readable label used in summary charts.
-# Order matters: exact matches are checked first, then prefix matches.
-_INTERNAL_SCREEN_EXACT = {
-    'jake_treg_suppresion_simplified': 'Treg simplified (internal)',
-    'jake_treg_suppresion': 'Treg full (internal)',
-}
-_INTERNAL_SCREEN_PREFIXES = {
-    'NGS7126_': 'NGS7126 CDKi (internal)',
-}
-
-# Zhu2025 condition prefixes for sub-split grouping.
-_ZHU2025_CONDITION_PREFIXES = ['Rest_', 'Stim8hr_', 'Stim48hr_']
-
-
 @hydra.main(version_base="1.3", config_path="../configs", config_name="evaluate-model-splits")
 def main(cfg: DictConfig):
     """
@@ -1925,41 +1911,6 @@ def main(cfg: DictConfig):
                 sname = gt.get('dataset_name', 'unknown')
                 screen_to_keys.setdefault(sname, []).append(key)
 
-            # For ongoing_screens, group into internal screens and public
-            # Zhu2025 sub-conditions for separate reporting.
-            is_ongoing = (addl_split_name == 'ongoing_screens')
-            # label -> list of example keys
-            ongoing_groups: Dict[str, List[str]] = {}
-            if is_ongoing:
-                for key, gt in addl_gt.items():
-                    ds_name = gt.get('dataset_name', '')
-                    matched = False
-                    if ds_name in _INTERNAL_SCREEN_EXACT:
-                        ongoing_groups.setdefault(_INTERNAL_SCREEN_EXACT[ds_name], []).append(key)
-                        matched = True
-                    else:
-                        for prefix, label in _INTERNAL_SCREEN_PREFIXES.items():
-                            if ds_name.startswith(prefix):
-                                ongoing_groups.setdefault(label, []).append(key)
-                                matched = True
-                                break
-                    if not matched:
-                        # Public Zhu2025 — sub-group by condition
-                        cond_label = None
-                        for cp in _ZHU2025_CONDITION_PREFIXES:
-                            if ds_name.startswith(cp):
-                                cond_label = f'Zhu2025 {cp.rstrip("_")}'
-                                break
-                        if cond_label is None:
-                            cond_label = 'Zhu2025 (other)'
-                        ongoing_groups.setdefault(cond_label, []).append(key)
-
-                for label, keys in sorted(ongoing_groups.items()):
-                    print(f"    {label}: {len(keys)} examples")
-
-            # Per-model metrics caches — needed for sub-aggregates
-            model_metrics_caches: Dict[str, Dict] = {}
-
             # Evaluate each model
             per_screen_results: Dict[str, Dict[str, Dict]] = {}
             aggregate_results: Dict[str, Dict] = {}
@@ -2008,7 +1959,6 @@ def main(cfg: DictConfig):
                 metrics_cache = compute_all_metrics(
                     addl_pred_map, addl_gt, metrics_evaluator_unmapped
                 , n_workers=n_workers)
-                model_metrics_caches[display_name] = metrics_cache
 
                 # Aggregate over the whole split
                 all_keys = list(metrics_cache.keys())
@@ -2029,20 +1979,8 @@ def main(cfg: DictConfig):
                             per_screen_results[display_name][screen_name] = screen_agg
 
             # Build summary aggregates for chart
-            if is_ongoing and ongoing_groups:
-                for group_label, group_keys in sorted(ongoing_groups.items()):
-                    group_agg: Dict[str, Dict] = {}
-                    for display_name, mc in model_metrics_caches.items():
-                        valid = [k for k in group_keys if k in mc]
-                        if valid:
-                            a = aggregate_metrics_for_split(mc, valid, cfg.metric)
-                            if a:
-                                group_agg[display_name] = a
-                    if group_agg:
-                        summary_aggregates[group_label] = group_agg
-            elif not is_ongoing:
-                if aggregate_results:
-                    summary_aggregates[addl_split_name] = aggregate_results
+            if aggregate_results:
+                summary_aggregates[addl_split_name] = aggregate_results
 
             # Collect all metrics to plot (primary + additional)
             addl_metrics_to_plot = [cfg.metric]

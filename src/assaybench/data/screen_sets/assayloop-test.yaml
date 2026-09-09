@@ -1,0 +1,520 @@
+version: 2
+description: 'Sequential-screening test set used in the AssayLoop paper: 20 genome-wide screens
+  curated from the AssayBench public test split (Genentech/assaybench, biogrid, yearfold0=''test'',
+  334 eligible entries). This is NOT the whole public test split -- it is a diversity-stratified
+  subset with a Gemini AnDCG@100 >= 0.05 signal floor, so screens no method can beat random
+  on do not dominate the average. Baselines are scored for audit only; no LLM-vs-baseline
+  winner balancing is applied. The selection script is scripts/select_default_public_screens.py
+  in the AssayLoop repo.'
+source:
+  dataset: Genentech/assaybench
+  config: biogrid
+  split_field: yearfold0
+  split_value: test
+selection_criteria:
+  num_genes_min: 18000
+  num_genes_max: 22000
+  num_hits_min: 50
+  max_hit_rate: 0.15
+  gemini_signal_floor: true
+  min_gemini_andcg: 0.05
+  winner_balance: false
+  max_per_phenotype: 6
+  max_per_phenotype_is_soft: true
+  quality_metric: gemini-3-pro adjusted_ndcg@100
+  quality_weight: 0.5
+  scoring_methods:
+    llm: gemini-3-pro
+    baselines:
+    - oracle_knn
+    - embedding_knn
+    - phenotype_hit_freq
+  stratification: Per cleaned_phenotype, allocate slots proportional to the eligible split
+    distribution with a soft cap of six per phenotype (relaxed only if needed to reach n_target);
+    within each phenotype, diversify via greedy max-min on TF-IDF of (phenotype | condition_clause
+    | cell_line | cell_type | library_methodology), lightly weighted by gemini-3-pro AnDCG@100.
+    No LLM-vs-baseline winner balancing is applied.
+  n_target: 20
+screens:
+- dataset_name: '1985'
+  phenotype: impacts response to chemicals
+  cleaned_phenotype: Drug / Chemical / Environmental Response
+  cell_line: NALM-6
+  cell_type: Pre-B Acute Lymphoblastic Leukemia Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: recovered_bidirectional
+  condition_name: cerivastatin
+  condition_clause: ' under cerivastatin treatment (150.0 nM)'
+  duration: 8 Days
+  author: Krosl J (2022)
+  source_id: '34731885'
+  num_genes: 18873
+  num_hits: 216
+  andcg_at_100:
+    gemini-3-pro: 0.3204
+    oracle_knn: 0.175
+    embedding_knn: 0.1266
+    phenotype_hit_freq: 0.0171
+  gemini_signal_pass: true
+  best_method: gemini-3-pro
+  llm_lead: true
+- dataset_name: U_1736_dec
+  phenotype: decrease resistance to hydroxychloroquine
+  cleaned_phenotype: Drug / Chemical / Environmental Response
+  cell_line: HT-29
+  cell_type: Colonic Adenocarcinoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: bidirectional
+  condition_name: Hydroxychloroquine
+  condition_clause: " under Hydroxychloroquine treatment (30.0 \xB5M)"
+  duration: 14 Days
+  author: Akinci E (2022)
+  source_id: https://www.biorxiv.org/content/10.1101/2020.08.27.270819v1.full
+  num_genes: 19008
+  num_hits: 1189
+  andcg_at_100:
+    gemini-3-pro: 0.2483
+    oracle_knn: 0.9852
+    embedding_knn: 0.9852
+    phenotype_hit_freq: 0.1497
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: '2462'
+  phenotype: increases sensitivity to Cpd-391 as measured by decreased cell proliferation
+    in the presence of Cpd-391.
+  cleaned_phenotype: Drug / Chemical / Environmental Response
+  cell_line: Capan-1
+  cell_type: Pancreatic Ductal Adenocarcinoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: "Cpd\u2010391 (4\u2010(4\u2010Fluoro\u20103\u2010(5\u2010methyl\u2010\
+    3\u2010(thiazol\u20102\u2010yl)\u20105,6,7,8\u2010tetrahydro\u2010[1,2,4]triazolo[4,3\u2010\
+    a]pyrazine\u20107\u2010carbonyl)benzyl)phthalazin\u20101(2H)\u2010one)"
+  condition_clause: " under Cpd\u2010391 (4\u2010(4\u2010Fluoro\u20103\u2010(5\u2010\
+    methyl\u20103\u2010(thiazol\u20102\u2010yl)\u20105,6,7,8\u2010tetrahydro\u2010\
+    [1,2,4]triazolo[4,3\u2010a]pyrazine\u20107\u2010carbonyl)benzyl)phthalazin\u2010\
+    1(2H)\u2010one) treatment (50.0 nM)"
+  duration: 14 Days
+  author: Wang LM (2023)
+  source_id: '36652375'
+  num_genes: 19012
+  num_hits: 706
+  andcg_at_100:
+    gemini-3-pro: 0.2155
+    oracle_knn: 0.4533
+    embedding_knn: 0.1342
+    phenotype_hit_freq: 0.0212
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: '1953'
+  phenotype: impacts cell proliferation
+  cleaned_phenotype: Drug / Chemical / Environmental Response
+  cell_line: HuP-T3
+  cell_type: Cancer Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: recovered_bidirectional
+  condition_name: CAR T cells
+  condition_clause: ' under CAR T cells treatment (4.0 Ratio of effector cells/target
+    cells)'
+  duration: 17 Days
+  author: Hagel KR (2022)
+  source_id: '36548402'
+  num_genes: 19580
+  num_hits: 869
+  andcg_at_100:
+    gemini-3-pro: 0.1722
+    oracle_knn: 0.3012
+    embedding_knn: 0.0351
+    phenotype_hit_freq: 0.1968
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: '2054'
+  phenotype: increases resistance to the ferroptosis-inducing drug RSL3, as measured
+    by increased cell viability after exposure.
+  cleaned_phenotype: Drug / Chemical / Environmental Response
+  cell_line: SK-N-DZ
+  cell_type: Neuroblastoma Cell Line
+  library_methodology: Activation
+  library_type: CRISPRa
+  screen_category: unidirectional
+  condition_name: 1S,3R-RSL3
+  condition_clause: ' under 1S,3R-RSL3 treatment (300.0 nM)'
+  duration: 14 Days
+  author: Alborzinia H (2023)
+  source_id: '37435859'
+  num_genes: 18652
+  num_hits: 944
+  andcg_at_100:
+    gemini-3-pro: 0.1287
+    oracle_knn: 0.0989
+    embedding_knn: 0.0
+    phenotype_hit_freq: 0.0275
+  gemini_signal_pass: true
+  best_method: gemini-3-pro
+  llm_lead: true
+- dataset_name: '1900'
+  phenotype: increases resistance to suppression of T-cell proliferation, as measured
+    by increased T-cell proliferation under suppressive conditions.
+  cleaned_phenotype: Drug / Chemical / Environmental Response
+  cell_line: Primary T-cells
+  cell_type: T cell
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: CGS-21680
+  condition_clause: " under CGS-21680 treatment (20.0 \xB5M)"
+  duration: 17 Days
+  author: Carnevale J (2022)
+  source_id: '36002574'
+  num_genes: 19009
+  num_hits: 898
+  andcg_at_100:
+    gemini-3-pro: 0.1466
+    oracle_knn: 0.8491
+    embedding_knn: 0.0082
+    phenotype_hit_freq: 0.0
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: U_2423_merged
+  phenotype: either increases or decreases IL-2 production by CD4+ T cells
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+  cell_line: Primary T-cells
+  cell_type: T cell
+  library_methodology: Inhibition
+  library_type: CRISPRi
+  screen_category: bidirectional
+  condition_name: Interleukin-2 (IL-2)
+  condition_clause: ' under Interleukin-2 (IL-2) treatment (500.0 IU/ml)'
+  duration: 6 Days
+  author: Schmidt R (2022)
+  source_id: '35113687'
+  num_genes: 18811
+  num_hits: 225
+  andcg_at_100:
+    gemini-3-pro: 0.3297
+    oracle_knn: 0.3444
+    embedding_knn: 0.0475
+    phenotype_hit_freq: 0.2191
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: U_1733_merged
+  phenotype: "either increases or decreases RelA nuclear translocation upon TNF\u03B1\
+    \ stimulation"
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+  cell_line: HeLa RelA-mNeonGreen
+  cell_type: Cervical Adenocarcinoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: bidirectional
+  condition_name: "IFN-\u03B2 (Interferon beta)"
+  condition_clause: " under IFN-\u03B2 (Interferon beta) treatment (75 ng/\xB5L)"
+  duration: 60 Minutes
+  author: Schraivogel D (2022)
+  source_id: '35050652'
+  num_genes: 18385
+  num_hits: 169
+  andcg_at_100:
+    gemini-3-pro: 0.2649
+    oracle_knn: 0.1582
+    embedding_knn: 0.1001
+    phenotype_hit_freq: 0.0
+  gemini_signal_pass: true
+  best_method: gemini-3-pro
+  llm_lead: true
+- dataset_name: U_1987_merged
+  phenotype: either increases or decreases SARS-CoV-2 -1 PRF efficiency
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+  cell_line: HEK293T
+  cell_type: Embryonic Kidney Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: bidirectional
+  condition_name: Not specified
+  condition_clause: ''
+  duration: 7 Days
+  author: Wei LH (2023)
+  source_id: 10.1101/2023.01.23.525275
+  num_genes: 20671
+  num_hits: 428
+  andcg_at_100:
+    gemini-3-pro: 0.1019
+    oracle_knn: 0.2303
+    embedding_knn: 0.0133
+    phenotype_hit_freq: 0.1271
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: U_2422_merged
+  phenotype: either increases or decreases IFN-gamma production in primary CD8+ T
+    cells
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+  cell_line: Primary T-cells
+  cell_type: T cell
+  library_methodology: Activation
+  library_type: CRISPRa
+  screen_category: bidirectional
+  condition_name: Interleukin-2 (IL-2)
+  condition_clause: ' under Interleukin-2 (IL-2) treatment (500.0 IU/ml)'
+  duration: 6 Days
+  author: Schmidt R (2022)
+  source_id: '35113687'
+  num_genes: 18800
+  num_hits: 571
+  andcg_at_100:
+    gemini-3-pro: 0.3093
+    oracle_knn: 0.7484
+    embedding_knn: 0.6846
+    phenotype_hit_freq: 0.0
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: U_2427_dec
+  phenotype: decrease TNF-alpha production by CD4+ T cells
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+  cell_line: CD4+ T-cells
+  cell_type: T cell
+  library_methodology: Activation
+  library_type: CRISPRa
+  screen_category: bidirectional
+  condition_name: Interleukin-2 (IL-2)
+  condition_clause: ' under Interleukin-2 (IL-2) treatment (500.0 IU/ml)'
+  duration: 6 Days
+  author: Schmidt R (2022)
+  source_id: '35113687'
+  num_genes: 18800
+  num_hits: 283
+  andcg_at_100:
+    gemini-3-pro: 0.1741
+    oracle_knn: 0.7276
+    embedding_knn: 0.5343
+    phenotype_hit_freq: 0.0
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: '2076'
+  phenotype: increases SARS-CoV-2 programmed ribosomal frameshifting efficiency as
+    measured by dual fluorescent reporter readouts.
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+  cell_line: HCT 116
+  cell_type: Colorectal Cancer Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: 'Virus: SARS-CoV-2 (isolate USA-WA1/2020)'
+  condition_clause: ' under Virus: SARS-CoV-2 (isolate USA-WA1/2020) treatment (0.3
+    MOI)'
+  duration: 10 Days
+  author: Rehfeld F (2023)
+  source_id: '36753415'
+  num_genes: 19007
+  num_hits: 212
+  andcg_at_100:
+    gemini-3-pro: 0.0606
+    oracle_knn: 0.1171
+    embedding_knn: 0.0055
+    phenotype_hit_freq: 0.0119
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: '1830'
+  phenotype: increases resistance to HCoV-OC43 infection, as measured by increased
+    survival of HEK293T-hACE2 cells during prolonged infection.
+  cleaned_phenotype: Host-Pathogen / Infection Response
+  cell_line: HEK293T/ACE2
+  cell_type: Embryonic Kidney Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: 'Virus: HCoV-OC43 (Human coronavirus OC43)'
+  condition_clause: ' under Virus: HCoV-OC43 (Human coronavirus OC43) treatment (0.1
+    MOI)'
+  duration: 32 Days
+  author: Grodzki M (2022)
+  source_id: '35086559'
+  num_genes: 18984
+  num_hits: 88
+  andcg_at_100:
+    gemini-3-pro: 0.1976
+    oracle_knn: 0.1453
+    embedding_knn: 0.1309
+    phenotype_hit_freq: 0.1395
+  gemini_signal_pass: true
+  best_method: gemini-3-pro
+  llm_lead: true
+- dataset_name: '2466'
+  phenotype: increases rAAV (AAV2-GFP) transgene expression as measured by GFP protein
+    accumulation.
+  cleaned_phenotype: Host-Pathogen / Infection Response
+  cell_line: K-562
+  cell_type: Chronic Myeloid Leukemia Cell Line
+  library_methodology: Inhibition
+  library_type: CRISPRi
+  screen_category: unidirectional
+  condition_name: Spin infection with AAV2-GFP
+  condition_clause: ' under Spin infection with AAV2-GFP treatment (50000.0 vg/cell
+    (viral genomes/cell))'
+  duration: 12 Days
+  author: Ngo AM (2023)
+  source_id: '36971544'
+  num_genes: 18734
+  num_hits: 88
+  andcg_at_100:
+    gemini-3-pro: 0.1879
+    oracle_knn: 0.2769
+    embedding_knn: 0.0199
+    phenotype_hit_freq: 0.0
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: U_1863_inc
+  phenotype: increase resistance to SARS-CoV-2 infection
+  cleaned_phenotype: Host-Pathogen / Infection Response
+  cell_line: Calu-3
+  cell_type: Lung Adenocarcinoma Cell Line
+  library_methodology: Activation
+  library_type: CRISPRa
+  screen_category: bidirectional
+  condition_name: 'Virus: SARS-CoV-2 ( isolate BetaCoV/France/ IDF0372/2020)'
+  condition_clause: ' under Virus: SARS-CoV-2 ( isolate BetaCoV/France/ IDF0372/2020)
+    treatment (0.005 MOI)'
+  duration: 11 Days
+  author: Rebendenne A (2022)
+  source_id: '35879413'
+  num_genes: 18458
+  num_hits: 50
+  andcg_at_100:
+    gemini-3-pro: 0.1694
+    oracle_knn: 0.0334
+    embedding_knn: 0.0
+    phenotype_hit_freq: 0.0
+  gemini_signal_pass: true
+  best_method: gemini-3-pro
+  llm_lead: true
+- dataset_name: '2060'
+  phenotype: decreases cell viability of Calu-1 ACE2-overexpressing cells upon SARS-CoV-2
+    Spike-delta19 pseudotyped lentiviral infection.
+  cleaned_phenotype: Host-Pathogen / Infection Response
+  cell_line: Calu1-ACE2
+  cell_type: Lung Cancer Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: "SARS-CoV-2 Spike\u2010\u039419 protein pseudotyped lentivirus"
+  condition_clause: " under SARS-CoV-2 Spike\u2010\u039419 protein pseudotyped lentivirus\
+    \ treatment (25.0 %)"
+  duration: 6 Days
+  author: Ugalde AP (2022)
+  source_id: '36124427'
+  num_genes: 20670
+  num_hits: 103
+  andcg_at_100:
+    gemini-3-pro: 0.1382
+    oracle_knn: 0.167
+    embedding_knn: 0.0189
+    phenotype_hit_freq: 0.0
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: '1827'
+  phenotype: increases resistance to SARS-CoV-2 infection in HEK293T-hACE2 cells.
+  cleaned_phenotype: Host-Pathogen / Infection Response
+  cell_line: HEK293T/ACE2
+  cell_type: Embryonic Kidney Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: 'Virus: SARS-CoV-2 (Strain UF-1)'
+  condition_clause: ' under Virus: SARS-CoV-2 (Strain UF-1) treatment (0.03 MOI)'
+  duration: 15 Days
+  author: Grodzki M (2022)
+  source_id: '35086559'
+  num_genes: 19007
+  num_hits: 61
+  andcg_at_100:
+    gemini-3-pro: 0.1965
+    oracle_knn: 0.1969
+    embedding_knn: 0.0
+    phenotype_hit_freq: 0.104
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: U_1735_dec
+  phenotype: decrease cell proliferation in DMSO-treated control conditions
+  cleaned_phenotype: Fitness / Proliferation / Viability
+  cell_line: HT-29
+  cell_type: Colonic Adenocarcinoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: bidirectional
+  condition_name: Dimethyl sulfoxide (DMSO)
+  condition_clause: ' under Dimethyl sulfoxide (DMSO) treatment'
+  duration: 10 Days
+  author: Akinci E (2022)
+  source_id: https://www.biorxiv.org/content/10.1101/2020.08.27.270819v1.full
+  num_genes: 19008
+  num_hits: 126
+  andcg_at_100:
+    gemini-3-pro: 0.2062
+    oracle_knn: 0.2337
+    embedding_knn: 0.0565
+    phenotype_hit_freq: 0.0099
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: '1905'
+  phenotype: increases T-cell proliferation as measured by enrichment of highly dividing
+    T cells in response to proliferation stimulation.
+  cleaned_phenotype: Fitness / Proliferation / Viability
+  cell_line: Primary T-cells
+  cell_type: T cell
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: Not specified
+  condition_clause: ''
+  duration: 17 Days
+  author: Carnevale J (2022)
+  source_id: '36002574'
+  num_genes: 19007
+  num_hits: 699
+  andcg_at_100:
+    gemini-3-pro: 0.1411
+    oracle_knn: 0.4364
+    embedding_knn: 0.0278
+    phenotype_hit_freq: 0.0
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: '2404'
+  phenotype: increases inner nuclear membrane (INM) substrate protein accumulation,
+    as measured by LBR1600*S11 accumulation and increased nuclear GFP fluorescence.
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+  cell_line: HeLa
+  cell_type: Cervical Adenocarcinoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: Not specified
+  condition_clause: ''
+  duration: 13 Days
+  author: Tsai PL (2022)
+  source_id: '36417855'
+  num_genes: 19005
+  num_hits: 89
+  andcg_at_100:
+    gemini-3-pro: 0.0786
+    oracle_knn: 0.1084
+    embedding_knn: 0.0
+    phenotype_hit_freq: 0.0
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false

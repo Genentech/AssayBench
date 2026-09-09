@@ -10,7 +10,7 @@ Results are saved to a JSON file that generate_journal_figures.py can
 consume.
 
 Usage:
-    cd promptoptbase && uv run python scripts/evaluate_best_ensemble.py
+    uv run python benchmarking/predictions_generation/evaluate_best_ensemble.py
 """
 
 import rootutils
