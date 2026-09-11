@@ -9,6 +9,8 @@ A benchmark for evaluating machine learning models on phenotypic screen predicti
 **September 2026 — [AssayLoop is now on arXiv](https://arxiv.org/abs/2609.11877).**
 This follow-on work extends AssayBench to a lab-in-the-loop active learning framework with adaptive sequential hit discovery. 
 
+[![Try it yourself](https://img.shields.io/badge/Try_it_yourself!-Run_AssayFormer_in_your_browser-176b87?style=for-the-badge)](https://genentech.github.io/AssayLoop/try.html)
+
 **May 2026 —**
 We released a [website](https://genentech.github.io/AssayBench/) with interactive data visualization!
 
