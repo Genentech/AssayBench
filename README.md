@@ -6,6 +6,10 @@ A benchmark for evaluating machine learning models on phenotypic screen predicti
 
 ## 0. News
 
+**September 2026 — [AssayLoop is now on arXiv](https://arxiv.org/abs/2609.11877).**
+This follow-on work extends AssayBench to a lab-in-the-loop active learning framework with adaptive sequential hit discovery. 
+
+** May 2026 **
 We released a [website](https://genentech.github.io/AssayBench/) with interactive data visualization!
 
 [<img width="1352" height="675" alt="image" src="https://github.com/user-attachments/assets/74201853-1505-429f-af1d-0c3ad64065c7" />](https://genentech.github.io/AssayBench/)
@@ -141,7 +145,8 @@ By default all metric groups are computed. Pass `metric_groups={"adjusted_ndcg",
 `RankingMetrics` scores a single ranked gene list. `assaybench.benchmark.sequential`
 scores a *trajectory*: the genes a policy acquires over N rounds of an adaptive
 screen, where each round's labels are revealed before the next round is
-proposed. These are the metrics defined in [AssayLoop](#citation) §3.3.
+proposed. These are the metrics defined in
+[AssayLoop](https://arxiv.org/abs/2609.11877) §3.3.
 
 ```python
 from assaybench import adjusted_nauc, enrichment_factor, shortfall
@@ -234,7 +239,7 @@ correlate whatever your model does internally — LLM calls, say — with the ru
 pass a `trace_scope` context manager; it is called as
 `trace_scope(run_id, sweep_id=..., task_id=...)` around the whole run.
 
-[AssayLoop](#citation) is the reference implementation: a model zoo, LLM
+[AssayLoop](https://arxiv.org/abs/2609.11877) is the reference implementation: a model zoo, LLM
 acquisition policies and the paper's experiments, all built on these ABCs.
 
 ### External data assets
@@ -381,13 +386,10 @@ Outputs (PNG, PDF, LaTeX tables) are saved to `figures/journal_figures/`.
 ## Citation
 If you found our work useful, please cite:
 ```bibtex
-@misc{debrouwer2026assaybench,
-      title={AssayBench: An Assay-Level Virtual Cell Benchmark for LLMs and Agents}, 
-      author={Edward De Brouwer and Carl Edwards and Alexander Wu and Jenna Collier and Graham Heimberg and Xiner Li and Meena Subramaniam and Ehsan Hajiramezanali and David Richmond and Jan-Christian Hütter and Sara Mostafavi and Gabriele Scalia},
-      year={2026},
-      eprint={2605.10876},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
-      url={https://arxiv.org/abs/2605.10876}, 
+@article{debrouwer2026assaybench,
+  title={AssayBench: An Assay-Level Virtual Cell Benchmark for LLMs and Agents},
+  author={De Brouwer, Edward and Edwards, Carl and Wu, Alexander and Collier, Jenna and Heimberg, Graham and Li, Xiner and Subramaniam, Meena and Hajiramezanali, Ehsan and Richmond, David and H{\"u}tter, Jan-Christian and others},
+  journal={arXiv preprint arXiv:2605.10876},
+  year={2026}
 }
 ```
