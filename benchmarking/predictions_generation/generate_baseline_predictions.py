@@ -40,10 +40,7 @@ from omegaconf import DictConfig, ListConfig
 from typing import List, Dict, Any, Optional, Tuple
 from collections import defaultdict
 
-from datasets import load_from_disk
-from screensqa.dataset.dataset import BioGRIDDSPY
-
-from scripts.collect_llm_predictions import create_dspy_examples
+from datasets import load_dataset, load_from_disk
 
 
 # ============================================================================
@@ -87,6 +84,56 @@ def _save_predictions(
         json.dump(data, f, indent=2)
 
     print(f"  Saved {split_name}: {len(predictions)} examples -> {out_file}")
+
+
+def _save_harmonized(
+    harmonized_dir: Path,
+    baseline_name: str,
+    all_rankings: Dict[str, List[List[str]]],
+    all_examples: Dict[str, List[Dict[str, Any]]],
+    split_layout: str = "year",
+):
+    """Save predictions in the harmonized format used by the figures pipeline."""
+    from datetime import datetime, timezone
+
+    harmonized_dir.mkdir(parents=True, exist_ok=True)
+    records_by_dataset = {}
+    split_name_map = {"val": "val", "validation": "val", "train": "train", "test": "test",
+                      "novel_public_dataset": "novel_public_dataset"}
+
+    for split_name, rankings in all_rankings.items():
+        examples = all_examples[split_name]
+        harm_split = split_name_map.get(split_name, split_name)
+        layout = "novel" if "novel" in split_name else split_layout
+        for idx, (ex, genes) in enumerate(zip(examples, rankings)):
+            ds_name = str(ex["dataset_name"])
+            record = {
+                "dataset_name": ds_name,
+                "split": harm_split,
+                "split_layout": layout,
+                "predicted_genes": genes,
+                "prediction_runs": [genes],
+                "n_runs": 1,
+                "example_key": f"{harm_split}:{idx}",
+            }
+            records_by_dataset.setdefault(ds_name, []).append(record)
+
+    n_records = sum(len(v) for v in records_by_dataset.values())
+    payload = {
+        "schema_version": 1,
+        "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        "model_name": f"baseline/{baseline_name}",
+        "source_group": "baseline_predictions",
+        "n_records": n_records,
+        "n_unique_datasets": len(records_by_dataset),
+        "records_by_dataset": records_by_dataset,
+    }
+
+    filename = f"baseline__{baseline_name}.json"
+    out_file = harmonized_dir / filename
+    with open(out_file, "w") as f:
+        json.dump(payload, f)
+    print(f"  Harmonized: {n_records} records -> {out_file}")
 
 
 def _load_raw_dataset(dataset_path: str):
@@ -236,14 +283,8 @@ def baseline_phenotype_hit_freq(
 def build_coarse_phenotype_map(
     examples: List[Dict[str, Any]],
 ) -> Dict[str, str]:
-    """Build dataset_name -> coarse phenotype mapping using screensqa's stratification."""
-    from screensqa.utils.biogrid_maps import stratify_metrics_by_dataset_name
-
-    dataset_names = list({ex["dataset_name"] for ex in examples})
-    phenotype_df = stratify_metrics_by_dataset_name(
-        {ds: 0 for ds in dataset_names}
-    )
-    return dict(zip(phenotype_df["dataset_name"], phenotype_df["phenotype"]))
+    """Build dataset_name -> coarse phenotype mapping from cleaned_phenotype field."""
+    return {ex["dataset_name"]: ex["cleaned_phenotype"] for ex in examples}
 
 
 def compute_coarse_phenotype_hit_frequency(
@@ -542,21 +583,17 @@ def build_ppi_graph(biogrid_file: Path):
     print("  Building PPI graph...")
     df = pd.read_csv(biogrid_file, sep="\t", dtype=str, low_memory=False)
 
-    physical_mask = df["Experimental System Type"] == "physical"
-    df = df[physical_mask]
+    df = df[df["Experimental System Type"] == "physical"]
+    df = df[["Official Symbol Interactor A", "Official Symbol Interactor B"]].dropna()
+    df = df[df["Official Symbol Interactor A"] != df["Official Symbol Interactor B"]]
 
-    G = nx.Graph()
-    for _, row in df.iterrows():
-        gene_a = row.get("Official Symbol Interactor A")
-        gene_b = row.get("Official Symbol Interactor B")
-        if gene_a and gene_b and gene_a != gene_b:
-            G.add_edge(gene_a, gene_b)
+    G = nx.from_pandas_edgelist(df, "Official Symbol Interactor A", "Official Symbol Interactor B")
 
     print(f"  PPI graph: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges")
     return G
 
 
-def compute_network_scores(cache_dir: str) -> Tuple[Dict[str, float], Dict[str, int]]:
+def compute_network_scores(cache_dir: str, return_graph: bool = False):
     """
     Download BioGRID, build PPI graph, compute PageRank and degree.
     Caches results to disk.
@@ -567,6 +604,7 @@ def compute_network_scores(cache_dir: str) -> Tuple[Dict[str, float], Dict[str, 
     pagerank_file = cache_dir / "pagerank_scores.json"
     degree_file = cache_dir / "degree_scores.json"
 
+    G = None
     if pagerank_file.exists() and degree_file.exists():
         print("  Loading cached network scores...")
         with open(pagerank_file) as f:
@@ -574,23 +612,216 @@ def compute_network_scores(cache_dir: str) -> Tuple[Dict[str, float], Dict[str, 
         with open(degree_file) as f:
             degree_scores = json.load(f)
         print(f"  Loaded PageRank for {len(pagerank_scores)} genes, degree for {len(degree_scores)} genes")
-        return pagerank_scores, degree_scores
+    else:
+        biogrid_file = download_biogrid_ppi(cache_dir)
+        G = build_ppi_graph(biogrid_file)
 
-    biogrid_file = download_biogrid_ppi(cache_dir)
-    G = build_ppi_graph(biogrid_file)
+        print("  Computing PageRank (this may take a minute)...")
+        pagerank_scores = nx.pagerank(G)
 
-    print("  Computing PageRank (this may take a minute)...")
-    pagerank_scores = nx.pagerank(G)
+        degree_scores = {node: deg for node, deg in G.degree()}
 
-    degree_scores = {node: deg for node, deg in G.degree()}
+        with open(pagerank_file, "w") as f:
+            json.dump(pagerank_scores, f)
+        with open(degree_file, "w") as f:
+            json.dump(degree_scores, f)
 
-    with open(pagerank_file, "w") as f:
-        json.dump(pagerank_scores, f)
-    with open(degree_file, "w") as f:
-        json.dump(degree_scores, f)
+        print(f"  Cached network scores to {cache_dir}")
 
-    print(f"  Cached network scores to {cache_dir}")
+    if return_graph:
+        if G is None:
+            biogrid_file = download_biogrid_ppi(cache_dir)
+            G = build_ppi_graph(biogrid_file)
+        return pagerank_scores, degree_scores, G
+
     return pagerank_scores, degree_scores
+
+
+def _precompute_neighbor_sets(G) -> Dict[str, set]:
+    """Pre-compute neighbor sets for all nodes (avoids repeated graph lookups)."""
+    return {node: set(G.neighbors(node)) for node in G.nodes()}
+
+
+def _ppi_neighbor_score(
+    neighbor_sets: Dict[str, set],
+    seed_genes: set,
+    candidate_genes: List[str],
+) -> Dict[str, float]:
+    """Score each candidate gene by the fraction of its PPI neighbors that are seeds."""
+    scores = {}
+    for gene in candidate_genes:
+        neighbors = neighbor_sets.get(gene)
+        if not neighbors:
+            scores[gene] = 0.0
+            continue
+        scores[gene] = len(neighbors & seed_genes) / len(neighbors)
+    return scores
+
+
+def baseline_ppi_coarse_phenotype(
+    examples: List[Dict[str, Any]],
+    train_examples: List[Dict[str, Any]],
+    neighbor_sets: Dict[str, set],
+    ds_to_coarse: Dict[str, str],
+) -> List[List[str]]:
+    """Rank genes by PPI neighbor overlap with hits from same coarse phenotype."""
+    from collections import defaultdict
+    hits_by_coarse = defaultdict(set)
+    for ex in train_examples:
+        coarse = ds_to_coarse.get(ex["dataset_name"])
+        if coarse is None:
+            continue
+        for gene, is_hit in zip(ex["relevance_genes"], ex["hit"]):
+            if is_hit:
+                hits_by_coarse[coarse].add(gene)
+
+    rankings = []
+    for ex in examples:
+        coarse = ds_to_coarse.get(ex["dataset_name"])
+        seeds = hits_by_coarse.get(coarse, set())
+        scores = _ppi_neighbor_score(neighbor_sets, seeds, ex["relevance_genes"])
+        rankings.append(rank_by_scores(ex["relevance_genes"], scores))
+    return rankings
+
+
+def baseline_ppi_knn(
+    examples: List[Dict[str, Any]],
+    train_examples: List[Dict[str, Any]],
+    neighbor_sets: Dict[str, set],
+    k: int = 10,
+    embedding_cache_path: str = None,
+    dotenv_path: str = "/cv/home/debroue1/from_prescient/projects/promptoptbase/.env",
+) -> List[List[str]]:
+    """Rank genes by PPI neighbor overlap with hits from k nearest training screens (LLM embeddings)."""
+    from openai import AzureOpenAI
+    from dotenv import dotenv_values
+
+    env = dotenv_values(dotenv_path)
+
+    cache = {}
+    if embedding_cache_path and Path(embedding_cache_path).exists():
+        import pickle
+        with open(embedding_cache_path, "rb") as f:
+            cache = pickle.load(f)
+        print(f"  Loaded {len(cache)} cached embeddings")
+
+    client = AzureOpenAI(
+        azure_endpoint=env["AZURE_OPENAI_ENDPOINT"],
+        api_key=env["API_KEY_ES2"],
+        api_version="2025-04-01-preview",
+    )
+
+    def _get_embedding(text):
+        if text in cache:
+            return cache[text]
+        response = client.embeddings.create(model="text-embedding-3-small", input=text)
+        embedding = np.array(response.data[0].embedding, dtype=np.float32)
+        cache[text] = embedding
+        return embedding
+
+    _SCREEN_CONTEXT_TEMPLATE = (
+        "This screen was performed in {cell_line} cells, a {cell_type}. "
+        "Researchers used a {library_type} library ({library_methodology}) to systematically perturb gene function. "
+        "The experiment followed a {experimental_setup} design and was conducted over {duration}{condition_clause}.\n"
+        "The primary objective of this screen was to identify a set of hit genes, each of which {phenotype}\n"
+        'A gene is classified as a "hit" if its {library_methodology} significantly {phenotype} '
+        "The statistical criterion for significance is: {significance_criteria}.\n"
+        "Genes with {ranking_rationale} are ranked most highly.\n"
+        "Screen notes: {notes}"
+    )
+
+    def _phenotype_text(ex):
+        phenotype = ex.get("phenotype", "")
+        if phenotype and phenotype[-1] == ".":
+            phenotype = phenotype[:-1]
+        fields = {k: ex.get(k, "") for k in [
+            "cell_line", "cell_type", "library_type", "library_methodology",
+            "experimental_setup", "duration", "condition_clause",
+            "significance_criteria", "ranking_rationale", "notes",
+        ]}
+        fields["phenotype"] = phenotype
+        return _SCREEN_CONTEXT_TEMPLATE.format(**fields)
+
+    train_texts = [_phenotype_text(ex) for ex in train_examples]
+    eval_texts = [_phenotype_text(ex) for ex in examples]
+
+    all_texts = list(set(train_texts + eval_texts))
+    uncached = [t for t in all_texts if t not in cache]
+    print(f"  {len(all_texts)} unique texts, {len(uncached)} need embedding")
+
+    for i, text in enumerate(uncached):
+        _get_embedding(text)
+        if (i + 1) % 100 == 0:
+            print(f"    Embedded {i + 1}/{len(uncached)}")
+
+    if uncached and embedding_cache_path:
+        import pickle
+        with open(embedding_cache_path, "wb") as f:
+            pickle.dump(cache, f)
+        print(f"  Updated embedding cache at {embedding_cache_path}")
+
+    train_embeddings = np.array([cache[t] for t in train_texts])
+    eval_embeddings = np.array([cache[t] for t in eval_texts])
+
+    from sklearn.metrics.pairwise import cosine_similarity
+    sims = cosine_similarity(eval_embeddings, train_embeddings)
+
+    rankings = []
+    for i, ex in enumerate(examples):
+        top_k_idx = np.argsort(sims[i])[-k:][::-1]
+        seeds = set()
+        for idx in top_k_idx:
+            neighbor = train_examples[idx]
+            for gene, is_hit in zip(neighbor["relevance_genes"], neighbor["hit"]):
+                if is_hit:
+                    seeds.add(gene)
+        scores = _ppi_neighbor_score(neighbor_sets, seeds, ex["relevance_genes"])
+        rankings.append(rank_by_scores(ex["relevance_genes"], scores))
+    return rankings
+
+
+def baseline_ppi_entry_point(
+    examples: List[Dict[str, Any]],
+    G,
+    entry_points_map: Dict[str, Dict[str, Any]],
+    seed: int = 42,
+) -> Tuple[List[List[str]], List[str]]:
+    """Rank genes by shortest-path distance to LLM-extracted entry points in PPI graph."""
+    import networkx as nx
+
+    rng = random.Random(seed)
+    rankings = []
+    flagged = []
+
+    for ex in examples:
+        ds_name = str(ex["dataset_name"])
+        ep_info = entry_points_map.get(ds_name, {})
+        seeds = set(ep_info.get("entry_points", [])) & set(G.nodes())
+
+        if not seeds:
+            flagged.append(ds_name)
+            genes = list(ex["relevance_genes"])
+            rng.shuffle(genes)
+            rankings.append(genes)
+            continue
+
+        distances = {}
+        for seed_gene in seeds:
+            lengths = nx.single_source_shortest_path_length(G, seed_gene)
+            for gene, dist in lengths.items():
+                if gene not in distances or dist < distances[gene]:
+                    distances[gene] = dist
+
+        scores = {}
+        for gene in ex["relevance_genes"]:
+            if gene in distances:
+                scores[gene] = 1.0 / (1.0 + distances[gene])
+            else:
+                scores[gene] = 0.0
+
+        rankings.append(rank_by_scores(ex["relevance_genes"], scores))
+
+    return rankings, flagged
 
 
 # ============================================================================
@@ -609,6 +840,9 @@ ALL_BASELINES = [
     "degree",
     "gene-name-overlap",
     "library-size-prior",
+    "ppi-coarse-phenotype",
+    "ppi-knn",
+    "ppi-entry-point",
 ]
 
 
@@ -630,30 +864,36 @@ def main(cfg: DictConfig):
 
     print(f"\nBaselines to generate: {baselines}")
 
-    # Load dataset
-    print(f"\nLoading dataset from {cfg.dataset.dataset_path}...")
-    dataset = BioGRIDDSPY(
-        dataset_path=cfg.dataset.dataset_path,
-        split_type=cfg.dataset.split_type,
-        fold=cfg.dataset.fold,
-    )
-    train_examples_dspy, val_examples_dspy, test_examples_dspy = dataset.get_train_test_split()
+    # Load dataset from HuggingFace Hub (cached automatically)
+    dataset_group = cfg.dataset.get("dataset_group", "Genentech/assaybench")
+    dataset_name = cfg.dataset.get("dataset_name", "biogrid")
+    print(f"\nLoading dataset: {dataset_group}/{dataset_name}...")
+    hf_ds = load_dataset(dataset_group, dataset_name, split="train")
+    split_col = f"{cfg.dataset.split_type}fold{cfg.dataset.fold}"
+    print(f"  Using split column: {split_col}")
 
-    train_dspy = create_dspy_examples(train_examples_dspy)
-    val_dspy = create_dspy_examples(val_examples_dspy)
-    test_dspy = create_dspy_examples(test_examples_dspy)
+    def _hf_row_to_example(row):
+        """Convert a HF dataset row to the dict format expected by baselines."""
+        return {k: row[k] for k in row.keys()}
 
-    print(f"  Train: {len(train_examples_dspy)}, Val: {len(val_examples_dspy)}, Test: {len(test_examples_dspy)}")
+    all_examples = [_hf_row_to_example(hf_ds[i]) for i in range(len(hf_ds))]
+    train_raw = [ex for ex in all_examples if ex[split_col] == "train"]
+    val_raw = [ex for ex in all_examples if ex[split_col] == "validation"]
+    test_raw = [ex for ex in all_examples if ex[split_col] == "test"]
 
-    # Extract raw examples for baselines (need relevance_genes, hit, etc.)
-    train_raw = train_examples_dspy
-    val_raw = val_examples_dspy
-    test_raw = test_examples_dspy
+    # Load LaTest (novel) dataset
+    novel_dataset_name = cfg.dataset.get("novel_dataset_name", "LaTest")
+    print(f"\nLoading novel dataset: {dataset_group}/{novel_dataset_name}...")
+    novel_ds = load_dataset(dataset_group, novel_dataset_name, split="train")
+    novel_raw = [_hf_row_to_example(novel_ds[i]) for i in range(len(novel_ds))]
 
-    # Questions for saving predictions
-    train_questions = [ex["question"] for ex in train_raw]
-    val_questions = [ex["question"] for ex in val_raw]
-    test_questions = [ex["question"] for ex in test_raw]
+    print(f"  Train: {len(train_raw)}, Val: {len(val_raw)}, Test: {len(test_raw)}, LaTest: {len(novel_raw)}")
+
+    # Build a question string per screen (used for saving and text-based baselines)
+    train_questions = [ex.get("phenotype", "") for ex in train_raw]
+    val_questions = [ex.get("phenotype", "") for ex in val_raw]
+    test_questions = [ex.get("phenotype", "") for ex in test_raw]
+    novel_questions = [ex.get("phenotype", "") for ex in novel_raw]
 
     output_dir = Path(cfg.output.save_dir) / "baseline_predictions"
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -672,7 +912,7 @@ def main(cfg: DictConfig):
                    "coarse-phenotype-hit-freq", "phenotype-knn-hit-freq", "library-size-prior"]
     )
     needs_summaries = any(b in baselines for b in ["bm25", "gene-name-overlap"])
-    needs_network = any(b in baselines for b in ["pagerank", "degree"])
+    needs_network = any(b in baselines for b in ["pagerank", "degree", "ppi-coarse-phenotype", "ppi-knn", "ppi-entry-point"])
 
     freq_by_phenotype = None
     freq_by_coarse = None
@@ -687,21 +927,51 @@ def main(cfg: DictConfig):
         print(f"  Screen types: {list(freq_by_type.keys())}")
         print(f"  Phenotypes (screen_rationale): {list(freq_by_phenotype.keys())}")
 
-    if "coarse-phenotype-hit-freq" in baselines:
+    if "coarse-phenotype-hit-freq" in baselines or "ppi-coarse-phenotype" in baselines:
         print("\nBuilding coarse phenotype mapping (5 categories)...")
-        all_raw = train_raw + val_raw + test_raw
+        all_raw = train_raw + val_raw + test_raw + novel_raw
         ds_to_coarse = build_coarse_phenotype_map(all_raw)
-        freq_by_coarse = compute_coarse_phenotype_hit_frequency(train_raw, ds_to_coarse)
-        print(f"  Coarse phenotype categories: {list(freq_by_coarse.keys())}")
+        if "coarse-phenotype-hit-freq" in baselines:
+            freq_by_coarse = compute_coarse_phenotype_hit_frequency(train_raw, ds_to_coarse)
+            print(f"  Coarse phenotype categories: {list(freq_by_coarse.keys())}")
 
     if needs_summaries:
         print(f"\nLoading gene summaries from {cfg.gene_data_dir}...")
         gene_summaries = load_gene_summaries(cfg.gene_data_dir)
         print(f"  Loaded summaries for {len(gene_summaries)} genes")
 
+    ppi_neighbor_sets = None
+    ppi_graph = None
+    entry_points_map = None
     if needs_network:
+        needs_graph = any(b in baselines for b in ["ppi-coarse-phenotype", "ppi-knn", "ppi-entry-point"])
         print(f"\nLoading/computing network scores from {cfg.ppi_data_dir}...")
-        pagerank_scores, degree_scores = compute_network_scores(cfg.ppi_data_dir)
+        if needs_graph:
+            pagerank_scores, degree_scores, ppi_graph = compute_network_scores(
+                cfg.ppi_data_dir, return_graph=True
+            )
+            print("  Pre-computing PPI neighbor sets...")
+            ppi_neighbor_sets = _precompute_neighbor_sets(ppi_graph)
+            if "ppi-entry-point" not in baselines:
+                del ppi_graph
+                ppi_graph = None
+        else:
+            pagerank_scores, degree_scores = compute_network_scores(cfg.ppi_data_dir)
+
+    if "ppi-entry-point" in baselines:
+        ep_path = Path(cfg.ppi_data_dir) / "entry_points.json"
+        if not ep_path.exists():
+            raise FileNotFoundError(
+                f"Entry points file not found: {ep_path}\n"
+                "Run extract_entry_points.py first."
+            )
+        with open(ep_path) as f:
+            entry_points_map = json.load(f)
+        n_with = sum(1 for v in entry_points_map.values() if v.get("has_entry_points"))
+        print(f"\nLoaded entry points: {n_with}/{len(entry_points_map)} screens have entry points")
+
+    # Harmonized output directory (alongside raw predictions)
+    harmonized_dir = Path(cfg.output.save_dir).parent.parent / "predictions" / "baselines"
 
     # Generate each baseline
     for baseline_name in baselines:
@@ -709,8 +979,10 @@ def main(cfg: DictConfig):
         print(f"Generating: {baseline_name}")
         print(f"{'='*50}")
 
-        splits = {"train": train_raw, "val": val_raw, "test": test_raw}
-        question_lists = {"train": train_questions, "val": val_questions, "test": test_questions}
+        splits = {"train": train_raw, "val": val_raw, "test": test_raw, "novel_public_dataset": novel_raw}
+        question_lists = {"train": train_questions, "val": val_questions, "test": test_questions, "novel_public_dataset": novel_questions}
+        all_rankings_for_harmonized = {}
+        all_flagged_screens = []
 
         for split_name, examples in splits.items():
             questions = question_lists[split_name]
@@ -764,6 +1036,27 @@ def main(cfg: DictConfig):
             elif baseline_name == "library-size-prior":
                 rankings = baseline_library_size_prior(examples, train_raw)
 
+            elif baseline_name == "ppi-coarse-phenotype":
+                rankings = baseline_ppi_coarse_phenotype(
+                    examples, train_raw, ppi_neighbor_sets, ds_to_coarse
+                )
+
+            elif baseline_name == "ppi-knn":
+                k = cfg.get("knn_k", 10)
+                cache_path = str(Path(cfg.ppi_data_dir) / "phenotype_embedding_cache.pkl")
+                rankings = baseline_ppi_knn(
+                    examples, train_raw, ppi_neighbor_sets, k=k,
+                    embedding_cache_path=cache_path,
+                )
+
+            elif baseline_name == "ppi-entry-point":
+                rankings, flagged_screens = baseline_ppi_entry_point(
+                    examples, ppi_graph, entry_points_map, seed=cfg.seed
+                )
+                all_flagged_screens.extend(flagged_screens)
+                if flagged_screens:
+                    print(f"    {len(flagged_screens)}/{len(examples)} screens flagged (no entry points)")
+
             else:
                 print(f"  Unknown baseline: {baseline_name}, skipping")
                 continue
@@ -771,6 +1064,16 @@ def main(cfg: DictConfig):
             _save_predictions(
                 output_dir, baseline_name, split_name, questions, rankings
             )
+            all_rankings_for_harmonized[split_name] = rankings
+
+        _save_harmonized(harmonized_dir, baseline_name, all_rankings_for_harmonized, splits)
+
+        if baseline_name == "ppi-entry-point" and all_flagged_screens:
+            flagged_path = harmonized_dir / "ppi_entry_point_flagged_screens.json"
+            flagged_set = sorted(set(all_flagged_screens))
+            with open(flagged_path, "w") as f:
+                json.dump({"flagged_screens": flagged_set, "n_flagged": len(flagged_set)}, f, indent=2)
+            print(f"  Flagged screens saved to {flagged_path} ({len(flagged_set)} screens)")
 
     print(f"\n{'='*60}")
     print("ALL BASELINES GENERATED!")

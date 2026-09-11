@@ -49,7 +49,7 @@ def _load_ground_truth_by_dataset() -> Tuple[Dict[str, Dict[str, Any]], Dict[str
         dataset_name="biogrid",
         split_type="year",
         fold=0,
-        novel_dataset_name="2026Q1",
+        novel_dataset_name="LaTest",
     )
     train, val, test, novel = ds.get_train_test_split()
 

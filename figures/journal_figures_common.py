@@ -76,6 +76,9 @@ METHOD_DISPLAY_NAMES = {
     "baseline/gene-name-overlap": "Gene-name overlap",
     "baseline/pagerank": "PageRank",
     "baseline/degree": "Degree",
+    "baseline/ppi-coarse-phenotype": "PPI neighbor (by phenotype)",
+    "baseline/ppi-knn": "PPI neighbor (kNN)",
+    "baseline/ppi-entry-point": "PPI entry-point proximity",
 }
 
 BIOMNI_PREFIX = "biomni"
@@ -92,7 +95,7 @@ STATISTICAL_BASELINES = {
     "baseline/coarse-phenotype-hit-freq",
 }
 TEXT_BASELINES = {"baseline/bm25", "baseline/gene-name-overlap"}
-NETWORK_BASELINES = {"baseline/pagerank", "baseline/degree"}
+NETWORK_BASELINES = {"baseline/pagerank", "baseline/degree", "baseline/ppi-coarse-phenotype", "baseline/ppi-knn", "baseline/ppi-entry-point"}
 
 CATEGORY_COLORS = {
     "Baseline (statistical)": "#D4A72C",

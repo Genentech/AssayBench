@@ -15,7 +15,8 @@ ppi_data_dir: "./gene_data/biogrid_ppi"
 
 # Dataset settings
 dataset:
-  dataset_path: "./data/biogrid_v0.4_combined"
+  dataset_group: "Genentech/assaybench"
+  dataset_name: "biogrid"
   split_type: "year"
   fold: 0
 
