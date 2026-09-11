@@ -1,0 +1,2066 @@
+version: 2
+description: 'LOPO fold: held-out test set for phenotype ''Fitness / Proliferation
+  / Viability'' (1027 screens from all yearfold0 partitions).'
+source:
+  dataset: Genentech/assaybench
+  config: biogrid
+  split_field: yearfold0
+  split_value:
+  - train
+  - validation
+  - test
+screens:
+- dataset_name: '1000'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1001'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1002'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1003'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1004'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1005'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1006'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1007'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1008'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1009'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1010'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1011'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1012'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1013'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1014'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1015'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1016'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1020'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1021'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1022'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1023'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1024'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1025'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1026'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1027'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1028'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1029'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '103'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1030'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1031'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1032'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1033'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1034'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '104'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1075'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1076'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1109'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1192'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1193'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1205'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1292'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1293'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1294'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1295'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1296'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1297'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1298'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1299'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1300'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1301'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1302'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1303'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1304'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1305'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1306'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1307'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1308'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1309'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1310'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1311'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1312'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '141'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '142'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '143'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1458'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1459'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '149'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '150'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '151'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '152'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '153'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '154'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '155'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '156'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1580'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '16'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1687'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1688'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1689'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1690'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1691'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1692'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1693'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1694'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1695'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1696'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '17'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1753'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1754'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1755'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1756'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1757'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1758'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1759'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1760'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1761'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1762'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1763'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1764'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '179'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '18'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '180'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1801'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '181'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1811'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1812'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1813'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1814'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '184'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '185'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '186'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '187'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '188'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '189'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '190'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1905'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '191'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1910'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1917'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '192'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '193'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1932'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1933'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1934'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '1935'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '194'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '195'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '196'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '197'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '198'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '199'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '200'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '201'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '202'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '203'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '204'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '205'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2050'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2051'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2052'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2053'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2056'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2057'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '206'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2061'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2062'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2063'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2064'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '207'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '208'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2089'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '209'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '210'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '211'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2113'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2114'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2115'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2116'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2117'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2118'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '212'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '213'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '214'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '215'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '216'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '217'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '218'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '219'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '220'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2200'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2201'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '221'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '222'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '223'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '224'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '225'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '226'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '227'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '228'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '229'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '230'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '232'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '233'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '234'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '235'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '236'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '237'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2374'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '238'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '239'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '240'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '241'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '242'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '243'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '244'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '245'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2458'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '246'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '2463'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '247'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '248'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '249'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '250'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '251'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '252'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '253'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '254'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '255'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '256'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '257'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '258'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '259'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '260'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '261'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '262'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '263'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '264'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '265'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '266'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '267'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '268'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '269'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '27'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '270'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '271'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '272'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '273'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '274'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '275'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '276'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '277'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '278'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '279'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '28'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '280'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '281'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '282'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '283'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '284'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '285'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '286'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '287'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '288'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '289'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '29'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '290'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '291'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '292'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '293'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '294'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '295'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '296'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '297'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '298'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '299'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '300'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '301'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '302'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '303'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '304'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '305'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '306'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '307'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '308'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '309'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '310'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '311'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '312'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '313'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '314'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '315'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '316'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '317'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '318'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '319'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '320'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '321'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '322'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '323'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '324'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '325'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '326'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '327'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '328'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '329'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '330'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '331'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '332'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '333'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '334'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '335'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '336'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '337'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '338'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '339'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '340'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '341'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '342'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '343'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '346'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '347'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '348'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '349'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '350'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '351'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '352'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '353'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '354'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '355'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '356'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '357'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '358'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '359'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '360'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '361'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '362'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '363'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '364'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '365'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '366'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '367'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '368'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '369'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '370'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '371'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '372'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '373'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '374'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '375'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '376'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '377'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '378'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '379'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '380'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '381'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '382'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '383'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '384'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '385'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '386'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '387'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '388'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '389'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '390'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '391'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '392'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '393'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '394'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '395'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '396'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '397'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '398'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '399'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '400'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '401'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '402'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '403'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '404'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '406'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '407'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '408'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '409'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '410'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '411'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '412'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '413'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '414'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '415'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '416'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '418'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '419'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '420'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '421'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '422'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '423'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '424'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '425'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '426'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '427'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '428'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '429'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '430'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '431'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '432'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '433'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '434'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '435'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '436'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '437'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '438'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '439'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '440'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '441'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '442'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '443'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '444'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '445'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '446'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '447'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '448'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '449'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '450'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '451'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '452'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '453'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '454'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '455'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '456'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '457'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '458'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '459'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '460'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '461'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '462'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '463'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '464'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '465'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '466'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '467'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '468'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '469'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '470'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '471'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '472'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '473'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '474'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '475'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '476'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '477'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '478'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '479'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '480'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '481'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '482'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '483'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '484'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '485'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '486'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '487'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '488'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '489'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '490'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '491'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '492'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '493'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '494'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '495'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '496'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '497'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '498'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '5'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '503'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '504'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '505'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '506'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '507'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '508'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '509'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '510'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '511'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '512'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '513'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '514'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '515'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '516'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '517'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '518'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '519'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '520'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '521'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '522'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '523'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '524'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '525'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '526'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '527'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '528'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '529'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '530'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '531'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '532'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '533'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '534'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '535'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '536'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '537'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '538'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '539'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '540'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '541'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '542'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '543'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '544'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '545'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '546'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '547'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '548'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '549'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '550'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '551'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '552'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '553'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '554'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '555'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '556'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '557'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '558'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '559'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '560'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '561'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '562'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '563'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '564'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '565'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '566'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '567'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '568'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '569'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '570'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '571'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '572'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '573'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '574'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '575'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '576'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '577'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '597'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '6'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '600'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '601'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '602'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '603'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '604'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '613'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '614'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '627'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '629'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '639'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '640'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '641'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '642'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '643'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '644'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '645'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '646'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '647'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '648'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '649'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '650'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '651'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '652'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '653'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '654'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '655'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '656'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '657'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '658'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '659'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '66'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '660'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '661'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '662'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '663'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '664'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '665'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '666'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '667'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '668'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '669'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '67'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '670'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '671'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '672'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '673'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '674'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '675'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '676'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '677'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '678'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '679'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '68'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '680'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '681'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '682'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '683'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '69'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '691'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '692'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '693'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '694'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '695'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '696'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '697'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '698'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '699'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '70'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '700'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '701'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '702'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '703'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '704'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '705'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '706'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '707'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '708'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '709'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '710'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '711'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '712'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '713'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '714'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '715'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '716'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '717'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '718'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '719'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '720'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '721'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '722'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '723'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '724'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '725'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '726'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '727'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '728'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '729'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '73'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '730'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '731'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '732'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '733'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '734'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '735'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '736'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '737'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '738'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '739'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '74'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '740'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '741'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '742'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '743'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '744'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '745'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '746'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '747'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '748'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '749'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '75'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '750'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '751'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '752'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '753'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '754'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '755'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '756'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '757'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '758'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '759'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '76'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '760'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '761'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '762'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '763'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '764'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '765'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '766'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '767'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '768'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '769'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '77'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '770'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '771'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '772'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '773'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '774'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '775'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '776'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '777'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '778'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '779'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '78'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '780'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '781'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '782'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '783'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '784'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '785'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '786'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '787'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '788'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '789'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '79'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '790'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '791'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '792'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '793'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '794'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '795'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '798'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '799'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '80'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '800'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '801'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '802'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '803'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '804'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '805'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '806'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '807'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '808'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '809'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '810'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '811'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '812'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '813'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '814'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '815'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '816'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '817'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '818'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '819'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '820'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '821'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '822'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '823'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '824'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '825'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '826'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '827'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '828'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '829'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '830'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '831'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '832'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '833'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '834'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '835'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '836'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '837'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '838'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '839'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '840'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '841'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '842'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '843'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '844'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '845'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '846'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '847'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '848'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '849'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '850'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '851'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '852'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '853'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '854'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '855'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '856'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '857'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '858'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '859'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '860'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '861'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '862'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '863'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '864'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '865'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '866'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '867'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '868'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '869'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '870'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '871'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '872'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '873'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '874'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '875'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '876'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '877'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '878'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '879'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '880'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '881'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '882'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '883'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '884'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '885'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '886'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '887'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '888'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '889'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '890'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '891'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '892'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '893'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '894'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '895'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '896'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '897'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '898'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '899'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '900'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '901'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '902'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '903'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '904'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '905'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '906'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '907'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '908'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '909'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '910'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '911'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '912'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '913'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '914'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '915'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '916'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '917'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '918'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '919'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '920'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '921'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '922'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '923'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '924'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '925'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '926'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '927'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '928'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '929'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '930'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '931'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '932'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '933'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '934'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '935'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '936'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '937'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '938'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '939'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '940'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '941'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '942'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '943'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '944'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '945'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '946'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '947'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '948'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '949'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '950'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '951'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '952'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '953'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '954'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '955'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '956'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '957'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '958'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '959'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '960'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '961'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '962'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '963'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '964'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '965'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '966'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '967'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '968'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '969'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '970'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '971'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '972'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '973'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '974'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '975'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '976'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '977'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '978'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '979'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '980'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '981'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '982'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '983'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '984'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '985'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '986'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '987'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '988'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '989'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '990'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '991'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '992'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '993'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '994'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '995'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '996'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '997'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '998'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: '999'
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: TR_71_72
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: TR_796_797
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1035_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1037_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1037_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1037_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1039_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1238_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1238_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1238_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1240_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1240_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1240_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1242_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1242_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1242_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1243_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1243_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1243_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1244_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1244_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1244_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1245_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1245_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1245_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1246_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1246_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1246_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1247_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1247_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1247_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1248_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1248_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1248_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1441_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1441_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1441_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1442_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1442_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1442_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1443_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1443_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1443_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1444_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1444_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1444_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1634_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1634_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1634_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1635_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1635_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1635_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1636_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1636_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1636_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1719_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1719_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1719_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1722_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1722_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1722_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1735_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1735_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1735_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1787_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1787_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1787_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1788_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1788_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1788_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1789_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1789_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1789_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1790_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1790_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1790_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1791_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1791_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1791_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1792_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1792_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1792_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1793_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1793_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1793_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1795_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1795_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1795_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1797_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1797_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1797_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1799_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1799_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1799_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1996_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1996_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1996_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1999_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1999_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_1999_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2209_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2209_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2209_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2362_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2362_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2362_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2363_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2363_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2363_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2364_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2364_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2364_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2365_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2365_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2365_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2366_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2366_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2366_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2367_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2367_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2367_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2485_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2486_dec
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2486_inc
+  cleaned_phenotype: Fitness / Proliferation / Viability
+- dataset_name: U_2486_merged
+  cleaned_phenotype: Fitness / Proliferation / Viability

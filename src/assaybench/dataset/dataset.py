@@ -1,16 +1,13 @@
 from datasets import Dataset
 from datasets import load_dataset
-import os
 import dotenv
-from typing import Literal
 dotenv.load_dotenv()
 
-import os
 from typing import List, Dict, Any, Optional
 import numpy as np
 
 
-#from screensqa.prompt_generation.datasets import StudentTeacherDataset, InMemoryDSPackage
+#from assaybench.prompt_generation.datasets import StudentTeacherDataset, InMemoryDSPackage
 from assaybench.utils.prompt_loaders import load_objective_prompt
 from assaybench.utils.screen_processing import _extract_screen_ids_from_dataset_name
 
@@ -132,7 +129,7 @@ class AssayBenchDataset:
             prompt = self.prompt_template.format(**item)
             if self.display_library_genes:
                 if len(item['relevance_genes']) < 2000:
-                    prompt += "\n\Only the following genes were considered in this screen. Only output genes from this list: " + ', '.join(item['relevance_genes'])
+                    prompt += "\nOnly the following genes were considered in this screen. Only output genes from this list: " + ', '.join(item['relevance_genes'])
 
             example = {
                 'question': prompt,

@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 from __future__ import annotations
 
 import argparse
@@ -19,7 +20,7 @@ dotenv.load_dotenv(".env", override=True)
 import dspy
 
 from journal_figures_common import DATASET_PATH, NOVEL_DATASET_PATHS, NOVEL_SPLIT_NAME, RESULTS_DIR
-from screensqa.dataset.dataset import BioGRIDDSPY
+from assaybench.dataset.dataset import BioGRIDDSPY
 
 try:
     from run_ensemble_baseline import RankingModule, create_dspy_examples, create_ranking_signature, parse_genes_from_output

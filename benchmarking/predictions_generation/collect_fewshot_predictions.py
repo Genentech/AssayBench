@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 """
 Few-shot kNN prediction: use embedding-based nearest neighbors as in-context examples.
 
@@ -39,7 +40,7 @@ from tqdm import tqdm
 import dspy
 from dspy import Example
 
-from screensqa.dataset.dataset import BioGRIDDSPY
+from assaybench.dataset.dataset import BioGRIDDSPY
 from openai import AzureOpenAI
 
 from scripts.run_ensemble_baseline import create_dspy_examples

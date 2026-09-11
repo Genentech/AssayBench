@@ -1,0 +1,332 @@
+version: 2
+description: 'LOPO fold: held-out test set for phenotype ''Host-Pathogen / Infection
+  Response'' (160 screens from all yearfold0 partitions).'
+source:
+  dataset: Genentech/assaybench
+  config: biogrid
+  split_field: yearfold0
+  split_value:
+  - train
+  - validation
+  - test
+screens:
+- dataset_name: '1017'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1132'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1148'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1149'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1163'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1164'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1165'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1167'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1168'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1169'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1170'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1171'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1172'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1175'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1208'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1215'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1218'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1220'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1221'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1222'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1230'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1429'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1430'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1431'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1433'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1479'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1480'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1520'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1524'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1561'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1567'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1581'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1582'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1583'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1584'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1704'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1706'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1708'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1741'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1751'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1752'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1815'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1816'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1817'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1818'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1821'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1822'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1823'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1824'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1825'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1826'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1827'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1828'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1829'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1830'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '1891'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2020'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2021'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2022'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2023'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2025'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2026'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2027'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2028'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2029'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2030'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2031'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2033'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2034'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2035'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2036'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2039'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2043'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2044'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2045'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2058'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2059'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2060'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2066'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2067'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2068'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2069'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2070'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2071'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2074'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2075'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2216'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2370'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2371'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2406'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2407'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2408'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2409'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2410'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2447'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2448'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2465'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2466'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: '2478'
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: TR_1209_1210
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: TR_2024_2038
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: TR_2046_2047
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1387_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1387_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1387_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1423_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1423_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1423_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1712_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1712_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1712_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1862_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1863_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1863_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1863_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1864_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1864_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1864_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1865_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1865_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1865_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1882_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1882_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1882_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1884_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1884_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1884_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1886_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1886_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1886_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1887_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1887_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1887_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1892_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1892_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1892_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1893_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1893_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1893_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1894_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1894_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1894_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1895_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1895_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1895_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1955_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1955_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1955_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1956_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1956_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_1956_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_2006_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_2006_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_2006_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_2360_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_2360_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_2360_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_2361_dec
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_2361_inc
+  cleaned_phenotype: Host-Pathogen / Infection Response
+- dataset_name: U_2361_merged
+  cleaned_phenotype: Host-Pathogen / Infection Response

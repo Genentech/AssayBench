@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 """
 Train a neural network classifier to predict gene relevance categories in CRISPR screens.
 
@@ -14,7 +15,7 @@ Usage:
     uv run python scripts/train_relevance_predictor_classifier.py --epochs 50 --batch-size 256 --use-class-weights --split-type easy_split --fold 0
     T
     # Evaluation mode (test set evaluation of a saved model)
-    uv run python scripts/train_relevance_predictor_classifier.py --eval-run-path debroue1/screensQA/mj05dzbq
+    uv run python scripts/train_relevance_predictor_classifier.py --eval-run-path user/project/run_id
 """
 
 import rootutils
@@ -38,9 +39,10 @@ from sklearn.metrics import roc_auc_score
 import wandb
 from transformers import AutoTokenizer, AutoModel
 
-from screensqa.dataset.dataset import BioGRIDDSPY as ScreenRankingDataset
-from promptopt.utils.pert_embeddings import PertGeneEmbeddings
-from screensqa.benchmark.ranking_metrics import RankingMetrics
+from assaybench.dataset.dataset import BioGRIDDSPY as ScreenRankingDataset
+# Not functional in public package. Script is just for reference.
+from embedding_utils.pert_embeddings import PertGeneEmbeddings
+from assaybench.benchmark.ranking_metrics import RankingMetrics
 from openai import AzureOpenAI
 from bollm_gene_embeddings import BOLLMGeneEmbeddings
 
@@ -126,17 +128,17 @@ def batch_get_text_embeddings(texts: List[str], client: AzureOpenAI, cache: Dict
 
 
 def get_genes(example: Dict[str, Any]) -> List[str]:
-    """Get genes from example, handling both ScreensQADSPY and BioGRIDDSPY formats."""
+    """Get genes from example, handling both AssayBenchDSPY and BioGRIDDSPY formats."""
     return example.get('genes', example.get('relevance_genes', []))
 
 
 def get_description(example: Dict[str, Any]) -> str:
-    """Get description from example, handling both ScreensQADSPY and BioGRIDDSPY formats."""
+    """Get description from example, handling both AssayBenchDSPY and BioGRIDDSPY formats."""
     return example.get('description', example.get('screen_rationale', ''))
 
 
 def get_phenotype(example: Dict[str, Any]) -> str:
-    """Get phenotype from example, handling both ScreensQADSPY and BioGRIDDSPY formats."""
+    """Get phenotype from example, handling both AssayBenchDSPY and BioGRIDDSPY formats."""
     return example.get('phenotype', 'Not specified')
 
 
@@ -930,7 +932,7 @@ def evaluate_saved_model(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
     
-    # Parse wandb run path (e.g., "debroue1/screensQA/mj05dzbq")
+    # Parse a W&B run path (for example, "user/project/run_id").
     run_path = args.eval_run_path
     if run_path.count('/') != 2:
         raise ValueError(f"Invalid run path format: {run_path}. Expected format: entity/project/run_id")
@@ -973,7 +975,7 @@ def evaluate_saved_model(args):
     use_scibert = (train_args.get('text_encoder', 'gpt') == 'scibert')
     
     # Load dataset
-    print("\nLoading ScreensQA dataset...")
+    print("\nLoading AssayBench dataset...")
     #dataset = ScreenRankingDataset(max_examples=args.max_examples)
     train_examples, val_examples, test_examples = dataset.get_train_test_split()
     
@@ -1313,7 +1315,7 @@ def main():
     
     # Mode selection
     parser.add_argument("--eval-run-path", type=str, default=None,
-                        help="W&B run path to evaluate (e.g., debroue1/screensQA/mj05dzbq). "
+                        help="W&B run path to evaluate (for example, user/project/run_id). "
                              "If provided, will load the saved model and evaluate on test set.")
     
     # Training arguments
@@ -1348,11 +1350,20 @@ def main():
                         help="How to combine multiple BOLLM options: 'mean' or 'concat' (only used with --bollm-option=all)")
     
     # Wandb arguments
-    parser.add_argument("--wandb-project", type=str, default="screensQA", help="W&B project name")
+    parser.add_argument("--wandb-project", type=str, default="assaybench", help="W&B project name")
     parser.add_argument("--wandb-entity", type=str, default=None, help="W&B entity name")
     parser.add_argument("--wandb-name", type=str, default=None, help="W&B run name")
     parser.add_argument("--wandb-tags", type=str, nargs='+', default=None, help="W&B tags")
-    parser.add_argument("--no-wandb", action="store_true", help="Disable W&B logging")
+    wandb_group = parser.add_mutually_exclusive_group()
+    wandb_group.add_argument(
+        "--wandb", dest="no_wandb", action="store_false",
+        help="Opt in to W&B logging and artifact uploads.",
+    )
+    wandb_group.add_argument(
+        "--no-wandb", dest="no_wandb", action="store_true",
+        help="Disable W&B logging (the default).",
+    )
+    parser.set_defaults(no_wandb=True)
 
     args = parser.parse_args()
     
@@ -1408,7 +1419,7 @@ def main():
     print(f"Positive threshold: {args.positive_threshold}")
     
     # Load dataset
-    print("\nLoading ScreensQA dataset...")
+    print("\nLoading AssayBench dataset...")
     dataset = ScreenRankingDataset(dataset_path = "./data/biogrid_v0.4_combined",
                                    split_type=args.split_type,
                                    fold=args.fold)

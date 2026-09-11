@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 """
 Generate non-LLM baseline predictions for the BioGRID gene ranking benchmark.
 

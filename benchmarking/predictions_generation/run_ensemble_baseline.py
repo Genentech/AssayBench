@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 """
 Script for evaluating an ensemble baseline on the ScreenBench ranking task.
 
@@ -28,8 +29,8 @@ from collections import defaultdict
 import dspy
 from dspy import Example
 
-from screensqa.dataset.dataset import ScreensQADSPY
-from screensqa.benchmark.ranking_metrics import RankingMetrics
+from assaybench.dataset.dataset import AssayBenchDSPY
+from assaybench.benchmark.ranking_metrics import RankingMetrics
 
 
 
@@ -67,7 +68,7 @@ class RankingModule(dspy.Module):
             signature_class = create_ranking_signature()
         
         # Always use a standard DSPy predictor
-        # The LM backend (GNEsys or standard) is configured via dspy.configure()
+        # The LM backend is configured via dspy.configure().
         self.predictor = dspy.ChainOfThought(signature_class)
     
     def forward(self, question: str) -> dspy.Prediction:
@@ -88,12 +89,12 @@ def create_dspy_examples(dataset_examples: List[Dict[str, Any]]) -> List[Example
     """
     Convert dataset examples to DSPy Example format.
     
-    Supports both ScreensQADSPY and BioGRIDDSPY dataset formats:
-    - ScreensQADSPY uses 'genes' key
+    Supports both AssayBenchDSPY and BioGRIDDSPY dataset formats:
+    - AssayBenchDSPY uses 'genes' key
     - BioGRIDDSPY uses 'relevance_genes' key
     
     Args:
-        dataset_examples: List of examples from ScreensQADSPY or BioGRIDDSPY
+        dataset_examples: List of examples from AssayBenchDSPY or BioGRIDDSPY
         
     Returns:
         List of dspy.Example objects
@@ -108,14 +109,14 @@ def create_dspy_examples(dataset_examples: List[Dict[str, Any]]) -> List[Example
         ).with_inputs("question")
         
         # Store additional metadata for evaluation
-        # Handle both ScreensQADSPY ('genes') and BioGRIDDSPY ('relevance_genes')
+        # Handle both AssayBenchDSPY ('genes') and BioGRIDDSPY ('relevance_genes')
         dspy_ex.genes = ex.get('genes', ex.get('relevance_genes', []))
         dspy_ex.relevance_scores = ex.get('relevance_scores', [])
         dspy_ex.dataset_name = ex.get('dataset_name', '')
         dspy_ex.phenotype = ex.get('phenotype', '')
         dspy_ex.num_genes = ex.get('num_genes', 0)
         
-        # ScreensQADSPY-specific fields (with defaults for BioGRID)
+        # AssayBenchDSPY-specific fields (with defaults for BioGRID)
         dspy_ex.alpha = ex.get('alpha', None)
         dspy_ex.ranking_method = ex.get('ranking_method', None)
         dspy_ex.description = ex.get('description', ex.get('screen_rationale', ''))
@@ -641,25 +642,15 @@ def main(cfg: DictConfig):
     Args:
         cfg: Hydra configuration
     """
-    from promptopt.utils.gnesys_wrapper import GNEsysPredictor, GNEsysLM
-
     from sklearn.model_selection import train_test_split
     print("="*60, flush=True)
     print("ENSEMBLE BASELINE EVALUATION FOR GENE RANKING", flush=True)
     print("="*60, flush=True)
     
-    # Initialize Langfuse (optional monitoring)
-    try:
+    # Tracing can include prompts and model outputs, so it is strictly opt-in.
+    if os.environ.get("ASSAYBENCH_ENABLE_LANGFUSE") == "1":
         from langfuse import Langfuse
-        import httpx
-        import urllib3
-
-        # Suppress SSL warnings
-        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-        # Create httpx client with SSL verification disabled
-        httpx_client = httpx.Client(verify=False)
-        langfuse = Langfuse(httpx_client=httpx_client)
+        langfuse = Langfuse()
 
         if langfuse.auth_check():
             print("Langfuse client is authenticated and ready!")
@@ -668,9 +659,6 @@ def main(cfg: DictConfig):
             DSPyInstrumentor().instrument()
         else:
             print("Langfuse authentication failed. Continuing without monitoring.")
-    except Exception as e:
-        print(f"Could not initialize Langfuse: {e}")
-        print("Continuing without monitoring.")
     
     # Set random seed
     import random
@@ -700,69 +688,28 @@ def main(cfg: DictConfig):
     # Initialize LM based on configuration
     print(f"\nInitializing LM...", flush=True)
     
-    if hasattr(cfg, 'gnesys'):
-        # Initialize GNEsys as the LM
-        print("\nInitializing GNEsys as custom DSPy LM...", flush=True)
-        gnesys_predictor = GNEsysPredictor.from_config_path(
-            config_path=cfg.gnesys.config_path,
-            config_name=cfg.gnesys.config_name,
-            overrides=cfg.gnesys.overrides,
-            verbose=cfg.gnesys.verbose
+    provider = cfg.dspy_lm.get('provider', 'openai')
+    if provider == 'azure':
+        api_key = os.environ.get('AZURE_API_KEY')
+        api_base = os.environ.get('AZURE_API_BASE')
+        if not api_key or not api_base:
+            raise ValueError(
+                "Azure OpenAI requires AZURE_API_KEY and AZURE_API_BASE environment variables."
+            )
+        print(f"  Using Azure OpenAI endpoint: {api_base}", flush=True)
+        print(f"  Deployment: {cfg.dspy_lm.model}", flush=True)
+        lm = dspy.LM(
+            model=f"azure/{cfg.dspy_lm.model}",
+            max_tokens=cfg.dspy_lm.max_tokens,
+            temperature=cfg.dspy_lm.temperature,
         )
-        
-        # Configure kernel pooling to prevent memory leaks
-        reuse_kernels = cfg.gnesys.get('reuse_kernels', True)
-        max_kernels = cfg.gnesys.get('max_kernels', 5)
-        
-        lm = GNEsysLM(
-            gnesys_predictor=gnesys_predictor,
-            reuse_kernels=reuse_kernels,
-            max_kernels=max_kernels
-        )
-        print(f"  GNEsys LM initialized successfully", flush=True)
-        print(f"  Kernel pooling: {'enabled' if reuse_kernels else 'disabled'} (max_kernels={max_kernels})", flush=True)
-
-        # Extract init_prompt from GNEsys to use in RankingSignature
-        init_prompt = gnesys_predictor.get_init_prompt()
-        print(f"  Extracted init_prompt ({len(init_prompt)} characters)", flush=True)
-        
-        tool_prompt = gnesys_predictor.get_tool_prompt()
-        print(f"  Tool prompt will be appended by GNEsys ({len(tool_prompt)} characters)", flush=True)
-        
-        # Create RankingSignature with the GNEsys init_prompt
-        RankingSignatureClass = create_ranking_signature(init_prompt)
-        
     else:
-        # Use standard DSPy LM
-        provider = cfg.dspy_lm.get('provider', 'openai')
-        
-        if provider == 'azure':
-            import os
-            api_key = os.environ.get('AZURE_API_KEY')
-            api_base = os.environ.get('AZURE_API_BASE')
-            
-            if not api_key or not api_base:
-                raise ValueError(
-                    "Azure OpenAI requires AZURE_API_KEY and AZURE_API_BASE environment variables."
-                )
-            
-            print(f"  Using Azure OpenAI endpoint: {api_base}", flush=True)
-            print(f"  Deployment: {cfg.dspy_lm.model}", flush=True)
-            
-            lm = dspy.LM(
-                model=f"azure/{cfg.dspy_lm.model}",
-                max_tokens=cfg.dspy_lm.max_tokens,
-                temperature=cfg.dspy_lm.temperature,
-            )
-        else:
-            # Standard OpenAI configuration
-            lm = dspy.LM(
-                model=cfg.dspy_lm.model,
-                max_tokens=cfg.dspy_lm.max_tokens,
-                temperature=cfg.dspy_lm.temperature
-            )
-        
-        RankingSignatureClass = create_ranking_signature()
+        lm = dspy.LM(
+            model=cfg.dspy_lm.model,
+            max_tokens=cfg.dspy_lm.max_tokens,
+            temperature=cfg.dspy_lm.temperature,
+        )
+    RankingSignatureClass = create_ranking_signature()
     
     # Configure DSPy to use the LM
     dspy.configure(lm=lm)
@@ -775,7 +722,7 @@ def main(cfg: DictConfig):
     
     # Load dataset
     print(f"\nLoading dataset...", flush=True)
-    dataset = ScreensQADSPY(
+    dataset = AssayBenchDSPY(
         mounted_dir=cfg.dataset.mounted_dir,
         cache_directory=cfg.dataset.cache_directory,
         split_type=cfg.dataset.split_type,
@@ -867,4 +814,3 @@ def main(cfg: DictConfig):
 
 if __name__ == "__main__":
     main()
-

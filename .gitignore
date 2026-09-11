@@ -1,7 +1,35 @@
+# Secrets and local credentials
+.env
+.env.*
+!.env.example
+*.key
+*.p12
+*.pem
+*.pfx
+credentials.json
+
+# Python build and caches
 __pycache__/
-*.pyc
+*.py[cod]
 .venv/
 *.egg-info/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+
+# Runtime outputs and experiment-tracking state
+output/
+outputs/
+wandb/
+*.log
+*.ckpt
+*.pickle
+*.pkl
+*.pt
+*.pth
 journal_figures_cache/
 journal_figures/
-.env
+
+# Licensed third-party data is cached outside the source tree.
+src/assaybench/data/depmap/CRISPRInferredCommonEssentials.csv

@@ -1,0 +1,12 @@
+# Keep the PyPI source distribution focused on the installable package.
+# Research artifacts remain available from the Git repository, but must not be
+# copied into release archives where local paths or generated data can leak.
+prune benchmarking
+prune docs
+prune examples
+prune figures
+
+global-exclude .env .env.*
+global-exclude *.ckpt *.key *.p12 *.pem *.pfx *.pickle *.pkl *.pt *.pth
+global-exclude CRISPRInferredCommonEssentials.csv
+global-exclude __pycache__ *.py[cod]

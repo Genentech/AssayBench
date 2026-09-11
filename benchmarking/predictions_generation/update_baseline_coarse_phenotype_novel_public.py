@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 from __future__ import annotations
 
 import argparse
@@ -15,8 +16,8 @@ rootutils.setup_root(__file__, indicator=".project_root", pythonpath=True)
 
 from datasets import load_from_disk
 from journal_figures_common import DATASET_PATH, NOVEL_DATASET_PATHS, NOVEL_SPLIT_NAME, RESULTS_DIR
-from screensqa.dataset.dataset import BioGRIDDSPY
-from screensqa.utils.biogrid_maps import stratify_metrics_by_dataset_name
+from assaybench.dataset.dataset import BioGRIDDSPY
+from assaybench.utils.biogrid_maps import stratify_metrics_by_dataset_name
 
 
 def log(message: str) -> None:

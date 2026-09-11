@@ -1,0 +1,100 @@
+version: 2
+description: 'LOPO fold: held-out test set for phenotype ''Trafficking / Localization
+  / Structural Phenotypes'' (44 screens from all yearfold0 partitions).'
+source:
+  dataset: Genentech/assaybench
+  config: biogrid
+  split_field: yearfold0
+  split_value:
+  - train
+  - validation
+  - test
+screens:
+- dataset_name: '1119'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1121'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1123'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1125'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1135'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1137'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1140'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1142'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1187'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1199'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1224'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1225'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1434'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1461'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1566'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1574'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1575'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1609'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '1618'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '2085'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '2147'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '2157'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '2160'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '2163'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '2166'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '2167'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '2205'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '2206'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '2404'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '405'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '583'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '587'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '590'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '592'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: '593'
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: U_1388_dec
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: U_1388_inc
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: U_1388_merged
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: U_1389_dec
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: U_1389_inc
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: U_1389_merged
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: U_1718_dec
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: U_1718_inc
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes
+- dataset_name: U_1718_merged
+  cleaned_phenotype: Trafficking / Localization / Structural Phenotypes

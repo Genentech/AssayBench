@@ -16,7 +16,7 @@ rootutils.setup_root(__file__, indicator=".project_root", pythonpath=True)
 from journal_figures_common import NOVEL_SPLIT_NAME, SCRIPT_DIR
 
 
-DEFAULT_OUTPUT_DIR = Path("/cv/data/braid/gnesys/datasets/screensQA/results")
+DEFAULT_OUTPUT_DIR = Path("output/harmonized_predictions")
 SCHEMA_VERSION = 1
 KNN_TEST_ROOT = SCRIPT_DIR.parent / "output_latent_biology" / "knn_test"
 TRANSFER_MATRIX_DIR = SCRIPT_DIR.parent / "output" / "transfer_matrix"
@@ -97,7 +97,7 @@ def build_payload(
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "model_name": model_name,
         "source_group": "knn_predictions",
-        "source_files": list(source_files),
+        "source_files": sorted({Path(source).name for source in source_files}),
         "n_records": len(records),
         "n_unique_datasets": len(grouped),
         "records_by_dataset": grouped,

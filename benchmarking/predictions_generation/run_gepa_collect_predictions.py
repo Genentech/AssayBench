@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 """
 GEPA prompt optimization + test evaluation script.
 
@@ -32,8 +33,8 @@ import logging
 import dspy
 from dspy import GEPA, Example
 
-from screensqa.dataset.dataset import BioGRIDDSPY
-from screensqa.benchmark.ranking_metrics import RankingMetrics
+from assaybench.dataset.dataset import BioGRIDDSPY
+from assaybench.benchmark.ranking_metrics import RankingMetrics
 
 from scripts.collect_llm_predictions import (
     create_ranking_signature,
@@ -42,7 +43,6 @@ from scripts.collect_llm_predictions import (
     collect_predictions,
     BiomniLM,
 )
-from promptopt.utils.gnesys_wrapper import GNEsysPredictor, GNEsysLM
 
 import matplotlib
 matplotlib.use('Agg')
@@ -237,23 +237,6 @@ def plot_gepa_results(detailed_results, output_dir: Path):
 def init_task_lm(cfg: DictConfig):
     """Initialize the task LM based on provider config (mirrors collect_llm_predictions.py)."""
     provider = cfg.lm.provider
-
-    if provider == 'gnesys':
-        print("  Initializing GNEsys...")
-        gnesys_predictor = GNEsysPredictor.from_config_path(
-            config_path=cfg.gnesys.config_path,
-            config_name=cfg.gnesys.config_name,
-            overrides=cfg.gnesys.overrides,
-            verbose=cfg.gnesys.verbose,
-        )
-        lm = GNEsysLM(
-            gnesys_predictor=gnesys_predictor,
-            reuse_kernels=cfg.gnesys.get('reuse_kernels', True),
-            max_kernels=cfg.gnesys.get('max_kernels', 5),
-        )
-        init_prompt = gnesys_predictor.get_init_prompt()
-        sig_class = create_ranking_signature(init_prompt)
-        return lm, sig_class
 
     if provider == 'azure':
         api_key = os.environ.get('AZURE_API_KEY') or os.environ.get('AZURE_OPENAI_API_KEY')

@@ -1,0 +1,514 @@
+version: 2
+description: 'Sequential-screening validation set used in the AssayLoop paper: 20 genome-wide
+  screens curated from the AssayBench public validation split (Genentech/assaybench, biogrid,
+  yearfold0=''validation''). Selected by the same procedure as assayloop-test with the same
+  Gemini AnDCG@100 >= 0.05 signal floor; disjoint from assayloop-test by construction because
+  the underlying splits are. Use this for model selection and assayloop-test for reported
+  numbers. The selection script is scripts/select_default_public_screens.py in the AssayLoop
+  repo.'
+source:
+  dataset: Genentech/assaybench
+  config: biogrid
+  split_field: yearfold0
+  split_value: validation
+selection_criteria:
+  num_genes_min: 18000
+  num_genes_max: 22000
+  num_hits_min: 50
+  max_hit_rate: 0.15
+  gemini_signal_floor: true
+  min_gemini_andcg: 0.05
+  winner_balance: false
+  max_per_phenotype: 6
+  max_per_phenotype_is_soft: true
+  quality_metric: gemini-3-pro adjusted_ndcg@100
+  quality_weight: 0.5
+  scoring_methods:
+    llm: gemini-3-pro
+    baselines:
+    - oracle_knn
+    - embedding_knn
+    - phenotype_hit_freq
+  stratification: Per cleaned_phenotype, allocate slots proportional to the eligible split
+    distribution with a soft cap of six per phenotype (relaxed only if needed to reach n_target);
+    within each phenotype, diversify via greedy max-min on TF-IDF of (phenotype | condition_clause
+    | cell_line | cell_type | library_methodology), lightly weighted by gemini-3-pro AnDCG@100.
+    No LLM-vs-baseline winner balancing is applied.
+  n_target: 20
+screens:
+- dataset_name: U_1796_dec
+  phenotype: decrease cell growth in the presence of erlotinib in a KRASG12V mutant
+    background
+  cleaned_phenotype: Drug / Chemical / Environmental Response
+  cell_line: PC-9
+  cell_type: Lung Adenocarcinoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: bidirectional
+  condition_name: 'Mutation: KRAS (ETG3845) G12V| erlotinib'
+  condition_clause: ' under Mutation: KRAS (ETG3845) G12V| erlotinib treatment (40.0
+    nM)'
+  duration: 12 Doublings
+  author: Vichas A (2021)
+  source_id: '34373451'
+  num_genes: 19010
+  num_hits: 1447
+  andcg_at_100:
+    gemini-3-pro: 0.2807
+    oracle_knn: 0.9309
+    embedding_knn: 0.1442
+    phenotype_hit_freq: 0.9644
+  gemini_signal_pass: true
+  best_method: phenotype_hit_freq
+  llm_lead: false
+- dataset_name: '1990'
+  phenotype: impacts response to chemicals
+  cleaned_phenotype: Drug / Chemical / Environmental Response
+  cell_line: OCI-AML-1
+  cell_type: Acute Myeloid Leukemia Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: recovered_bidirectional
+  condition_name: UM171
+  condition_clause: ' under UM171 treatment (800 nM)'
+  duration: 14 Days
+  author: Chagraoui J (2021)
+  source_id: '33417871'
+  num_genes: 18832
+  num_hits: 536
+  andcg_at_100:
+    gemini-3-pro: 0.2549
+    oracle_knn: 0.4256
+    embedding_knn: 0.1685
+    phenotype_hit_freq: 0.2021
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: '2048'
+  phenotype: increases resistance to aflatoxin B1 as measured by increased viability.
+  cleaned_phenotype: Drug / Chemical / Environmental Response
+  cell_line: PLC/PRF/5
+  cell_type: Hepatoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: aflatoxin B1 (AFB1)
+  condition_clause: " under aflatoxin B1 (AFB1) treatment (8 \xB5M)"
+  duration: 12 Days
+  author: Zhu Q (2021)
+  source_id: '34373448'
+  num_genes: 18983
+  num_hits: 128
+  andcg_at_100:
+    gemini-3-pro: 0.1202
+    oracle_knn: 0.0809
+    embedding_knn: 0.001
+    phenotype_hit_freq: 0.0
+  gemini_signal_pass: true
+  best_method: gemini-3-pro
+  llm_lead: true
+- dataset_name: TR_1975_1976
+  phenotype: increases resistance to the CDK9 inhibitor AZ5576, as measured by increased
+    cell proliferation in its presence.
+  cleaned_phenotype: Drug / Chemical / Environmental Response
+  cell_line: THP-1
+  cell_type: Monocytic Leukemia Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: AZD5576 (CDK9i)
+  condition_clause: ' under AZD5576 (CDK9i) treatment (150.0 nM)'
+  duration: 21 Days
+  author: Vervoort SJ (2021)
+  source_id: '34004147'
+  num_genes: 20494
+  num_hits: 375
+  andcg_at_100:
+    gemini-3-pro: 0.1135
+    oracle_knn: 0.4405
+    embedding_knn: 0.1062
+    phenotype_hit_freq: 0.0278
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: U_1794_dec
+  phenotype: decrease cell growth in the presence of erlotinib in EGFR-T790M/L858R
+    mutant cells
+  cleaned_phenotype: Drug / Chemical / Environmental Response
+  cell_line: PC-9
+  cell_type: Lung Adenocarcinoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: bidirectional
+  condition_name: 'Mutation: EGFR (ETG1956) T790M/L858R| erlotinib'
+  condition_clause: ' under Mutation: EGFR (ETG1956) T790M/L858R| erlotinib treatment
+    (40.0 nM)'
+  duration: 12 Doublings
+  author: Vichas A (2021)
+  source_id: '34373451'
+  num_genes: 19010
+  num_hits: 1449
+  andcg_at_100:
+    gemini-3-pro: 0.2124
+    oracle_knn: 0.9154
+    embedding_knn: 0.0145
+    phenotype_hit_freq: 0.9812
+  gemini_signal_pass: true
+  best_method: phenotype_hit_freq
+  llm_lead: false
+- dataset_name: '1644'
+  phenotype: increases resistance to irinotecan in Bx-PC3 cells.
+  cleaned_phenotype: Drug / Chemical / Environmental Response
+  cell_line: BxPC-3
+  cell_type: Pancreatic Adenocarcinoma Cell Line
+  library_methodology: Activation
+  library_type: CRISPRa
+  screen_category: unidirectional
+  condition_name: Irinotecan
+  condition_clause: ' under Irinotecan treatment (250.0 nM)'
+  duration: 14 Days
+  author: Ramaker RC (2021)
+  source_id: '34049503'
+  num_genes: 18835
+  num_hits: 958
+  andcg_at_100:
+    gemini-3-pro: 0.0521
+    oracle_knn: 0.1
+    embedding_knn: 0.0305
+    phenotype_hit_freq: 0.0
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: U_1793_dec
+  phenotype: decrease cell proliferation in an EGFR-T790M/L858R mutant background
+  cleaned_phenotype: Fitness / Proliferation / Viability
+  cell_line: PC-9
+  cell_type: Lung Adenocarcinoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: bidirectional
+  condition_name: 'Mutation: EGFR (ETG1956) T790M/L858R'
+  condition_clause: ' under Mutation: EGFR (ETG1956) T790M/L858R treatment'
+  duration: 12 Doublings
+  author: Vichas A (2021)
+  source_id: '34373451'
+  num_genes: 19010
+  num_hits: 1587
+  andcg_at_100:
+    gemini-3-pro: 0.845
+    oracle_knn: 0.9936
+    embedding_knn: 0.9814
+    phenotype_hit_freq: 0.9673
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: U_1793_merged
+  phenotype: either increases or decreases cell proliferation in an EGFR-T790M/L858R
+    mutant background
+  cleaned_phenotype: Fitness / Proliferation / Viability
+  cell_line: PC-9
+  cell_type: Lung Adenocarcinoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: bidirectional
+  condition_name: 'Mutation: EGFR (ETG1956) T790M/L858R'
+  condition_clause: ' under Mutation: EGFR (ETG1956) T790M/L858R treatment'
+  duration: 12 Doublings
+  author: Vichas A (2021)
+  source_id: '34373451'
+  num_genes: 19010
+  num_hits: 1600
+  andcg_at_100:
+    gemini-3-pro: 0.7693
+    oracle_knn: 0.9936
+    embedding_knn: 0.9734
+    phenotype_hit_freq: 0.9673
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: U_1795_dec
+  phenotype: decrease cell proliferation in a KRASG12V mutant background
+  cleaned_phenotype: Fitness / Proliferation / Viability
+  cell_line: PC-9
+  cell_type: Lung Adenocarcinoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: bidirectional
+  condition_name: 'Mutation: KRAS (ETG3845) G12V'
+  condition_clause: ' under Mutation: KRAS (ETG3845) G12V treatment'
+  duration: 12 Doublings
+  author: Vichas A (2021)
+  source_id: '34373451'
+  num_genes: 19010
+  num_hits: 1629
+  andcg_at_100:
+    gemini-3-pro: 0.8657
+    oracle_knn: 0.9672
+    embedding_knn: 0.8946
+    phenotype_hit_freq: 0.9695
+  gemini_signal_pass: true
+  best_method: phenotype_hit_freq
+  llm_lead: false
+- dataset_name: U_1795_merged
+  phenotype: either increases or decreases cell proliferation in a KRASG12V mutant
+    background
+  cleaned_phenotype: Fitness / Proliferation / Viability
+  cell_line: PC-9
+  cell_type: Lung Adenocarcinoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: bidirectional
+  condition_name: 'Mutation: KRAS (ETG3845) G12V'
+  condition_clause: ' under Mutation: KRAS (ETG3845) G12V treatment'
+  duration: 12 Doublings
+  author: Vichas A (2021)
+  source_id: '34373451'
+  num_genes: 19010
+  num_hits: 1632
+  andcg_at_100:
+    gemini-3-pro: 0.695
+    oracle_knn: 0.9672
+    embedding_knn: 0.0499
+    phenotype_hit_freq: 0.9694
+  gemini_signal_pass: true
+  best_method: phenotype_hit_freq
+  llm_lead: false
+- dataset_name: U_1797_dec
+  phenotype: decrease cell proliferation in a RIT1M90I mutant background
+  cleaned_phenotype: Fitness / Proliferation / Viability
+  cell_line: PC-9
+  cell_type: Lung Adenocarcinoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: bidirectional
+  condition_name: 'Mutation: RIT1 (ETG6016) M90I'
+  condition_clause: ' under Mutation: RIT1 (ETG6016) M90I treatment'
+  duration: 12 Doublings
+  author: Vichas A (2021)
+  source_id: '34373451'
+  num_genes: 19010
+  num_hits: 1287
+  andcg_at_100:
+    gemini-3-pro: 0.6088
+    oracle_knn: 0.9267
+    embedding_knn: 0.7965
+    phenotype_hit_freq: 0.9128
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: U_1797_merged
+  phenotype: either increases or decreases cell proliferation in a RIT1M90I mutant
+    background
+  cleaned_phenotype: Fitness / Proliferation / Viability
+  cell_line: PC-9
+  cell_type: Lung Adenocarcinoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: bidirectional
+  condition_name: 'Mutation: RIT1 (ETG6016) M90I'
+  condition_clause: ' under Mutation: RIT1 (ETG6016) M90I treatment'
+  duration: 12 Doublings
+  author: Vichas A (2021)
+  source_id: '34373451'
+  num_genes: 19010
+  num_hits: 1407
+  andcg_at_100:
+    gemini-3-pro: 0.1754
+    oracle_knn: 0.9258
+    embedding_knn: 0.6718
+    phenotype_hit_freq: 0.9116
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: '1561'
+  phenotype: increases resistance to Hepatitis A virus (HM175/18f), as measured by
+    increased cell growth in the presence of the virus.
+  cleaned_phenotype: Host-Pathogen / Infection Response
+  cell_line: Huh-7.5.1
+  cell_type: Huh-7 Cell
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: 'Virus: Human hepatitis A virus HM175'
+  condition_clause: ' under Virus: Human hepatitis A virus HM175 treatment (10.0 MOI)'
+  duration: 12 Days
+  author: Kulsuptrakul J (2021)
+  source_id: '33730579'
+  num_genes: 20671
+  num_hits: 205
+  andcg_at_100:
+    gemini-3-pro: 0.1623
+    oracle_knn: 0.143
+    embedding_knn: 0.0679
+    phenotype_hit_freq: 0.0003
+  gemini_signal_pass: true
+  best_method: gemini-3-pro
+  llm_lead: true
+- dataset_name: '1581'
+  phenotype: increases resistance to virus infection.
+  cleaned_phenotype: Host-Pathogen / Infection Response
+  cell_line: HuH-7
+  cell_type: Hepatoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: 'Virus: SARS-CoV-2 (Severe acute respiratory syndrome coronavirus
+    2)'
+  condition_clause: ' under Virus: SARS-CoV-2 (Severe acute respiratory syndrome coronavirus
+    2) treatment (0.1 MOI)'
+  duration: 14 Days
+  author: Baggen J (2021)
+  source_id: '33686287'
+  num_genes: 18994
+  num_hits: 382
+  andcg_at_100:
+    gemini-3-pro: 0.1127
+    oracle_knn: 0.1701
+    embedding_knn: 0.0
+    phenotype_hit_freq: 0.0901
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: '1584'
+  phenotype: increases resistance to viral infection, as indicated by enrichment of
+    infected cells.
+  cleaned_phenotype: Host-Pathogen / Infection Response
+  cell_line: HuH-7
+  cell_type: Hepatoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: 'Virus: SARS-CoV-2 (Severe acute respiratory syndrome coronavirus
+    2)'
+  condition_clause: ' under Virus: SARS-CoV-2 (Severe acute respiratory syndrome coronavirus
+    2) treatment (0.1 MOI)'
+  duration: 14 Days
+  author: Baggen J (2021)
+  source_id: '33686287'
+  num_genes: 18111
+  num_hits: 376
+  andcg_at_100:
+    gemini-3-pro: 0.093
+    oracle_knn: 0.1698
+    embedding_knn: 0.0
+    phenotype_hit_freq: 0.0975
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: '1815'
+  phenotype: increases resistance to MERS-CoV infection.
+  cleaned_phenotype: Host-Pathogen / Infection Response
+  cell_line: HuH-7
+  cell_type: Hepatoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: 'Virus: MERS-CoV'
+  condition_clause: ' under Virus: MERS-CoV treatment (0.05 MOI)'
+  duration: 14 Days
+  author: Kratzel A (2021)
+  source_id: '34962926'
+  num_genes: 20482
+  num_hits: 684
+  andcg_at_100:
+    gemini-3-pro: 0.0647
+    oracle_knn: 0.0806
+    embedding_knn: 0.0054
+    phenotype_hit_freq: 0.0
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: '1817'
+  phenotype: increases resistance to HCoV-229E coronavirus infection.
+  cleaned_phenotype: Host-Pathogen / Infection Response
+  cell_line: HuH-7
+  cell_type: Hepatoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: 'Virus: HCoV-229E (Human coronavirus 229E)'
+  condition_clause: ' under Virus: HCoV-229E (Human coronavirus 229E) treatment (0.1
+    MOI)'
+  duration: 14 Days
+  author: Kratzel A (2021)
+  source_id: '34962926'
+  num_genes: 20482
+  num_hits: 888
+  andcg_at_100:
+    gemini-3-pro: 0.0894
+    oracle_knn: 0.0811
+    embedding_knn: 0.0022
+    phenotype_hit_freq: 0.027
+  gemini_signal_pass: true
+  best_method: gemini-3-pro
+  llm_lead: true
+- dataset_name: '1818'
+  phenotype: increases resistance to HCoV-229E coronavirus infection.
+  cleaned_phenotype: Host-Pathogen / Infection Response
+  cell_line: HuH-7
+  cell_type: Hepatoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: 'Virus: HCoV-229E (Human coronavirus 229E)'
+  condition_clause: ' under Virus: HCoV-229E (Human coronavirus 229E) treatment (0.1
+    MOI)'
+  duration: 14 Days
+  author: Kratzel A (2021)
+  source_id: '34962926'
+  num_genes: 20482
+  num_hits: 371
+  andcg_at_100:
+    gemini-3-pro: 0.0686
+    oracle_knn: 0.0562
+    embedding_knn: 0.0
+    phenotype_hit_freq: 0.0
+  gemini_signal_pass: true
+  best_method: gemini-3-pro
+  llm_lead: true
+- dataset_name: '1725'
+  phenotype: decreases mTORC1 activity as measured by reduced rpS6 phosphorylation.
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+  cell_line: HEK293T
+  cell_type: Embryonic Kidney Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: Not specified
+  condition_clause: ''
+  duration: 10 Days
+  author: Condon KJ (2021)
+  source_id: '33483422'
+  num_genes: 18485
+  num_hits: 173
+  andcg_at_100:
+    gemini-3-pro: 0.1276
+    oracle_knn: 0.1854
+    embedding_knn: 0.0383
+    phenotype_hit_freq: 0.149
+  gemini_signal_pass: true
+  best_method: oracle_knn
+  llm_lead: false
+- dataset_name: '2104'
+  phenotype: increases accumulation of NMD-reporter protein as measured by fluorescence.
+  cleaned_phenotype: Molecular Output / Reporter / Pathway Activity
+  cell_line: U2OS
+  cell_type: Osteosarcoma Cell Line
+  library_methodology: Knockout
+  library_type: CRISPRn
+  screen_category: unidirectional
+  condition_name: Not specified
+  condition_clause: ''
+  duration: 6 Days
+  author: Cheruiyot A (2021)
+  source_id: '34215620'
+  num_genes: 18736
+  num_hits: 904
+  andcg_at_100:
+    gemini-3-pro: 0.2058
+    oracle_knn: 0.1826
+    embedding_knn: 0.0
+    phenotype_hit_freq: 0.1157
+  gemini_signal_pass: true
+  best_method: gemini-3-pro
+  llm_lead: true

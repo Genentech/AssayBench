@@ -1,3 +1,4 @@
+# Not functional in public package. Script is just for reference.
 from __future__ import annotations
 
 import argparse
@@ -12,7 +13,7 @@ import rootutils
 rootutils.setup_root(__file__, indicator=".project_root", pythonpath=True)
 
 from journal_figures_common import DATASET_PATH, NOVEL_DATASET_PATHS, NOVEL_SPLIT_NAME, RESULTS_DIR
-from screensqa.dataset.dataset import BioGRIDDSPY
+from assaybench.dataset.dataset import BioGRIDDSPY
 
 try:
     from run_ensemble_baseline import create_dspy_examples
@@ -20,7 +21,7 @@ except ImportError:
     from scripts.run_ensemble_baseline import create_dspy_examples
 
 
-from screensqa.benchmark.ranking_metrics import RankingMetrics
+from assaybench.benchmark.ranking_metrics import RankingMetrics
 
 def log(message: str) -> None:
     timestamp = datetime.now(timezone.utc).strftime("%H:%M:%S")
